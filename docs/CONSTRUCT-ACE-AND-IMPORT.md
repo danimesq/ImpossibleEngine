@@ -44,7 +44,7 @@ invoking it. Do not substitute a similarly named addon converter.
 ### Addon conversion is a separate problem
 
 The repository
-[ T ob yReeno/c2-addon-assistant ](https://github.com/TobyReeno/c2-addon-assistant)
+[TobyReeno/c2-addon-assistant](https://github.com/TobyReeno/c2-addon-assistant)
 documents a `C2C3AddonConverter` that generates Construct 3 addon source from
 Construct 2 addon source. That is useful research for addon/ACE metadata
 migration, but it is not evidence of a complete C2 game-project converter.

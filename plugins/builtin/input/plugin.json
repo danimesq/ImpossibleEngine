@@ -1,0 +1,13 @@
+{
+  "id": "impossible.input",
+  "name": "Input",
+  "version": "0.1.0",
+  "api": "impossible-plugin/1",
+  "kind": "event",
+  "builtin": true,
+  "mandatory": false,
+  "dependencies": [],
+  "operations": [
+    "condition:input.axis_nonzero"
+  ]
+}

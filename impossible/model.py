@@ -25,6 +25,8 @@ PLATFORM_PROFILES = (
                     "Retro 3D target with distinct rendering and asset constraints.", "N64-specific model, texture and rendering preparation."),
     PlatformProfile("mobile-modern", "Modern mobile", "mobile", "2D + 3D", "Native / Vulkan / GLES",
                     "Contemporary Android and iOS devices.", "Battery-aware rendering, scalable textures and touch-first input."),
+    PlatformProfile("web-wasm", "WebAssembly / Browser", "web", "2D + 3D", "Canvas 2D / WebGL 2",
+                    "Rust game logic running as WebAssembly inside a browser host.", "Browser sandbox, asynchronous assets, memory budgets and browser API boundaries."),
     PlatformProfile("gba", "Game Boy Advance", "handheld", "2D", "Console adapter",
                     "Classic handheld 2D target.", "Tile/sprite-sheet planning, palette-aware art and compact animation sets."),
     PlatformProfile("gbc", "Game Boy Color", "handheld", "2D", "Console adapter",

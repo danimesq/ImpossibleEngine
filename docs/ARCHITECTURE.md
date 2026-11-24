@@ -33,3 +33,48 @@ Event operation definitions live in plugins, not compiler-core hardcoding. Syste
 Street Chaves is a first-class behavioral-fidelity target. Its Pascal reference and StreetChavesRust reconstruction are used to derive a source-backed clock profile, exact ordered phase schedule, deterministic input/replay contract and differential trace tests. Byte-identical executable reproduction is not required; observable gameplay behavior is.
 
 Point Blank Rust is a later demanding validation project. Impossible Pong remains the smaller vertical slice for Event Sheets, plugin registration, deterministic simulation and Bevy.
+
+
+## Construct project compatibility boundary
+
+Alien-Parcor and Flappy Madruga are C2 reference projects used to derive the
+ACE, object-plugin, behavior-plugin, selection and runtime compatibility model.
+They are not manually imported into Impossible and their C2 project/XML formats
+are not accepted by the production importer.
+
+The intended migration path is:
+
+`C2 project -> external C2-to-C3 project converter -> C3 project -> Impossible C3 importer -> typed IR -> Rust backend`
+
+The importer accepts Construct 3 folder projects and `.c3p` archives only.
+The project-level C2-to-C3 converter will be developed in a separate external
+repository and is not shipped by Impossible. C2 addon conversion is a distinct
+workflow and must not be confused with whole-project conversion.
+
+The C3-to-Impossible importer is built into this repository and the normal
+Impossible application workflow. It reads C3 folder projects and .c3p ZIP
+archives through one virtual-source interface, uses project.c3proj as the
+resource index, applies a versioned reader profile, resolves plugins,
+behaviors and ACE schemas, and builds a normalized Impossible project. It is
+read-only, does not execute project/addon JavaScript and reports unknown or
+incompatible features rather than silently dropping them. A CLI/headless
+adapter may expose the same importer API for automation and tests.
+
+See [CONSTRUCT-REFERENCE-STUDY.md](CONSTRUCT-REFERENCE-STUDY.md) and
+[CONSTRUCT-ACE-AND-IMPORT.md](CONSTRUCT-ACE-AND-IMPORT.md).
+
+
+## Built-in Construct 3 importer
+
+The importer is an internal Impossible subsystem, separate from the external
+C2-to-C3 project converter. It is GTK/Bevy-independent and callable from both
+the editor and headless validation. It recognizes the C3 folder and .c3p
+container forms, reads the manifest-guided resource graph and produces a
+normalized Impossible project plus provenance and compatibility report.
+
+The importer owns container safety, version profiles, resource parsing,
+addon/ACE resolution, typed event/variable/expression lowering and diagnostics.
+The existing plugin registry owns actual Impossible runtime semantics and Rust
+lowering. The importer never executes source addon JavaScript. See
+[CONSTRUCT3-PROJECT-STUDY.md](CONSTRUCT3-PROJECT-STUDY.md) for the detailed
+stages, source-project findings and acceptance corpus.

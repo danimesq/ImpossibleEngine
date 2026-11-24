@@ -37,6 +37,26 @@ See [docs/EVENT-SHEETS-AND-CODEGEN.md](docs/EVENT-SHEETS-AND-CODEGEN.md),
 [docs/PLUGINS.md](docs/PLUGINS.md) and the
 [Impossible Pong project](demos/impossible-pong/project.json).
 
+
+## Construct compatibility direction
+
+Alien-Parcor and Flappy Madruga are reference projects for Impossible's ACE,
+object-plugin, behavior-plugin and runtime semantics. They are not manually
+ported and are not direct C2 importer inputs.
+
+The planned chain is **C2 project → external C2-to-C3 project converter
+(separate repository) → C3 project → built-in Impossible C3 importer → typed
+IR → Rust backend**. The C2 converter will be developed outside this
+repository. The C3-to-Impossible importer is a first-party component shipped
+inside Impossible and accepts C3 projects only. C2 addon conversion is a
+separate concern.
+
+See [the C2 reference-project study](docs/CONSTRUCT-REFERENCE-STUDY.md),
+[the C3 project study and importer design](docs/CONSTRUCT3-PROJECT-STUDY.md)
+and [the typed ACE / C3 import contract](docs/CONSTRUCT-ACE-AND-IMPORT.md).
+Semantic fixtures live in [fixtures/construct-reference](fixtures/construct-reference/README.md)
+and [fixtures/construct3-reference](fixtures/construct3-reference/README.md).
+
 ## Versioned clocks and behavioral fidelity
 
 Every project must declare a versioned clock contract. Project timing is not a
@@ -106,12 +126,23 @@ The model tests do not require a graphical session or PyGObject:
 
 This is an early GUI prototype, not a finished game runtime or compiler yet.
 The existing editor still has text-based Event Sheet rows. The typed Event
-Sheet schema, Impossible Pong JSON and clock/fidelity documents are design
-contracts; clock parsing/runtime, typed IR, Rust code generation, a runnable
-Bevy adapter, browser WASM output and console toolchains remain future work.
+Sheet schema, Impossible Pong JSON, Construct compatibility and importer
+documents, and clock/fidelity documents are design contracts. The built-in C3
+archive/folder reader, ACE registry parser, expression parser, Selection
+System, runtime evaluator, clock parser/runtime, typed IR, Rust code
+generation, runnable Bevy adapter, browser WASM output and console toolchains
+remain future work.
 
 ## Architecture boundary
 
+The built-in C3-to-Impossible importer is a toolkit-independent subsystem. It
+is designed to read C3 folder projects and .c3p archives, use
+project.c3proj as its resource index, and produce a normalized Impossible
+project with provenance and a compatibility report. It does not execute
+project or addon JavaScript. The separate C2-to-C3 project converter will live
+in another repository and is not part of Impossible.
+
 The UI is replaceable. Project data, Event Sheets, assets, object properties,
-clock profiles and platform-variant resolution belong to toolkit-independent
-modules. GTK is the first frontend, not the definition of the project format.
+clock profiles, import logic and platform-variant resolution belong to
+toolkit-independent modules. GTK is the first frontend, not the definition of
+the project format.

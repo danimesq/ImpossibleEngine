@@ -71,3 +71,71 @@ Reject duplicate IDs, missing capabilities/dependencies, cycles and unstable ord
 ```
 
 This is a design contract, not a claim that a loader/exporter already exists. The next slice should implement registry types, manifest parsing, built-in registrations and tests, then migrate the operation catalog through that API.
+
+## Typed ACE descriptors and Construct compatibility
+
+The initial `operations` string list is a compact bootstrap catalogue. It is
+not sufficient as the permanent contract for importing real Construct
+projects. The next manifest revision must expose typed ACE descriptors while
+retaining stable Impossible IDs and a migration path for the existing built-in
+manifests.
+
+An ACE descriptor records at least:
+
+- stable operation ID and ACE kind (condition, action or expression);
+- ordered, typed argument schemas with defaults and optionality;
+- Construct-generation/addon source aliases and source version constraints;
+- compatible object types and required behaviors;
+- selection effect and target selection scope;
+- clock domain, execution phase and re-entry/trigger policy where relevant;
+- determinism, RNG and side-effect classifications;
+- required capabilities and platform availability;
+- validator and typed IR lowering implementation.
+
+Construct names, IDs and localized labels are import aliases only. They must
+resolve to a permanent Impossible operation ID; they must never become the
+identity of the operation merely because an imported project contains them.
+
+### Object plugins and behavior composition
+
+An object plugin defines an object type, its common properties, instance data
+and base ACEs. A behavior plugin is a separately versioned component that may
+attach to compatible object types, contribute additional ACEs and own
+serialized parameters/state.
+
+The ACE palette available to an object is resolved from the object's base
+plugin plus its attached behaviors. For example, a Sprite with Platform and
+Fade behaviors exposes the compatible ACEs from all three definitions.
+Incompatible behavior/object combinations are import errors or explicit
+partial-compatibility results, never silently ignored.
+
+A behavior must not be flattened into a generic transform or merged
+irreversibly into the object's base type. Preserve behavior identity, version,
+parameters and order in project data.
+
+### Project/global plugins
+
+Input, Audio, Browser, WebStorage and platform/account integrations are
+project-global capabilities when the source runtime models them as global
+services. They may expose ACEs without creating fake visible scene instances.
+System remains mandatory and owns generic flow/time/game-state semantics; it
+does not absorb object movement, rendering, audio or game-specific mechanics.
+
+### Selection and side-effect metadata
+
+Conditions can change the selected object-instance set, not merely produce a
+boolean. ACE descriptors must declare whether they preserve, filter, replace,
+iterate or otherwise modify the current selection context. Collision and
+overlap conditions commonly produce selections consumed by later actions.
+
+Actions declare their target selection policy and side effects. Storage,
+browser, social, account, audio and other external services must declare
+capability and nondeterminism boundaries. They cannot be treated as ordinary
+authoritative gameplay state.
+
+The full C3 source-alias, selection, expression and import contract is specified
+in [CONSTRUCT-ACE-AND-IMPORT.md](CONSTRUCT-ACE-AND-IMPORT.md). The comparative
+source evidence is catalogued in [CONSTRUCT-REFERENCE-STUDY.md](CONSTRUCT-REFERENCE-STUDY.md).
+
+These are registry requirements, not a claim that the typed manifest parser,
+dynamic plugin loader or C3 importer is already implemented.

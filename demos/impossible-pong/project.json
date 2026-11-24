@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "project": {
+    "id": "impossible-pong",
+    "name": "Impossible Pong",
+    "kind": "demo-game"
+  },
+  "compiler": {
+    "contract": "impossible-event-ir",
+    "minimum_version": "0.1.0",
+    "deterministic": true,
+    "numeric_model": "fixed-point-i32",
+    "subunits_per_world_unit": 1024
+  },
+  "runtime": {
+    "adapter": "bevy",
+    "simulation_hz": 60,
+    "event_order": "declaration",
+    "collision_order": "stable-instance-id",
+    "input_sampling": "once-per-fixed-tick"
+  },
+  "scene": {
+    "id": "scene-main",
+    "name": "Main"
+  },
+  "objects": [
+    {
+      "id": "obj-player-paddle",
+      "name": "PlayerPaddle",
+      "components": [
+        { "type": "transform2d", "properties": { "x": -360, "y": 0 } },
+        { "type": "aabb_collider", "properties": { "width": 12, "height": 92 } },
+        { "type": "paddle", "properties": { "speed": 480, "min_y": -254, "max_y": 254 } }
+      ]
+    },
+    {
+      "id": "obj-opponent-paddle",
+      "name": "OpponentPaddle",
+      "components": [
+        { "type": "transform2d", "properties": { "x": 360, "y": 0 } },
+        { "type": "aabb_collider", "properties": { "width": 12, "height": 92 } },
+        { "type": "paddle_ai", "properties": { "speed": 360, "dead_zone": 8 } }
+      ]
+    },
+    {
+      "id": "obj-ball",
+      "name": "Ball",
+      "components": [
+        { "type": "transform2d", "properties": { "x": 0, "y": 0 } },
+        { "type": "aabb_collider", "properties": { "width": 12, "height": 12 } },
+        { "type": "ball", "properties": { "initial_speed": 420, "max_speed": 720 } }
+      ]
+    },
+    {
+      "id": "obj-arena",
+      "name": "Arena",
+      "components": [
+        { "type": "arena_bounds", "properties": { "half_width": 400, "half_height": 300 } }
+      ]
+    }
+  ],
+  "input_maps": [
+    {
+      "id": "input-player-one",
+      "actions": [
+        {
+          "id": "move_vertical",
+          "kind": "axis",
+          "negative": ["KeyS", "ArrowDown"],
+          "positive": ["KeyW", "ArrowUp"],
+          "dead_zone": 0
+        }
+      ]
+    }
+  ],
+  "event_sheets": [
+    {
+      "id": "sheet-gameplay",
+      "name": "Gameplay",
+      "events": [
+        {
+          "id": "evt-start",
+          "name": "Initialize match",
+          "trigger": { "op": "game.started" },
+          "conditions": [],
+          "actions": [
+            { "op": "game.set_state", "args": { "state": "playing" } },
+            { "op": "score.add", "args": { "side": "player", "amount": 0 } },
+            { "op": "score.add", "args": { "side": "opponent", "amount": 0 } },
+            { "op": "ball.spawn", "args": { "direction": "toward_opponent" } }
+          ]
+        },
+        {
+          "id": "evt-player-move",
+          "name": "Move player paddle",
+          "trigger": { "op": "simulation.fixed_tick" },
+          "conditions": [
+            { "op": "game.state_is", "args": { "state": "playing" } },
+            { "op": "input.axis_nonzero", "args": { "map": "input-player-one", "action": "move_vertical" } }
+          ],
+          "actions": [
+            { "op": "paddle.move_axis", "args": { "object": "obj-player-paddle", "input_map": "input-player-one", "action": "move_vertical", "clamp": true } }
+          ]
+        },
+        {
+          "id": "evt-opponent-move",
+          "name": "Track ball with opponent",
+          "trigger": { "op": "simulation.fixed_tick" },
+          "conditions": [
+            { "op": "game.state_is", "args": { "state": "playing" } }
+          ],
+          "actions": [
+            { "op": "paddle.track_ball", "args": { "object": "obj-opponent-paddle", "target": "obj-ball", "speed_property": "speed", "dead_zone_property": "dead_zone" } }
+          ]
+        },
+        {
+          "id": "evt-paddle-hit",
+          "name": "Ball hits a paddle",
+          "trigger": { "op": "collision.entered" },
+          "conditions": [
+            { "op": "collision.involves", "args": { "first": "obj-ball", "second_any": ["obj-player-paddle", "obj-opponent-paddle"] } }
+          ],
+          "actions": [
+            { "op": "ball.bounce_from_paddle", "args": { "ball": "obj-ball", "paddle_hit_position": true, "speed_increase": 0, "max_speed_property": "max_speed" } },
+            { "op": "audio.play", "args": { "cue": "paddle_hit" } }
+          ]
+        },
+        {
+          "id": "evt-wall-hit",
+          "name": "Ball hits top or bottom wall",
+          "trigger": { "op": "collision.entered" },
+          "conditions": [
+            { "op": "collision.involves", "args": { "first": "obj-ball", "second_any": ["wall-top", "wall-bottom"] } }
+          ],
+          "actions": [
+            { "op": "ball.bounce_from_wall", "args": { "ball": "obj-ball", "axis": "y" } },
+            { "op": "audio.play", "args": { "cue": "wall_hit" } }
+          ]
+        },
+        {
+          "id": "evt-player-scores",
+          "name": "Opponent misses",
+          "trigger": { "op": "collision.entered" },
+          "conditions": [
+            { "op": "collision.involves", "args": { "first": "obj-ball", "second_any": ["goal-right"] } }
+          ],
+          "actions": [
+            { "op": "score.add", "args": { "side": "player", "amount": 1 } },
+            { "op": "game.restart_round", "args": { "next_direction": "toward_player", "delay_ticks": 45 } }
+          ]
+        },
+        {
+          "id": "evt-opponent-scores",
+          "name": "Player misses",
+          "trigger": { "op": "collision.entered" },
+          "conditions": [
+            { "op": "collision.involves", "args": { "first": "obj-ball", "second_any": ["goal-left"] } }
+          ],
+          "actions": [
+            { "op": "score.add", "args": { "side": "opponent", "amount": 1 } },
+            { "op": "game.restart_round", "args": { "next_direction": "toward_opponent", "delay_ticks": 45 } }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    { "id": "asset-paddle", "kind": "sprite", "source": "assets/paddle.svg" },
+    { "id": "asset-ball", "kind": "sprite", "source": "assets/ball.svg" },
+    { "id": "asset-arena", "kind": "ui", "source": "assets/arena.svg" }
+  ],
+  "audio_cues": [
+    { "id": "paddle_hit", "source": "assets/audio/paddle-hit.ogg" },
+    { "id": "wall_hit", "source": "assets/audio/wall-hit.ogg" }
+  ]
+}

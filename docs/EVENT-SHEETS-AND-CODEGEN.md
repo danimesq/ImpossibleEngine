@@ -34,12 +34,38 @@ version, target profile and a content hash. Identical normalized input plus
 identical compiler version and target configuration must produce byte-identical
 output.
 
+## Event Sheet document model
+
+An Event Sheet is a first-class project resource and the sole container of its
+root events. Events do not live in a project-global event collection and are
+not independently attached to sheets after parsing. The project owns an ordered
+`event_sheets` collection; each sheet owns an ordered `events` tree. Each event
+owns its conditions, actions and nested `children` events.
+
+A standard event contains a single ordered condition list. Trigger conditions
+are entries in that same list, distinguished by `kind: "trigger"`; ordinary
+conditions use `kind: "condition"`. There is no parallel top-level `trigger`
+field. This keeps the Construct-style event structure intact and allows the
+editor to preserve condition order. An event's `type` identifies its node kind;
+`standard` is the initial supported type. Future node types (for example,
+groups, includes, loops and else branches) must receive explicit schema and
+compiler semantics rather than being approximated as standard events.
+
+The hierarchy is therefore:
+
+`Project -> Event Sheets -> Events -> Conditions / Actions / Child Events`.
+
 ## Event execution semantics
 
-- Events execute in the order stored in the Event Sheet.
-- Conditions within one event are ANDed, evaluated left-to-right, and have no
-  side effects.
+- Event Sheets are compiled in project declaration order; root events and child
+  events retain their declaration order.
+- Conditions within one event are evaluated left-to-right. All conditions must
+  pass for the event's actions to run; trigger conditions participate in this
+  ordered condition list and are not stored in a separate trigger property.
 - Actions execute left-to-right and complete in that order.
+- Child events execute only in the documented parent-event context and after
+  the parent event's conditions pass; the exact context inheritance rules must
+  be versioned before adding subevent types.
 - Gameplay events run on a numbered fixed simulation tick, never once per
   rendered frame.
 - Input is sampled into a tick-indexed input frame. Replays record those frames.
@@ -65,7 +91,8 @@ A project contains:
 - `runtime`: backend adapter and fixed simulation rate.
 - `objects`: stable logical object IDs and typed components/properties.
 - `input_maps`: named, platform-resolvable input actions.
-- `event_sheets`: ordered events, typed triggers, conditions and actions.
+- `event_sheets`: ordered Event Sheet resources; each resource owns its ordered
+  event tree, and each event owns its conditions, actions and child events.
 - `assets`: logical asset IDs with platform variants.
 
 Use stable string IDs for references. Display names are editable and are never
@@ -75,10 +102,10 @@ is not. The normalizer emits canonical JSON before hashing.
 ## Initial supported operation registry
 
 The first compiler slice should support only the operations needed by Pong:
-- Triggers: `game.started`, `simulation.fixed_tick`, `collision.entered`,
-  `score.reached`.
-- Conditions: `game.state_is`, `input.axis_nonzero`,
-  `collision.involves`, `score.at_least`.
+- Trigger conditions (`kind: "trigger"`): `game.started`,
+  `simulation.fixed_tick`, `collision.entered`, `score.reached`.
+- Ordinary conditions (`kind: "condition"`): `game.state_is`,
+  `input.axis_nonzero`, `collision.involves`, `score.at_least`.
 - Actions: `game.set_state`, `score.add`, `paddle.move_axis`,
   `paddle.track_ball`, `ball.spawn`, `ball.bounce_from_paddle`,
   `ball.bounce_from_wall`, `ball.despawn`, `audio.play`,
@@ -105,7 +132,7 @@ for logic that needs a consistent timestep. See:
 ## First demo: Impossible Pong
 
 Impossible Pong is the vertical slice for this contract:
-- one shared Event Sheet for gameplay;
+- one first-class `Gameplay` Event Sheet containing the ordered gameplay event tree;
 - stable IDs for paddles, ball, walls and score;
 - fixed-tick movement and collision processing;
 - player input mapped separately from the gameplay rules;

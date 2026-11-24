@@ -33,8 +33,28 @@ language is typed and declarative, not arbitrary text expressions. The compiler
 pipeline is JSON parsing, schema validation, symbol resolution, type checking,
 lowering to an engine-neutral IR, and deterministic Rust generation.
 
-See [docs/EVENT-SHEETS-AND-CODEGEN.md](docs/EVENT-SHEETS-AND-CODEGEN.md) and
-the [Impossible Pong project](demos/impossible-pong/project.json).
+See [docs/EVENT-SHEETS-AND-CODEGEN.md](docs/EVENT-SHEETS-AND-CODEGEN.md),
+[docs/PLUGINS.md](docs/PLUGINS.md) and the
+[Impossible Pong project](demos/impossible-pong/project.json).
+
+## Versioned clocks and behavioral fidelity
+
+Every project must declare a versioned clock contract. Project timing is not a
+global engine constant: simulation ticks, game timers, pause/time scale,
+suspension, input sampling, catch-up and ordered update phases are explicit
+project data with versioned semantics. Host, simulation, game and render clocks
+remain separate.
+
+Street Chaves is a first-class fidelity target. Impossible aims to reproduce
+the Pascal reference's observable gameplay behavior, using StreetChavesRust and
+reference traces as implementation and validation evidence. Byte-identical
+executable reproduction is not required; timing, update order, collision and
+hit resolution, state transitions, RNG consumption and other observable
+behavior are.
+
+See [docs/CLOCKS-AND-FIDELITY.md](docs/CLOCKS-AND-FIDELITY.md) for the full
+clock contract, proposed profile shape, scheduling rules, Street Chaves
+requirements and differential-validation plan.
 
 ## Platform variants from day one
 
@@ -86,12 +106,12 @@ The model tests do not require a graphical session or PyGObject:
 
 This is an early GUI prototype, not a finished game runtime or compiler yet.
 The existing editor still has text-based Event Sheet rows. The typed Event
-Sheet schema and Impossible Pong JSON are the first compiler-contract draft;
-validation, typed IR, Rust code generation, a runnable Bevy adapter, browser
-WASM output and console toolchains remain future work.
+Sheet schema, Impossible Pong JSON and clock/fidelity documents are design
+contracts; clock parsing/runtime, typed IR, Rust code generation, a runnable
+Bevy adapter, browser WASM output and console toolchains remain future work.
 
 ## Architecture boundary
 
-The UI is replaceable. Project data, Event Sheets, assets, object properties
-and platform-variant resolution belong to toolkit-independent modules. GTK is
-the first frontend, not the definition of the project format.
+The UI is replaceable. Project data, Event Sheets, assets, object properties,
+clock profiles and platform-variant resolution belong to toolkit-independent
+modules. GTK is the first frontend, not the definition of the project format.

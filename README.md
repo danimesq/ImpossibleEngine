@@ -27,7 +27,7 @@ One logical object or asset can have different realizations per target:
 The current profiles are authoring presets. Actual console builds require
 verified platform adapters, SDKs/toolchains and target-specific validation.
 
-See docs/PLATFORM-VARIANTS.md.
+See docs/PLATFORM-VARIANTS.md and docs/ARCHITECTURE.md.
 
 ## GUI stack
 

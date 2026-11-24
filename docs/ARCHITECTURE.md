@@ -6,11 +6,17 @@ The first GUI prototype uses the CUBIC/UNIC Python GUI stack: GTK 3, PyGObject, 
 
 ## Project model
 
-Project data is represented independently of GTK. Event Sheets, logical objects, assets, platform profiles and sparse platform overrides are persisted as JSON. Event Sheet operations are contributed by plugins and validated against a plugin registry before lowering to engine-neutral IR. Mandatory System provides generic game/flow/tick semantics; Input, Collision and Audio are built-in optional capabilities. See docs/PLUGINS.md and EVENT-SHEETS-AND-CODEGEN.md.
+Project data is represented independently of GTK. Event Sheets, logical objects, assets, platform profiles, clock profiles and sparse platform overrides are persisted as JSON. Event Sheet operations are contributed by plugins and validated against a plugin registry before lowering to engine-neutral IR. Mandatory System provides generic game/flow/temporal operations; Input, Collision and Audio are built-in optional capabilities.
+
+Every project declares an explicitly versioned clock contract. The contract defines simulation tick cadence, game-time semantics, pause/time-scale/suspension policy, input-to-tick assignment, catch-up behavior and the ordered simulation schedule. Host, simulation, game and render clocks are distinct domains. Backend defaults must never silently replace project semantics.
+
+See docs/PLUGINS.md, docs/EVENT-SHEETS-AND-CODEGEN.md and docs/CLOCKS-AND-FIDELITY.md.
 
 ## Runtime and output targets
 
 Impossible may adapt existing game engines and runtimes instead of requiring a new renderer or physics engine immediately. Engine integrations belong behind adapters; project data must not depend on one selected engine. First demo backend is Bevy, mapping logical objects to ECS and lowering operations into explicit systems. JSON/IR must not expose Bevy types or arbitrary Rust snippets.
+
+The clock contract and phase schedule are engine-neutral. Bevy is an execution adapter, not the authority on project timing. The headless runner is the canonical environment for deterministic simulation, replay and reference-trace comparison. Rendering and audio presentation must not mutate authoritative gameplay state.
 
 Browser output is planned as Rust compiled directly to WASM, initially wasm32-unknown-unknown with wasm-bindgen/web-sys, hosted through Canvas 2D and/or WebGL 2. WebGPU is optional future exploration. WASM logic requires browser bindings to draw. Emscripten is not the planned default. Console profiles are authoring targets, not proof SDK/toolchain adapters exist.
 
@@ -20,8 +26,10 @@ Logical assets may have platform variants. Objects have common properties and sp
 
 ## Plugin architecture
 
-Event operation definitions live in plugins, not compiler-core hardcoding. System is mandatory; Input, Collision and Audio are optional built-in capabilities; game-specific operations stay out of System. See docs/PLUGINS.md.
+Event operation definitions live in plugins, not compiler-core hardcoding. System is mandatory; Input, Collision and Audio are optional built-in capabilities; game-specific operations stay out of System. Plugins declare temporal domains, execution phases, deterministic constraints, RNG usage and structural-mutation effects where relevant. The runtime clock and phase scheduler remain core infrastructure; System exposes operations against that contract. See docs/PLUGINS.md.
 
-## Validation projects
+## Fidelity and validation projects
 
-Port Street Chaves preserving fidelity, then use Point Blank Rust as demanding validation. Impossible Pong is the first smaller slice for Event Sheets, plugin registration, deterministic simulation and Bevy.
+Street Chaves is a first-class behavioral-fidelity target. Its Pascal reference and StreetChavesRust reconstruction are used to derive a source-backed clock profile, exact ordered phase schedule, deterministic input/replay contract and differential trace tests. Byte-identical executable reproduction is not required; observable gameplay behavior is.
+
+Point Blank Rust is a later demanding validation project. Impossible Pong remains the smaller vertical slice for Event Sheets, plugin registration, deterministic simulation and Bevy.

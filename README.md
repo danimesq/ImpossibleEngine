@@ -67,7 +67,7 @@ The model tests do not require a graphical session or PyGObject:
 This is an early GUI prototype, not a game runtime or compiler yet. Event rows
 are currently authored as text expressions; typed condition/action schemas,
 validation, undo/redo, asset import pipelines, engine adapters, Rust code
-generation, WASM/Emscripten integration and console toolchains are future work.
+generation, the Emscripten-based HTML5 output path and console toolchains are future work.
 
 ## Architecture boundary
 

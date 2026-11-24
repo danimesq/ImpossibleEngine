@@ -33,3 +33,29 @@ Event operation definitions live in plugins, not compiler-core hardcoding. Syste
 Street Chaves is a first-class behavioral-fidelity target. Its Pascal reference and StreetChavesRust reconstruction are used to derive a source-backed clock profile, exact ordered phase schedule, deterministic input/replay contract and differential trace tests. Byte-identical executable reproduction is not required; observable gameplay behavior is.
 
 Point Blank Rust is a later demanding validation project. Impossible Pong remains the smaller vertical slice for Event Sheets, plugin registration, deterministic simulation and Bevy.
+
+
+## Construct project compatibility boundary
+
+Alien-Parcor and Flappy Madruga are C2 reference projects used to derive the
+ACE, object-plugin, behavior-plugin, selection and runtime compatibility model.
+They are not manually imported into Impossible and their C2 project/XML formats
+are not accepted by the production importer.
+
+The intended migration path is:
+
+`C2 project -> external C2-to-C3 project converter -> C3 project -> Impossible C3 importer -> typed IR -> Rust backend`
+
+The importer accepts Construct 3 folder projects and `.c3p` archives only.
+The C2-to-C3 converter is an external adapter and must be pinned by repository,
+commit/version, license, supported input versions, output schema and command
+interface before integration. Addon conversion is a separate workflow and must
+not be confused with whole-project conversion.
+
+Impossible imports C3 resources into its own normalized project model,
+resolves plugins/behaviors/ACEs, type-checks expressions and selection effects,
+then lowers into engine-neutral IR. Unknown or incompatible features produce
+an explicit compatibility report; they are never silently dropped.
+
+See [CONSTRUCT-REFERENCE-STUDY.md](CONSTRUCT-REFERENCE-STUDY.md) and
+[CONSTRUCT-ACE-AND-IMPORT.md](CONSTRUCT-ACE-AND-IMPORT.md).

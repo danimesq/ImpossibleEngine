@@ -2,79 +2,26 @@
 
 ## Frontend
 
-The first GUI prototype uses the CUBIC/UNIC Python GUI stack:
-
-- GTK 3
-- PyGObject
-- GtkBuilder
-- GTK CSS
-
-The prototype reuses the technology family, not CUBIC's ISO-building internals.
-The editor shell is replaceable and must not own project semantics.
+The first GUI prototype uses the CUBIC/UNIC Python GUI stack: GTK 3, PyGObject, GtkBuilder and GTK CSS. The prototype reuses the technology family, not CUBIC's ISO-building internals. The editor shell is replaceable and must not own project semantics.
 
 ## Project model
 
-Project data is represented independently of GTK. Event Sheets, logical
-objects, assets, platform profiles and sparse platform overrides are persisted
-as JSON. A future Rust GUI can read and write this format without inheriting
-the Python widget architecture.
-
-Event Sheet data is a typed language contract, not arbitrary code strings.
-The compiler frontend validates and lowers that data into an engine-neutral
-intermediate representation before any backend-specific code is generated.
-See EVENT-SHEETS-AND-CODEGEN.md.
+Project data is represented independently of GTK. Event Sheets, logical objects, assets, platform profiles and sparse platform overrides are persisted as JSON. Event Sheet operations are contributed by plugins and validated against a plugin registry before lowering to engine-neutral IR. Mandatory System provides generic game/flow/tick semantics; Input, Collision and Audio are built-in optional capabilities. See docs/PLUGINS.md and EVENT-SHEETS-AND-CODEGEN.md.
 
 ## Runtime and output targets
 
-Impossible may adapt existing game engines and runtimes instead of requiring a
-new renderer or physics engine immediately. Engine integrations belong behind
-adapters; project authoring data must not depend on one selected engine.
+Impossible may adapt existing game engines and runtimes instead of requiring a new renderer or physics engine immediately. Engine integrations belong behind adapters; project data must not depend on one selected engine. First demo backend is Bevy, mapping logical objects to ECS and lowering operations into explicit systems. JSON/IR must not expose Bevy types or arbitrary Rust snippets.
 
-The first demo backend is Bevy. The adapter maps Impossible logical objects
-and components to Bevy ECS entities/components, and lowers ordered gameplay
-operations into explicit systems and system sets. The JSON and compiler IR
-must not expose Bevy-specific type names or arbitrary Rust snippets.
-
-The browser output target should use **Rust compiled directly to WebAssembly**,
-initially investigating `wasm32-unknown-unknown` with `wasm-bindgen` and
-`web-sys`. The browser host should expose rendering through Canvas 2D and/or
-WebGL 2, selected behind an Impossible renderer adapter. WebGPU may be evaluated
-as an optional future backend, not assumed as the baseline.
-
-WASM runs the Rust game logic; it does not draw to a canvas by itself. Browser
-APIs remain host APIs and are reached through bindings. The Emscripten toolchain
-is not the planned default for this Rust-first web target. See WEB-WASM.md for
-the initial investigation boundaries and caveats.
-
-Native Rust and console targets are also backend/toolchain integrations. A
-console profile in the editor is an authoring target definition, not a claim
-that its SDK, licensing requirements, compiler or runtime adapter is already
-available.
+Browser output is planned as Rust compiled directly to WASM, initially wasm32-unknown-unknown with wasm-bindgen/web-sys, hosted through Canvas 2D and/or WebGL 2. WebGPU is optional future exploration. WASM logic requires browser bindings to draw. Emscripten is not the planned default. Console profiles are authoring targets, not proof SDK/toolchain adapters exist.
 
 ## Platform-aware content
 
-Platform variants are part of the project model from the beginning:
+Logical assets may have platform variants. Objects have common properties and sparse overrides. Resolver prefers exact platform, then generic/base, then default. Gameplay logic stays shared unless a genuine platform gameplay difference exists. Profiles include PC/PS1/N64 for 3D and mobile/GBA/GBC for 2D. See PLATFORM-VARIANTS.md.
 
-- Logical assets have one stable ID and may map to distinct source files per
-  target.
-- Logical objects have common base properties plus sparse per-target overrides.
-- The resolver prefers an exact platform variant, then a generic/base variant,
-  then the default asset source.
-- Event logic should remain shared unless a real gameplay rule differs by
-  platform; visual and resource constraints should not force duplicated logic.
+## Plugin architecture
 
-Examples include a 3D character using separate PC, PS1 and N64 meshes, and a 2D
-character using distinct modern-mobile, GBA and GBC sprite sheets.
+Event operation definitions live in plugins, not compiler-core hardcoding. System is mandatory; Input, Collision and Audio are optional built-in capabilities; game-specific operations stay out of System. See docs/PLUGINS.md.
 
-See PLATFORM-VARIANTS.md for the initial profile set and authoring direction.
+## Validation projects
 
-## Long-term validation projects
-
-The intended validation path is:
-
-1. Port Street Chaves into Impossible while preserving the behavior and
-   fidelity of its existing implementation.
-2. Use the Point Blank Rust port as the more demanding end-to-end validation.
-
-Impossible Pong is the first smaller vertical slice for validating the
-Event Sheet language and Bevy backend before those larger projects.
+Port Street Chaves preserving fidelity, then use Point Blank Rust as demanding validation. Impossible Pong is the first smaller slice for Event Sheets, plugin registration, deterministic simulation and Bevy.

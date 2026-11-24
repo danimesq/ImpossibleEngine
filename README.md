@@ -126,12 +126,23 @@ The model tests do not require a graphical session or PyGObject:
 
 This is an early GUI prototype, not a finished game runtime or compiler yet.
 The existing editor still has text-based Event Sheet rows. The typed Event
-Sheet schema, Impossible Pong JSON and clock/fidelity documents are design
-contracts; clock parsing/runtime, typed IR, Rust code generation, a runnable
-Bevy adapter, browser WASM output and console toolchains remain future work.
+Sheet schema, Impossible Pong JSON, Construct compatibility and importer
+documents, and clock/fidelity documents are design contracts. The built-in C3
+archive/folder reader, ACE registry parser, expression parser, Selection
+System, runtime evaluator, clock parser/runtime, typed IR, Rust code
+generation, runnable Bevy adapter, browser WASM output and console toolchains
+remain future work.
 
 ## Architecture boundary
 
+The built-in C3-to-Impossible importer is a toolkit-independent subsystem. It
+is designed to read C3 folder projects and .c3p archives, use
+project.c3proj as its resource index, and produce a normalized Impossible
+project with provenance and a compatibility report. It does not execute
+project or addon JavaScript. The separate C2-to-C3 project converter will live
+in another repository and is not part of Impossible.
+
 The UI is replaceable. Project data, Event Sheets, assets, object properties,
-clock profiles and platform-variant resolution belong to toolkit-independent
-modules. GTK is the first frontend, not the definition of the project format.
+clock profiles, import logic and platform-variant resolution belong to
+toolkit-independent modules. GTK is the first frontend, not the definition of
+the project format.

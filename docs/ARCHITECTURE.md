@@ -19,11 +19,21 @@ objects, assets, platform profiles and sparse platform overrides are persisted
 as JSON. A future Rust GUI can read and write this format without inheriting
 the Python widget architecture.
 
+Event Sheet data is a typed language contract, not arbitrary code strings.
+The compiler frontend validates and lowers that data into an engine-neutral
+intermediate representation before any backend-specific code is generated.
+See EVENT-SHEETS-AND-CODEGEN.md.
+
 ## Runtime and output targets
 
 Impossible may adapt existing game engines and runtimes instead of requiring a
 new renderer or physics engine immediately. Engine integrations belong behind
 adapters; project authoring data must not depend on one selected engine.
+
+The first demo backend is Bevy. The adapter maps Impossible logical objects
+and components to Bevy ECS entities/components, and lowers ordered gameplay
+operations into explicit systems and system sets. The JSON and compiler IR
+must not expose Bevy-specific type names or arbitrary Rust snippets.
 
 The browser output target should use **Rust compiled directly to WebAssembly**,
 initially investigating `wasm32-unknown-unknown` with `wasm-bindgen` and
@@ -66,4 +76,5 @@ The intended validation path is:
    fidelity of its existing implementation.
 2. Use the Point Blank Rust port as the more demanding end-to-end validation.
 
-These are end goals, not capabilities delivered by the current GUI prototype.
+Impossible Pong is the first smaller vertical slice for validating the
+Event Sheet language and Bevy backend before those larger projects.

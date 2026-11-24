@@ -44,16 +44,18 @@ Alien-Parcor and Flappy Madruga are reference projects for Impossible's ACE,
 object-plugin, behavior-plugin and runtime semantics. They are not manually
 ported and are not direct C2 importer inputs.
 
-The planned conversion chain is **C2 project → external C2-to-C3 project
-converter → C3 project → Impossible importer → typed IR → Rust backend**.
-Impossible's importer accepts C3 projects only. The project-level C2-to-C3
-converter must be verified and pinned separately from C2-to-C3 addon
-converters before integration.
+The planned chain is **C2 project → external C2-to-C3 project converter
+(separate repository) → C3 project → built-in Impossible C3 importer → typed
+IR → Rust backend**. The C2 converter will be developed outside this
+repository. The C3-to-Impossible importer is a first-party component shipped
+inside Impossible and accepts C3 projects only. C2 addon conversion is a
+separate concern.
 
-See [the reference-project study](docs/CONSTRUCT-REFERENCE-STUDY.md) and
-[the typed ACE / C3 import contract](docs/CONSTRUCT-ACE-AND-IMPORT.md).
-A semantic fixture catalogue is kept in
-[fixtures/construct-reference](fixtures/construct-reference/README.md).
+See [the C2 reference-project study](docs/CONSTRUCT-REFERENCE-STUDY.md),
+[the C3 project study and importer design](docs/CONSTRUCT3-PROJECT-STUDY.md)
+and [the typed ACE / C3 import contract](docs/CONSTRUCT-ACE-AND-IMPORT.md).
+Semantic fixtures live in [fixtures/construct-reference](fixtures/construct-reference/README.md)
+and [fixtures/construct3-reference](fixtures/construct3-reference/README.md).
 
 ## Versioned clocks and behavioral fidelity
 

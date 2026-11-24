@@ -1,0 +1,304 @@
+{
+  "fixture_schema_version": 1,
+  "purpose": "C3 project importer conformance cases. Metadata and assertions only; no game media is redistributed.",
+  "source_repository": "https://github.com/MrPrattASH/Game_Design_In_Construct_3",
+  "source_revision": "0dfcecbeda166a10c9d621f655c21e51dcf89020",
+  "projects": [
+    {
+      "id": "platform-abstraction",
+      "display_name": "Platform abstraction",
+      "source_path": "LG1_Using_Construct3/module_2.0_basic_platformer/finished_construct_folder",
+      "project_format_version": 1,
+      "saved_with_release": 31702,
+      "viewport": [
+        854,
+        480
+      ],
+      "layout": {
+        "name": "Layout 1",
+        "size": [
+          4000,
+          2048
+        ],
+        "layers": [
+          {
+            "name": "Platforms",
+            "instances": 40
+          },
+          {
+            "name": "HUD",
+            "instances": 1
+          }
+        ]
+      },
+      "object_types": [
+        "TiledBackground",
+        "Tilemap",
+        "PlayerAnim",
+        "PlayerBox",
+        "Keyboard",
+        "Enemy",
+        "EdgeMarker",
+        "Pickup",
+        "txtScore"
+      ],
+      "event_sheets": [
+        "Event sheet 1"
+      ],
+      "addons": {
+        "plugins": [
+          "TiledBg",
+          "Tilemap",
+          "Sprite",
+          "Keyboard",
+          "Text"
+        ],
+        "behaviors": [
+          "solid",
+          "Flash",
+          "Platform",
+          "scrollto",
+          "Sin"
+        ]
+      },
+      "cases": [
+        {
+          "id": "platform.player-hitbox-art-separation",
+          "source_files": [
+            "objectTypes/PlayerBox.json",
+            "objectTypes/PlayerAnim.json",
+            "eventSheets/Event sheet 1.json",
+            "layouts/Layout 1.json"
+          ],
+          "features": [
+            "object.plugin.sprite",
+            "behavior.platform",
+            "behavior.scroll-to",
+            "behavior.flash",
+            "event.every-tick",
+            "action.set-position-to-another-object",
+            "animation.state-trigger"
+          ],
+          "expected": [
+            "PlayerBox and PlayerAnim remain distinct object types and instances.",
+            "PlayerBox retains Platform and Scroll To; PlayerAnim retains Flash.",
+            "The every-tick position action remains an explicit relation between the two selected instances.",
+            "Platform state triggers update the PlayerAnim animation without collapsing the two objects."
+          ]
+        },
+        {
+          "id": "platform.tilemap-own-data-and-solid",
+          "source_files": [
+            "layouts/Layout 1.json"
+          ],
+          "features": [
+            "object.plugin.tilemap",
+            "behavior.solid",
+            "layout.instance.own-data"
+          ],
+          "expected": [
+            "Tilemap remains a Tilemap object rather than becoming a generic Sprite.",
+            "The instance Solid behavior and its properties are preserved.",
+            "ownData.tilemapData is retained or decoded by a versioned Tilemap adapter; it is never silently dropped."
+          ]
+        },
+        {
+          "id": "platform.event-hierarchy-and-instance-selection",
+          "source_files": [
+            "eventSheets/Event sheet 1.json"
+          ],
+          "features": [
+            "event.group",
+            "event.comment",
+            "event.variable",
+            "event.child",
+            "condition.collision",
+            "condition.else",
+            "variable.instance.string",
+            "behavior.platform.trigger"
+          ],
+          "expected": [
+            "The two groups, comments, variable declaration and ordered block tree are retained.",
+            "Collision conditions select the relevant Enemy or Pickup instances for following actions.",
+            "Enemy.Action remains an instance-scoped string variable.",
+            "Platform state triggers and behavior actions resolve through the Platform behavior provider."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "driving-template",
+      "display_name": "Driving template",
+      "source_path": "Bonus_Learning_Material/module_1_Advanced_AI_Driving_Cars/finished_example_construct_folder",
+      "project_format_version": 1,
+      "saved_with_release": 32703,
+      "viewport": [
+        640,
+        480
+      ],
+      "layout": {
+        "name": "Layout 1",
+        "size": [
+          1500,
+          1500
+        ],
+        "layers": [
+          {
+            "name": "Game",
+            "instances": 185
+          },
+          {
+            "name": "Cars",
+            "instances": 3
+          },
+          {
+            "name": "Checkpoints",
+            "instances": 4
+          },
+          {
+            "name": "UI",
+            "instances": 3
+          }
+        ]
+      },
+      "object_types": [
+        "Car",
+        "Road",
+        "Barrier",
+        "TiledBackground",
+        "AICar",
+        "Keyboard",
+        "CheckPoint",
+        "StartingLight",
+        "UIText",
+        "LapText",
+        "CheckeredLine",
+        "Gamepad"
+      ],
+      "event_sheets": [
+        "Event sheet 1"
+      ],
+      "timelines": [
+        "Car AI Path"
+      ],
+      "addons": {
+        "plugins": [
+          "Keyboard",
+          "Sprite",
+          "Text",
+          "TiledBg",
+          "gamepad"
+        ],
+        "behaviors": [
+          "Car",
+          "Pathfinding",
+          "Timer",
+          "scrollto",
+          "solid"
+        ]
+      },
+      "cases": [
+        {
+          "id": "driving.object-instance-behavior-composition",
+          "source_files": [
+            "objectTypes/Car.json",
+            "objectTypes/AICar.json",
+            "objectTypes/CheckPoint.json",
+            "layouts/Layout 1.json"
+          ],
+          "features": [
+            "object.plugin.sprite",
+            "behavior.car",
+            "behavior.pathfinding",
+            "behavior.timer",
+            "variable.instance.number",
+            "variable.instance.boolean",
+            "layout.instance.behavior-properties"
+          ],
+          "expected": [
+            "Car and AICar remain distinct Sprite object types with different behavior compositions.",
+            "AICar retains Pathfinding properties including cell-size, obstacle mode, speed, rotation and diagonals.",
+            "CheckPoint keeps number and boolean instance variables on each instance.",
+            "Layout instance behavior state is separate from object-type behavior declarations."
+          ]
+        },
+        {
+          "id": "driving.pathfinding-async-trigger",
+          "source_files": [
+            "eventSheets/Event sheet 1.json"
+          ],
+          "features": [
+            "behavior.pathfinding.action.find-path",
+            "behavior.pathfinding.trigger.on-path-found",
+            "behavior.pathfinding.action.move-along-path",
+            "runtime.async-continuation"
+          ],
+          "expected": [
+            "Find path is represented as an asynchronous request, not an immediate path return.",
+            "On path found remains a behavior-owned trigger with its source identity.",
+            "Move along path is dispatched after the completion trigger.",
+            "The runtime adapter defines how completion enters deterministic simulation/replay."
+          ]
+        },
+        {
+          "id": "driving.selection-for-each-and-pick-by-comparison",
+          "source_files": [
+            "eventSheets/Event sheet 1.json"
+          ],
+          "features": [
+            "system.for-each",
+            "system.pick-by-comparison",
+            "condition.collision",
+            "selection.context",
+            "variable.instance.boolean"
+          ],
+          "expected": [
+            "For Each iterates the selected CheckPoint instances in a defined order.",
+            "Pick by Comparison selects the checkpoint whose number matches the AI's next checkpoint expression.",
+            "Actions after collision and selection target the selected instance set rather than every instance of an object type.",
+            "The global CheckpointsPassed variable remains distinct from CheckPoint.PlayerCollided on each instance."
+          ]
+        },
+        {
+          "id": "driving.timer-gamepad-expressions",
+          "source_files": [
+            "eventSheets/Event sheet 1.json",
+            "objectTypes/UIText.json"
+          ],
+          "features": [
+            "behavior.timer.action.start-timer",
+            "behavior.timer.trigger.on-timer",
+            "plugin.gamepad.condition.compare-axis",
+            "expression.arithmetic",
+            "expression.function.lerp",
+            "expression.object-property-reference"
+          ],
+          "expected": [
+            "Timer start and Timer completion preserve the tag and logical timer semantics.",
+            "Gamepad axis comparisons preserve axis identity, comparison operator and typed threshold.",
+            "Expression-valued parameters are parsed using ACE parameter metadata, not treated as plain strings or blindly converted to literals."
+          ]
+        },
+        {
+          "id": "driving.timeline-instance-reference",
+          "source_files": [
+            "timelines/Car AI Path.json",
+            "layouts/Layout 1.json"
+          ],
+          "features": [
+            "timeline.instance-track",
+            "timeline.property-track",
+            "timeline.keyframe",
+            "reference.layout-instance-uid"
+          ],
+          "expected": [
+            "The timeline remains a first-class resource.",
+            "Its instance track reference to AICar UID 190 resolves to the corresponding layout instance.",
+            "Offset X/Y property tracks and keyframes are preserved.",
+            "A missing or ambiguous UID reference creates a diagnostic."
+          ]
+        }
+      ]
+    }
+  ]
+}

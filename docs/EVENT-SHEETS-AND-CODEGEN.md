@@ -99,17 +99,14 @@ Use stable string IDs for references. Display names are editable and are never
 used as generated Rust identifiers. Array order is meaningful; object-key order
 is not. The normalizer emits canonical JSON before hashing.
 
-## Initial supported operation registry
+## Initial plugin-owned operation registry
 
-The first compiler slice should support only the operations needed by Pong:
-- Trigger conditions (`kind: "trigger"`): `game.started`,
-  `simulation.fixed_tick`, `collision.entered`, `score.reached`.
-- Ordinary conditions (`kind: "condition"`): `game.state_is`,
-  `input.axis_nonzero`, `collision.involves`, `score.at_least`.
-- Actions: `game.set_state`, `score.add`, `paddle.move_axis`,
-  `paddle.track_ball`, `ball.spawn`, `ball.bounce_from_paddle`,
-  `ball.bounce_from_wall`, `ball.despawn`, `audio.play`,
-  `game.restart_round`.
+The compiler discovers operations from plugins, not a hard-coded catalog. Initial split:
+- System triggers: `game.started`, `simulation.fixed_tick`, `score.reached`; conditions `game.state_is`, `score.at_least`; actions `game.set_state`, `score.add`, `game.restart_round`.
+- Input condition: `input.axis_nonzero`.
+- Collision trigger and condition: `collision.entered`, `collision.involves`.
+- Audio action: `audio.play`.
+- Demo gameplay operations: `paddle.move_axis`, `paddle.track_ball`, `ball.spawn`, `ball.bounce_from_paddle`, `ball.bounce_from_wall`, `ball.despawn`.
 
 Each operation has a versioned schema, typed arguments, a defined execution
 phase, and a Rust lowering implementation. Do not expose arbitrary Bevy system

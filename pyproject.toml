@@ -14,3 +14,6 @@ impossible = "impossible.app:main"
 
 [tool.setuptools.package-data]
 impossible = ["ui/*.ui", "ui/*.css"]
+
+[tool.setuptools.packages.find]
+include = ["impossible*"]

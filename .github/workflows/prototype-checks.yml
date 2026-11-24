@@ -1,0 +1,23 @@
+name: Prototype checks
+
+on:
+  push:
+    branches:
+      - main
+      - prototype/gtk-event-sheets
+  pull_request:
+
+jobs:
+  python-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Python modules
+        run: python -m compileall -q impossible tests
+      - name: Validate GtkBuilder XML
+        run: python -c "import xml.etree.ElementTree as ET; ET.parse('impossible/ui/main-window.ui')"
+      - name: Run platform model tests
+        run: python -m unittest discover -s tests -v

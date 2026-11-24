@@ -19,6 +19,12 @@ class PlatformVariantTests(unittest.TestCase):
         self.assertEqual(sprite.source_for("gba"), "assets/hero/hero-gba.png")
         self.assertEqual(sprite.source_for("gbc"), "assets/hero/hero-gbc.png")
 
+    def test_browser_wasm_is_a_first_class_profile(self):
+        from impossible.model import PROFILE_BY_ID
+        web = PROFILE_BY_ID["web-wasm"]
+        self.assertEqual(web.dimension, "2D + 3D")
+        self.assertEqual(web.renderer, "Canvas 2D / WebGL 2")
+
     def test_missing_variant_falls_back_to_base_source(self):
         sprite = next(asset for asset in self.project.assets if asset.id == "asset-hero-sprite")
         self.assertEqual(sprite.source_for("ps1"), sprite.source)

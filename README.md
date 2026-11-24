@@ -27,7 +27,7 @@ One logical object or asset can have different realizations per target:
 The current profiles are authoring presets. Actual console builds require
 verified platform adapters, SDKs/toolchains and target-specific validation.
 
-See docs/PLATFORM-VARIANTS.md and docs/ARCHITECTURE.md.
+See docs/PLATFORM-VARIANTS.md, docs/ARCHITECTURE.md and docs/WEB-WASM.md.
 
 ## GUI stack
 
@@ -67,7 +67,7 @@ The model tests do not require a graphical session or PyGObject:
 This is an early GUI prototype, not a game runtime or compiler yet. Event rows
 are currently authored as text expressions; typed condition/action schemas,
 validation, undo/redo, asset import pipelines, engine adapters, Rust code
-generation, the Emscripten-based HTML5 output path and console toolchains are future work.
+generation, browser WASM output and console toolchains are future work.
 
 ## Architecture boundary
 

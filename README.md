@@ -37,6 +37,24 @@ See [docs/EVENT-SHEETS-AND-CODEGEN.md](docs/EVENT-SHEETS-AND-CODEGEN.md),
 [docs/PLUGINS.md](docs/PLUGINS.md) and the
 [Impossible Pong project](demos/impossible-pong/project.json).
 
+
+## Construct compatibility direction
+
+Alien-Parcor and Flappy Madruga are reference projects for Impossible's ACE,
+object-plugin, behavior-plugin and runtime semantics. They are not manually
+ported and are not direct C2 importer inputs.
+
+The planned conversion chain is **C2 project → external C2-to-C3 project
+converter → C3 project → Impossible importer → typed IR → Rust backend**.
+Impossible's importer accepts C3 projects only. The project-level C2-to-C3
+converter must be verified and pinned separately from C2-to-C3 addon
+converters before integration.
+
+See [the reference-project study](docs/CONSTRUCT-REFERENCE-STUDY.md) and
+[the typed ACE / C3 import contract](docs/CONSTRUCT-ACE-AND-IMPORT.md).
+A semantic fixture catalogue is kept in
+[fixtures/construct-reference](fixtures/construct-reference/README.md).
+
 ## Versioned clocks and behavioral fidelity
 
 Every project must declare a versioned clock contract. Project timing is not a

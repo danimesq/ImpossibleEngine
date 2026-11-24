@@ -1,0 +1,162 @@
+{
+  "fixture_schema_version": 1,
+  "purpose": "Semantic reference cases only. This is not a Construct 2 importer input format.",
+  "references": [
+    {
+      "id": "alien-parcor",
+      "repository": "https://github.com/danimesq/Alien-Parcor",
+      "upstream": "https://github.com/IshanArya/Alien-Parcor",
+      "source_format": "Construct 2",
+      "role": "platformer, behavior composition, level/event-sheet organization"
+    },
+    {
+      "id": "flappy-madruga",
+      "repository": "https://github.com/danimesq/Flappy-Ramon",
+      "source_format": "Construct 2",
+      "saved_with_version": 21400,
+      "role": "arcade gameplay, selection, OR/inversion, expressions and temporal semantics"
+    }
+  ],
+  "cases": [
+    {
+      "id": "flappy.jump.or-and-inverted-guard",
+      "source": {
+        "repository": "https://github.com/danimesq/Flappy-Ramon",
+        "path": "Event sheets/Common in-game.xml",
+        "event_group": "Movement"
+      },
+      "features": [
+        "condition-group.any",
+        "trigger.touch-start",
+        "trigger.keyboard-key-pressed",
+        "condition.inverted",
+        "variable.instance.boolean",
+        "behavior.platform.action",
+        "action-order",
+        "action.wait"
+      ],
+      "expected_contract": [
+        "Touch-start and Space-key press remain an OR condition group.",
+        "The Queda instance variable remains a boolean guard in the player instance scope.",
+        "Inversion is represented on the condition node and is evaluated with its selection effects.",
+        "Jump vector, angle and animation actions retain source order.",
+        "Wait becomes a non-blocking continuation; selected-instance and re-entry behavior are verified against C3."
+      ]
+    },
+    {
+      "id": "flappy.dt-expression-and-random-spawn",
+      "source": {
+        "repository": "https://github.com/danimesq/Flappy-Ramon",
+        "path": "Event sheets/Common in-game.xml",
+        "event_groups": [
+          "Movement",
+          "Background",
+          "Obstacle"
+        ]
+      },
+      "features": [
+        "expression.system.dt",
+        "expression.function.random",
+        "expression.arithmetic",
+        "timer.repeating-interval",
+        "action.create-object",
+        "action.destroy-object",
+        "behavior.solid"
+      ],
+      "expected_contract": [
+        "dt is retained as a typed clock-domain expression, not replaced by render delta implicitly.",
+        "random argument order and RNG draw consumption are deterministic and traceable.",
+        "Every-X-seconds scheduling uses a project timer contract.",
+        "Created pipe instances receive their per-instance Scored default before scoring can observe them.",
+        "Object creation/destruction visibility follows declared structural-mutation boundaries."
+      ]
+    },
+    {
+      "id": "flappy.collision-selection-and-instance-score",
+      "source": {
+        "repository": "https://github.com/danimesq/Flappy-Ramon",
+        "path": "Event sheets/Common in-game.xml",
+        "event_groups": [
+          "Collisions",
+          "Scoring"
+        ]
+      },
+      "features": [
+        "condition.collision",
+        "selection.filter-instances",
+        "variable.instance.boolean",
+        "variable.global.number",
+        "action.audio.play",
+        "action.audio.stop",
+        "action.variable.increment",
+        "event.child"
+      ],
+      "expected_contract": [
+        "Collision conditions expose the participating selected instances.",
+        "The Scored flag belongs to each BottomPipe instance, not the object type globally.",
+        "Score remains a global numeric variable.",
+        "Collision response actions retain declaration order.",
+        "External storage/audio operations declare capability and side-effect metadata."
+      ]
+    },
+    {
+      "id": "flappy.shared-event-sheet-includes",
+      "source": {
+        "repository": "https://github.com/danimesq/Flappy-Ramon",
+        "path": "Flappy Madruga.caproj",
+        "event_sheets": [
+          "Chaves",
+          "Continuous events",
+          "Start events",
+          "Common in-game",
+          "Common in-levels"
+        ]
+      },
+      "features": [
+        "event-sheet.first-class-resource",
+        "event-sheet.include",
+        "event-sheet.shared-dependency",
+        "event-sheet.include-cycle-validation"
+      ],
+      "expected_contract": [
+        "Common in-game remains one resource shared by Chaves and Continuous events.",
+        "Include edges retain authored order and are not copied into consumer sheets.",
+        "Include cycles and missing referenced sheets produce import diagnostics."
+      ]
+    },
+    {
+      "id": "alien.platformer-behavior-composition",
+      "source": {
+        "repository": "https://github.com/danimesq/Alien-Parcor",
+        "event_sheets": [
+          "Event sheet 1",
+          "Level 1 Event Sheet",
+          "Level 2 Event",
+          "Level 3 Event",
+          "Level Event",
+          "Setting Event",
+          "Settings Event",
+          "Title Evet"
+        ]
+      },
+      "features": [
+        "object-plugin.sprite",
+        "behavior.platform",
+        "behavior.bullet",
+        "behavior.fade",
+        "behavior.flash",
+        "behavior.destroy-outside-layout",
+        "behavior.scroll-to",
+        "behavior.solid",
+        "layout.multiple",
+        "event-sheet.multiple"
+      ],
+      "expected_contract": [
+        "Base object plugin and attached behavior definitions remain separate in the project model.",
+        "Behavior parameters and behavior ACEs resolve through the behavior registry.",
+        "Layout and Event Sheet identity is preserved across levels and menus.",
+        "The inventory is provisional until every object type and behavior declaration is checked."
+      ]
+    }
+  ]
+}

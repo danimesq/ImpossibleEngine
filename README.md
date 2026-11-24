@@ -17,6 +17,23 @@ CUBIC's ISO-builder internals, and it does not introduce Qt/PySide6.
 - Toolkit-independent Python project model, suitable for a future Rust GUI or
   compiler frontend.
 
+## Bundled demo games
+
+- **[Impossible Pong](demos/impossible-pong/)**: the first bundled demo-game
+  project and the initial vertical slice for typed Event Sheets, deterministic
+  simulation and Rust/Bevy code generation. Its JSON gameplay specification is
+  being developed before the runtime/exporter implementation.
+
+## Event Sheets and code generation
+
+Event Sheets are intended to be a typed declarative language, not arbitrary
+text expressions. The compiler pipeline is JSON parsing, schema validation,
+symbol resolution, type checking, lowering to an engine-neutral IR, and
+deterministic Rust generation.
+
+See [docs/EVENT-SHEETS-AND-CODEGEN.md](docs/EVENT-SHEETS-AND-CODEGEN.md) and
+the [Impossible Pong project](demos/impossible-pong/project.json).
+
 ## Platform variants from day one
 
 One logical object or asset can have different realizations per target:
@@ -65,10 +82,11 @@ The model tests do not require a graphical session or PyGObject:
 
 ## Current limitations
 
-This is an early GUI prototype, not a game runtime or compiler yet. Event rows
-are currently authored as text expressions; typed condition/action schemas,
-validation, undo/redo, asset import pipelines, engine adapters, Rust code
-generation, browser WASM output and console toolchains are future work.
+This is an early GUI prototype, not a finished game runtime or compiler yet.
+The existing editor still has text-based Event Sheet rows. The typed Event
+Sheet schema and Impossible Pong JSON are the first compiler-contract draft;
+validation, typed IR, Rust code generation, a runnable Bevy adapter, browser
+WASM output and console toolchains remain future work.
 
 ## Architecture boundary
 

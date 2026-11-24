@@ -1,0 +1,13 @@
+{
+  "id": "impossible.audio",
+  "name": "Audio",
+  "version": "0.1.0",
+  "api": "impossible-plugin/1",
+  "kind": "event",
+  "builtin": true,
+  "mandatory": false,
+  "dependencies": [],
+  "operations": [
+    "action:audio.play"
+  ]
+}

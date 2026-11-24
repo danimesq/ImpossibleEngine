@@ -24,7 +24,7 @@ CUBIC's ISO-builder internals, and it does not introduce Qt/PySide6.
   simulation and Rust/Bevy code generation. Its JSON gameplay specification is
   being developed before the runtime/exporter implementation.
 
-## Event Sheets and code generation
+## Event Sheets and plugin architecture
 
 Each Event Sheet is a first-class project resource that owns its ordered event
 tree. Events own their conditions, actions and child events; trigger conditions

@@ -35,11 +35,21 @@ The external C2-to-C3 migration step is a separate tool/process. Impossible
 does not implement a second C2 XML importer. The importer in this repository
 must accept C3 project data only.
 
-The exact GitHub repository for the **project-level** C2-to-C3 converter has
-not yet been pinned in this specification. That is a pre-implementation gate:
-verify its repository, license, supported C2 versions, output format,
-dependencies, command interface and conversion behavior before vendoring or
-invoking it. Do not substitute a similarly named addon converter.
+The **project-level** C2-to-C3 converter will be developed in a separate,
+external repository created for that purpose. It is not a component of the
+Impossible repository and will not be embedded in the Impossible application.
+Its own repository, license, input-version matrix, output contract and CLI/API
+will be specified there.
+
+Impossible owns the next step: a **built-in C3-to-Impossible importer** in this
+repository. It is an internal reader/translator, not an external service,
+separate converter product or optional shell command. It accepts C3 folder
+projects and .c3p archives, then creates the normalized Impossible project
+and typed import report.
+
+The external C2 converter ends at a C3 project. The built-in Impossible
+importer begins at that C3 project. Do not substitute an addon converter for
+the whole-project C2 converter.
 
 ### Addon conversion is a separate problem
 
@@ -55,9 +65,10 @@ The two pipelines must remain separate:
   supported C3 addon.
 - **Impossible import:** C3 project -> Impossible project/IR.
 
-The C3 editor itself also documents importing C2 `.capx` projects, but that
-native editor path is not a replacement for identifying the GitHub project
-converter that the product pipeline intends to reuse.
+The C3 editor also has its own C2 .capx import path, but our chosen migration
+chain remains the separately maintained C2-to-C3 project converter followed
+by Impossible's own built-in C3 importer. This keeps C2 migration and C3
+semantic translation as two independently testable stages.
 
 ## 2. Input contract: Construct 3 projects only
 
@@ -561,3 +572,158 @@ release notes claim support.
   never silently discarded.
 - A validated engine-neutral IR is the only source for Rust generation.
 - Reproducible codegen and deterministic replay are tested, not merely asserted.
+
+
+## 12. Built-in C3 importer: internal component and module boundaries
+
+The C3-to-Impossible importer is shipped as part of Impossible. It must be
+available in the normal application workflow (open/import project), and the
+same core importer API must also be callable headlessly for CI, batch imports
+and golden tests. A command-line entry point may wrap that API, but it is not a
+separately required converter executable or external service.
+
+Suggested Rust module boundaries:
+
+~~~text
+impossible-c3-import/
+  source/
+    folder_source
+    c3p_zip_source
+    virtual_tree
+  manifest/
+    project_manifest
+    resource_index
+    version_profile
+  resources/
+    object_types
+    layouts
+    event_sheets
+    families
+    timelines
+    assets
+    opaque_resources
+  addons/
+    addon_resolver
+    ace_schema
+    source_aliases
+  semantics/
+    variables
+    expressions
+    selection
+    behaviors
+    temporal
+    event_lowering
+  report/
+    diagnostics
+    compatibility_report
+    provenance
+~~~
+
+This is a module map, not a requirement to split the code into a separate
+crate. The importer should depend on the existing typed plugin/ACE registry
+rather than maintain a second catalog of operation semantics.
+
+### Import API
+
+The user-facing import workflow should accept a folder or .c3p file, show a
+preflight summary, then import into a new Impossible project. It must not
+mutate the original C3 content. The API should produce a structured result
+even when the import is incomplete:
+
+~~~rust
+pub struct C3ImportResult {
+    pub project: ImpossibleProject,
+    pub provenance: ImportProvenance,
+    pub report: CompatibilityReport,
+}
+
+pub enum C3Input {
+    Folder(PathBuf),
+    C3pArchive(PathBuf),
+}
+~~~
+
+The illustrative Rust shape is intentionally independent of GTK and Bevy.
+The editor invokes it; the CLI/headless harness can invoke the same core API.
+
+### Manifest-guided resource discovery
+
+The importer reads root `project.c3proj` first and treats it as the resource
+index. It traverses each manifest resource tree using its `items` and
+`subfolders` entries. It must not recursively ingest every JSON file as
+gameplay data.
+
+The resource catalog should recognize at least:
+
+- object types, families and containers;
+- layouts, layers and placed instances;
+- Event Sheets and event-node trees;
+- timelines and their tracks/keyframes;
+- animation/frame/image resources;
+- Tilemap and other object-specific `ownData`;
+- palettes, tilemap brushes and 3D model resources;
+- scripts, sounds, music, videos, fonts, icons and general files.
+
+Editor UI-state files such as `.uistate` and `*.uistate.json` are not
+gameplay resources. They may be retained as optional source attachments for
+diagnostics, but they must not become Event Sheets, game variables or layout
+content.
+
+### ACE schema bridge
+
+Construct addon packages can provide declarative `aces.json` metadata. The
+importer may use this metadata as an input schema for a C3 addon adapter:
+ACE IDs, kind and parameter declarations can be mapped to Impossible's stable
+plugin-owned operation IDs.
+
+The importer does not execute the addon's JavaScript files. The presence of
+an ACE definition describes an interface, not its runtime implementation.
+For every used addon, Impossible must either resolve a trusted native/registered
+implementation with compatible semantics or report a missing dependency /
+unsupported operation.
+
+ACE parameters must be classified by schema. An event parameter string may be
+an expression, literal, enum, object reference, layer name, variable name or
+other typed value. Do not parse every string as an expression. Do not use
+localized display labels as operation identity.
+
+### Import transaction and diagnostics
+
+Import is transactional: parse into a temporary normalized model, validate the
+full resource graph and compile the compatibility report before making the new
+project visible in the user's project library. A fatal structural error leaves
+the destination untouched. An explicitly lossy inspection import may preserve
+opaque resources and diagnostics, but must not pretend it is ready to build.
+
+Diagnostics should identify:
+
+- source path and resource identity (SID/UID where applicable);
+- Construct format version and saved-with release;
+- addon/plugin/behavior identity and version;
+- event block, condition/action ACE and parameter location;
+- affected layout/object/instance;
+- compatibility status and reason;
+- whether the issue blocks deterministic build/export.
+
+### C3 project corpus results
+
+The real C3 projects and source-backed cases are documented in
+[CONSTRUCT3-PROJECT-STUDY.md](CONSTRUCT3-PROJECT-STUDY.md), with fixture
+metadata under `fixtures/construct3-reference/`.
+
+The importer must prove it can retain, at minimum:
+
+- the platform project's separate PlayerBox/PlayerAnim object types;
+- Platform, Solid, Flash, Sine, Scroll To, Car, Pathfinding and Timer
+  behavior attachments and properties;
+- Tilemap `ownData`;
+- the driving project's per-instance CheckPoint values and UID references;
+- ordered Event Sheet groups, comments, blocks, variables and child events;
+- For Each and Pick by Comparison selection behavior;
+- asynchronous Pathfinding completion triggers;
+- Timer and Gamepad ACE parameters;
+- the Car AI Path timeline track and keyframes.
+
+The C3 projects are a first compatibility corpus, not the entirety of Construct
+3. Additional examples must be added when new ACE families, object kinds,
+resource types or release profiles are implemented.

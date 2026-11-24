@@ -25,10 +25,16 @@ Impossible may adapt existing game engines and runtimes instead of requiring a
 new renderer or physics engine immediately. Engine integrations belong behind
 adapters; project authoring data must not depend on one selected engine.
 
-The project's HTML5 output target is the **Emscripten-based path**. The exact
-integration between generated Rust and that toolchain is a separate technical
-spike: it must be demonstrated and documented rather than assumed from the
-fact that both Rust and WebAssembly exist.
+The browser output target should use **Rust compiled directly to WebAssembly**,
+initially investigating `wasm32-unknown-unknown` with `wasm-bindgen` and
+`web-sys`. The browser host should expose rendering through Canvas 2D and/or
+WebGL 2, selected behind an Impossible renderer adapter. WebGPU may be evaluated
+as an optional future backend, not assumed as the baseline.
+
+WASM runs the Rust game logic; it does not draw to a canvas by itself. Browser
+APIs remain host APIs and are reached through bindings. The Emscripten toolchain
+is not the planned default for this Rust-first web target. See WEB-WASM.md for
+the initial investigation boundaries and caveats.
 
 Native Rust and console targets are also backend/toolchain integrations. A
 console profile in the editor is an authoring target definition, not a claim

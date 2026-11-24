@@ -139,3 +139,21 @@ source evidence is catalogued in [CONSTRUCT-REFERENCE-STUDY.md](CONSTRUCT-REFERE
 
 These are registry requirements, not a claim that the typed manifest parser,
 dynamic plugin loader or C3 importer is already implemented.
+
+
+## Construct 3 ACE schema resolution
+
+The C3 importer may consume declarative C3 addon metadata, including
+`aces.json`, to resolve source ACE IDs, ACE kind and parameter schemas. These
+source IDs are compatibility aliases that map to stable Impossible operation
+IDs. They do not replace the Impossible registry or its versioning.
+
+The importer must distinguish parameter types (expression, literal, enum,
+object reference, variable name and other declared forms) rather than parse
+every serialized string as an expression. Addon JavaScript is never executed
+during import. A C3 addon with known ACE metadata but no trusted Impossible
+runtime adapter is a missing dependency/unsupported behavior, not an
+automatically executable plugin.
+
+See [CONSTRUCT3-PROJECT-STUDY.md](CONSTRUCT3-PROJECT-STUDY.md) for the
+manifest/addon bridge and the built-in importer stages.

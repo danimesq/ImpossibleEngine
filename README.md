@@ -26,10 +26,12 @@ CUBIC's ISO-builder internals, and it does not introduce Qt/PySide6.
 
 ## Event Sheets and code generation
 
-Event Sheets are intended to be a typed declarative language, not arbitrary
-text expressions. The compiler pipeline is JSON parsing, schema validation,
-symbol resolution, type checking, lowering to an engine-neutral IR, and
-deterministic Rust generation.
+Each Event Sheet is a first-class project resource that owns its ordered event
+tree. Events own their conditions, actions and child events; trigger conditions
+are part of the event's condition list, not a separate top-level field. The
+language is typed and declarative, not arbitrary text expressions. The compiler
+pipeline is JSON parsing, schema validation, symbol resolution, type checking,
+lowering to an engine-neutral IR, and deterministic Rust generation.
 
 See [docs/EVENT-SHEETS-AND-CODEGEN.md](docs/EVENT-SHEETS-AND-CODEGEN.md) and
 the [Impossible Pong project](demos/impossible-pong/project.json).

@@ -1,0 +1,20 @@
+{
+  "id": "impossible.system",
+  "name": "System",
+  "version": "0.1.0",
+  "api": "impossible-plugin/1",
+  "kind": "event",
+  "builtin": true,
+  "mandatory": true,
+  "dependencies": [],
+  "operations": [
+    "trigger:game.started",
+    "trigger:simulation.fixed_tick",
+    "trigger:score.reached",
+    "condition:game.state_is",
+    "condition:score.at_least",
+    "action:game.set_state",
+    "action:score.add",
+    "action:game.restart_round"
+  ]
+}

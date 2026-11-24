@@ -23,6 +23,7 @@ One logical object or asset can have different realizations per target:
 
 - 3D game: modern PC mesh, PS1 mesh and Nintendo 64 mesh.
 - 2D game: modern mobile sprite sheet, GBA sprite sheet and GBC sprite sheet.
+- Browser game: Rust compiled to WebAssembly, hosted by browser APIs.
 
 The current profiles are authoring presets. Actual console builds require
 verified platform adapters, SDKs/toolchains and target-specific validation.

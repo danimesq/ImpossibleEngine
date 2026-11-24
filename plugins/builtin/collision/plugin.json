@@ -1,0 +1,14 @@
+{
+  "id": "impossible.collision",
+  "name": "Collision",
+  "version": "0.1.0",
+  "api": "impossible-plugin/1",
+  "kind": "event",
+  "builtin": true,
+  "mandatory": false,
+  "dependencies": [],
+  "operations": [
+    "trigger:collision.entered",
+    "condition:collision.involves"
+  ]
+}

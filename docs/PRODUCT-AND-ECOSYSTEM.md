@@ -36,7 +36,24 @@ The ecosystem should be composed of products with explicit responsibilities:
 
 These components should communicate through documented interfaces. The engine must not become tightly coupled to a single wallet provider, chain RPC, marketplace or showcase frontend.
 
-## 3. Product principles
+## 3. Source availability and proprietary product direction
+
+The proposed commercial direction is for the professionally distributed Impossible Engine product to become closed-source and proprietary.
+
+That is a product and licensing decision, not an instruction to silently change this repository's visibility as part of this documentation proposal. The repository is currently public. A future transition needs its own explicit plan covering:
+
+- which code, tools and assets become proprietary;
+- the release boundary between public research/prototypes and the commercial product;
+- ownership and license review for all existing contributions and dependencies;
+- distribution, updates, activation and offline use;
+- source archives, tags and already-published releases;
+- what remains public for interoperability, education and community extension.
+
+A proprietary editor/runtime does not require proprietary project files or undocumented integration surfaces. Prefer keeping project schemas, export/package formats, extension interfaces and developer-facing APIs documented and portable. A future SDK or command-line integration surface may remain openly documented even if the main application is closed-source.
+
+Do not retroactively relicense existing contributions or imply that a public repository has already become proprietary. Any source-availability change requires a separate, reviewed legal and repository-migration decision.
+
+## 4. Product principles
 
 - **Professional minimum viable product:** reliability, clear documentation, predictable project formats, support boundaries and a credible release process matter more than a large feature checklist.
 - **Perpetual core license:** the primary engine purchase should be a one-time payment rather than a mandatory recurring subscription.
@@ -47,7 +64,7 @@ These components should communicate through documented interfaces. The engine mu
 - **Interoperability:** documented exports, stable identifiers and portable metadata should reduce lock-in.
 - **Honest provenance:** an on-chain record can establish that a record exists and has not been altered; it does not independently prove that a physical object is genuine or currently possessed.
 
-## 4. Commercial direction
+## 5. Commercial direction
 
 The proposed commercial model is a one-time purchase for a perpetual license, with multiple tiers for different usage contexts.
 
@@ -72,7 +89,7 @@ The business must explicitly distinguish:
 
 A perpetual license does not automatically mean lifetime updates, lifetime support or perpetual operation of hosted services. Any such promise must be explicit and financially sustainable.
 
-## 5. Plasmmer Accounts
+## 6. Plasmmer Accounts
 
 Plasmmer Accounts is the proposed identity layer shared by Impossible products and other participating Plasmmer services.
 
@@ -90,7 +107,7 @@ Shamir Secret Sharing is a possible recovery building block. Future research may
 
 Before implementation, specify the threat model, secret shares and thresholds, trust assumptions, device-loss scenarios, recovery authorization, privacy boundaries and the role of each network or service. Do not describe Shamir splitting alone as authentication, MPC or a complete wallet-recovery system.
 
-## 6. NFT Showcase
+## 7. NFT Showcase
 
 The proposed companion app is a display-first collection and identity showcase.
 
@@ -107,7 +124,7 @@ It should not default to trading charts, floor-price rankings or speculative pro
 
 The app should respect ownership and privacy settings. A public showcase must not silently expose every asset associated with an address. Users need controls for visibility, hiding items, account linking and disconnecting wallets.
 
-## 7. NFT2 and Plasmium Chain
+## 8. NFT2 and Plasmium Chain
 
 NFT2 is the working name for a proposed tokenized record model associated with Impossible licenses and published game editions.
 
@@ -125,7 +142,7 @@ A token or on-chain record must not be treated as a substitute for the legal lic
 
 Plasmium Chain should provide utility that is understandable without speculation: verifiable edition identity, public provenance events where appropriate, portable references and integration points for publishers and showcases.
 
-## 8. Architecture and integration boundaries
+## 9. Architecture and integration boundaries
 
 - The engine's project format and local build pipeline remain usable offline.
 - Licensing verification should support a documented grace/offline policy and a recovery path for service outages.
@@ -136,7 +153,7 @@ Plasmium Chain should provide utility that is understandable without speculation
 - Publishing services should not be required for local builds.
 - No private keys, recovery secrets or sensitive account data should be embedded in game builds.
 
-## 9. Risks and mitigations
+## 10. Risks and mitigations
 
 | Risk | Design response |
 | --- | --- |
@@ -149,7 +166,7 @@ Plasmium Chain should provide utility that is understandable without speculation
 | Small physical runs are too expensive | Explore print-on-demand, manufacturing partners, preorders and transparent unit economics |
 | Proprietary engine creates lock-in concerns | Document project formats, exports, APIs and user data portability |
 
-## 10. Proposed implementation phases
+## 11. Proposed implementation phases
 
 ### Phase 0 — Product and legal specification
 - Define license terms, tiers, version rights and commercial-use rules.
@@ -190,7 +207,7 @@ Plasmium Chain should provide utility that is understandable without speculation
 - Test QR/NFC linking, tamper evidence, fulfillment and customer support.
 - Expand only when unit economics and provenance limitations are understood.
 
-## 11. Open decisions
+## 12. Open decisions
 
 The following decisions require research and explicit approval before implementation:
 
@@ -205,7 +222,7 @@ The following decisions require research and explicit approval before implementa
 9. Which physical formats can be manufactured reliably and affordably?
 10. Who handles fulfillment, returns, warranties, taxes and regional consumer obligations?
 
-## 12. Success criteria
+## 13. Success criteria
 
 The strategy is ready to move from proposal to implementation when:
 

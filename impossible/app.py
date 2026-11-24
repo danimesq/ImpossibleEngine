@@ -47,7 +47,7 @@ class ImpossibleWindow:
         self.project = make_demo_project()
         self.project_path: Optional[Path] = None
         self.selected_event_index = 0
-        self.selected_target = "ps1"
+        self.selected_target = self.project.active_platform
         self.builder = Gtk.Builder.new_from_file(str(UI_FILE))
         self.window = self.builder.get_object("main_window")
         self.window.set_application(application)
@@ -377,6 +377,7 @@ class ImpossibleWindow:
 
     def on_target_changed(self, combo: Gtk.ComboBoxText) -> None:
         self.selected_target = combo.get_active_id() or "pc-modern"
+        self.project.active_platform = self.selected_target
         self._load_asset_variant()
         self._load_object_override()
 
@@ -493,6 +494,7 @@ class ImpossibleWindow:
         self.status_label.set_text("Saved " + self.project_path.name)
 
     def _refresh_all_pages(self) -> None:
+        self.selected_target = self.project.active_platform
         self.project_name_label.set_text(self.project.name)
         self._render_events()
         self._render_objects()

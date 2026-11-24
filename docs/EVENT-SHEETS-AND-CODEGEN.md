@@ -80,8 +80,9 @@ The first compiler slice should support only the operations needed by Pong:
 - Conditions: `game.state_is`, `input.axis_nonzero`,
   `collision.involves`, `score.at_least`.
 - Actions: `game.set_state`, `score.add`, `paddle.move_axis`,
-  `ball.spawn`, `ball.bounce_from_paddle`, `ball.bounce_from_wall`,
-  `ball.despawn`, `audio.play`, `game.restart_round`.
+  `paddle.track_ball`, `ball.spawn`, `ball.bounce_from_paddle`,
+  `ball.bounce_from_wall`, `ball.despawn`, `audio.play`,
+  `game.restart_round`.
 
 Each operation has a versioned schema, typed arguments, a defined execution
 phase, and a Rust lowering implementation. Do not expose arbitrary Bevy system
@@ -112,6 +113,11 @@ Impossible Pong is the vertical slice for this contract:
 - generated Bevy systems, not hand-authored gameplay hidden beside the JSON.
 
 The initial sample JSON lives at
-`demos/impossible-pong/project.json`. The Bevy game adapter and compiler are
-incremental work; the sample is a data contract, not a claim that code
-generation already exists.
+`demos/impossible-pong/project.json`. Its `arena_bounds` component reserves
+stable built-in collider IDs `wall-top`, `wall-bottom`, `goal-left` and
+`goal-right`; these are synthesized by the arena adapter and are not ordinary
+user-authored objects. `paddle.track_ball` is a deterministic bounded tracking
+rule, not a general-purpose scripting hook. `game.restart_round` queues ball
+despawn, waits the declared number of fixed ticks, then spawns the next ball.
+The Bevy game adapter and compiler are incremental work; the sample is a data
+contract, not a claim that code generation already exists.

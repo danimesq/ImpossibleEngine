@@ -145,3 +145,67 @@ rule, not a general-purpose scripting hook. `game.restart_round` queues ball
 despawn, waits the declared number of fixed ticks, then spawns the next ball.
 The Bevy game adapter and compiler are incremental work; the sample is a data
 contract, not a claim that code generation already exists.
+
+
+## Construct compatibility extensions: typed conditions, actions and expressions
+
+The initial Pong sample demonstrates a typed-operation direction, but a
+real-world Event Sheet language needs more structure than flat arrays of
+condition/action strings. The following additions are required before
+Construct compatibility can be claimed.
+
+### Condition groups and selection-aware evaluation
+
+Preserve Event Sheets as first-class ordered resources. Every sheet owns its
+event tree; every event owns ordered conditions, actions and child events.
+Shared sheets are linked by ordered include references. Includes are not
+copied into consumers and event trees are never flattened into a global list.
+
+The initial all-AND condition list must evolve to a structural condition-group
+AST that can represent AND and OR without losing source order or branch
+identity. Inversion belongs to the condition node and must be evaluated
+together with its selection effect. A condition may return truth while also
+filtering selected object instances; a boolean-only API is insufficient.
+
+### Typed ACE calls
+
+A condition or action node contains a permanent Impossible operation ID and
+ordered typed arguments. The operation is resolved through the plugin registry
+and validated against its ACE descriptor. Construct IDs, labels and addon
+names are importer aliases, not runtime identities.
+
+Object plugin ACEs and attached behavior ACEs compose for the compatible
+object type. Project/global plugins contribute ACEs without requiring scene
+instances. The compiler core resolves and validates these calls; it does not
+hard-code every Construct operation.
+
+### Expressions and symbol scopes
+
+Expression text is parsed to an AST with source spans, then type-checked
+against project symbols and plugin-provided functions. It must support typed
+literals, references, dotted object/behavior properties, arithmetic,
+comparisons, boolean operators, function calls and parentheses.
+
+Variable resolution distinguishes project/global, Event Sheet/local,
+object-type and per-instance scopes. Expressions such as `dt` remain explicit
+clock-domain values until the imported project profile determines their
+meaning. Random expressions use declared deterministic RNG state and preserve
+argument and draw order.
+
+### Selection context
+
+The Event Sheet evaluator carries an explicit ordered selection context. A
+collision or overlap condition may filter the current instances, and subsequent
+actions must target those selected instances rather than all instances of the
+object type. The context is scoped across parent/child events and must define
+behavior for OR branches, inversion, else branches, includes and Wait
+continuations.
+
+See [CONSTRUCT-ACE-AND-IMPORT.md](CONSTRUCT-ACE-AND-IMPORT.md) for the proposed
+typed AST, expression grammar, Selection System, compatibility diagnostics and
+engine-neutral IR contract. See [CONSTRUCT-REFERENCE-STUDY.md](CONSTRUCT-REFERENCE-STUDY.md)
+for the Alien-Parcor and Flappy Madruga source cases.
+
+The current editor and model still store condition/action rows as text. These
+sections define the next schema/compiler work; they do not claim that this
+parser, evaluator or importer exists yet.

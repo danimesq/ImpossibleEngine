@@ -10,9 +10,15 @@
 ## Engine architecture
 
 - [Rust Gaming Eclipse integration plan](RUST-GAMING-ECLIPSE.md) — compiler boundary, Foundation dependency gates, optional Bevy/Rapier integration, and StreetChaves migration strategy.
-
+- [Typed Event Sheets: JSON to native Rust](EVENT-SHEETS-JSON-TO-RUST.md) — proposed typed JSON event language, source-derived Flappy Madruga example, compiler semantics and Rust output.
+- [Game import and migration strategy](GAME-IMPORT-AND-MIGRATION.md) — Construct 2/3 import, existing Flappy Madruga project, and Delphi reverse engineering through reconstructed Pascal to native Rust.
 - [Architecture](ARCHITECTURE.md)
 - [Platform variants](PLATFORM-VARIANTS.md)
 - [WebAssembly](WEB-WASM.md)
 
 These documents describe a proposal and research direction unless a section explicitly says otherwise. A roadmap item is not evidence that the corresponding implementation exists.
+
+
+## First Impossible project
+
+- [Flappy Madruga / Flappy Ramon](../projects/flappy-ramon/README.md) — the complete Construct 2 to native Rust port is the first end-to-end project objective. Media folders are scaffolded and waiting for verified original assets.

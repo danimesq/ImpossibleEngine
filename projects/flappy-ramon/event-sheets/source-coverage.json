@@ -1,0 +1,466 @@
+{
+  "format": "impossible.flappy-madruga.source-coverage",
+  "version": 1,
+  "project": "danimesq/Flappy-Ramon",
+  "source_revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
+  "port_policy": "This is a hand-authored port of this known project. No generic Construct importer is part of this round.",
+  "event_sheets": [
+    {
+      "path": "Event sheets/Start events.xml",
+      "includes": [],
+      "events": [
+        {
+          "sid": "868568479922385",
+          "parent_sid": null,
+          "meaning": "On start of layout",
+          "actions": [
+            "Audio.StopAll"
+          ],
+          "status": "mapped",
+          "rust": "Game::new(Layout::Start) -> Effect::StopAllAudio"
+        },
+        {
+          "sid": "8450924142424696",
+          "parent_sid": null,
+          "meaning": "Button click OR Return key",
+          "actions": [],
+          "status": "mapped",
+          "rust": "Game::update_start"
+        },
+        {
+          "sid": "6960960697050587",
+          "parent_sid": "8450924142424696",
+          "meaning": "Android platform child",
+          "actions": [
+            "GooglePlay.SignIn"
+          ],
+          "status": "policy_fallback",
+          "rust": "Effect::RequestGooglePlaySignIn; Services falls back to offline mode because no client ID/SDK credentials are present"
+        },
+        {
+          "sid": "3050908862004944",
+          "parent_sid": "8450924142424696",
+          "meaning": "Else child for non-Android targets",
+          "actions": [
+            "System.GoToLayout(Continuous)"
+          ],
+          "status": "mapped",
+          "rust": "Game::update_start -> Game::enter_layout(Layout::Continuous)"
+        },
+        {
+          "sid": "2086025640003727",
+          "parent_sid": null,
+          "meaning": "Google Play On signed in",
+          "actions": [
+            "System.GoToLayout(Continuous)"
+          ],
+          "status": "adapter_callback",
+          "rust": "Game::on_google_play_signed_in"
+        }
+      ]
+    },
+    {
+      "path": "Event sheets/Continuous events.xml",
+      "includes": [
+        "Common in-game"
+      ],
+      "events": []
+    },
+    {
+      "path": "Event sheets/Common in-game.xml",
+      "includes": [],
+      "groups": [
+        {
+          "sid": "7994164912570463",
+          "title": "Start"
+        },
+        {
+          "sid": "2529645185920532",
+          "title": "Movement"
+        },
+        {
+          "sid": "4185334038513319",
+          "title": "Collisions"
+        },
+        {
+          "sid": "5546985916789968",
+          "title": "Scoring"
+        },
+        {
+          "sid": "3343506472260997",
+          "title": "Background"
+        },
+        {
+          "sid": "2110401972330273",
+          "title": "Obstacle"
+        }
+      ],
+      "events": [
+        {
+          "sid": "2246972820014324",
+          "parent_sid": null,
+          "group": "Start",
+          "meaning": "On start of layout",
+          "actions": [
+            "Set Layout_Name",
+            "Madruga.Queda=false",
+            "Disable Play_Continuous",
+            "ScoreText=0",
+            "Load Press Start 2P font",
+            "Reset TiledBackground2.X",
+            "Reset TiledBackground.X",
+            "Score=0",
+            "Destroy design-time TopPipe and BottomPipe",
+            "Madruga.Platform.VectorY=-JumpStrength",
+            "Madruga.Angle=320",
+            "SCROLLSPEED=300",
+            "SECONDSPEROBSTACLE=1"
+          ],
+          "status": "mapped",
+          "rust": "Game::common_game_layout_start"
+        },
+        {
+          "sid": "7816572494785124",
+          "parent_sid": "2246972820014324",
+          "group": "Start",
+          "meaning": "Trigger once while layout music condition remains true",
+          "actions": [
+            "Audio.Play(Music, loop=true)",
+            "Audio.AddGainEffect(+40dB)"
+          ],
+          "status": "mapped_with_host_limit",
+          "rust": "Effect::PlayMusic; Services maps source gain to Macroquad normalized full-scale volume"
+        },
+        {
+          "sid": "9923654974799748",
+          "parent_sid": null,
+          "group": "Movement",
+          "meaning": "Touch start OR Space key; parent has no direct actions",
+          "actions": [],
+          "status": "mapped",
+          "rust": "Game::update input edge"
+        },
+        {
+          "sid": "2918399259058403",
+          "parent_sid": "9923654974799748",
+          "group": "Movement",
+          "meaning": "NOT Madruga.Queda",
+          "actions": [
+            "Madruga.Platform.SetVectorY(-JumpStrength)",
+            "Madruga.SetAngle(320)",
+            "Madruga.SetAnimation(Flying, frame=1)",
+            "System.Wait(0.5)",
+            "Madruga.SetAnimation(Default, frame=1)"
+          ],
+          "status": "mapped",
+          "rust": "Game::update flap branch and Bird.animation_reset_waits"
+        },
+        {
+          "sid": "199979273240818",
+          "parent_sid": null,
+          "group": "Movement",
+          "meaning": "Every tick AND NOT Madruga.Queda",
+          "actions": [
+            "Madruga.RotateClockwise(60*dt)"
+          ],
+          "status": "mapped",
+          "rust": "Game::update angle integration using source dt"
+        },
+        {
+          "sid": "7365620846625415",
+          "parent_sid": null,
+          "group": "Collisions",
+          "meaning": "Parent collision group guard: NOT Madruga.Queda",
+          "actions": [],
+          "status": "mapped",
+          "rust": "Game::handle_collision guards against duplicate game-over transitions"
+        },
+        {
+          "sid": "170743918900562",
+          "parent_sid": "7365620846625415",
+          "group": "Collisions",
+          "meaning": "Madruga collides with TiledBackground2",
+          "actions": [
+            "Set Queda",
+            "SCROLLSPEED=0",
+            "SECONDSPEROBSTACLE=0",
+            "Play beat",
+            "Stop Music",
+            "Show and enable retry button"
+          ],
+          "status": "mapped_media_pending",
+          "rust": "Game::handle_collision(Ground); Services audio adapter"
+        },
+        {
+          "sid": "4987440076445908",
+          "parent_sid": "170743918900562",
+          "group": "Collisions",
+          "meaning": "Continuous layout AND Score greater than saved Highscore AND trigger once",
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
+          "status": "mapped",
+          "rust": "Game::finish_game_over -> Effect::SaveHighScore; quad-storage adapter"
+        },
+        {
+          "sid": "8821406997890014",
+          "parent_sid": "170743918900562",
+          "group": "Collisions",
+          "meaning": "Continuous layout high-score display",
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
+          "status": "mapped_vector_ui",
+          "rust": "Game::finish_game_over; renderer displays high_score_text"
+        },
+        {
+          "sid": "3130471190776897",
+          "parent_sid": "7365620846625415",
+          "group": "Collisions",
+          "meaning": "Madruga collides with TopPipe",
+          "actions": [
+            "Set Queda",
+            "SCROLLSPEED=0",
+            "SECONDSPEROBSTACLE=0",
+            "Play beat",
+            "Stop Music",
+            "Wait 0.5 seconds",
+            "Play Queda",
+            "Show and enable retry button"
+          ],
+          "status": "mapped_media_pending",
+          "rust": "Game::handle_collision(TopPipe), top_pipe_game_over_wait, retry_show_wait"
+        },
+        {
+          "sid": "4999406637386386",
+          "parent_sid": "3130471190776897",
+          "group": "Collisions",
+          "meaning": "Continuous layout AND Score greater than saved Highscore AND trigger once",
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
+          "status": "mapped",
+          "rust": "Game::finish_game_over -> Effect::SaveHighScore; quad-storage adapter"
+        },
+        {
+          "sid": "715855042734",
+          "parent_sid": "3130471190776897",
+          "group": "Collisions",
+          "meaning": "Continuous layout high-score display",
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
+          "status": "mapped_vector_ui",
+          "rust": "Game::finish_game_over; renderer displays high_score_text"
+        },
+        {
+          "sid": "1336496314225453",
+          "parent_sid": "7365620846625415",
+          "group": "Collisions",
+          "meaning": "Madruga collides with BottomPipe",
+          "actions": [
+            "Set Queda",
+            "SCROLLSPEED=0",
+            "SECONDSPEROBSTACLE=0",
+            "Play beat",
+            "Stop Music",
+            "Show and enable retry button"
+          ],
+          "status": "mapped_media_pending",
+          "rust": "Game::handle_collision(BottomPipe); Services audio adapter"
+        },
+        {
+          "sid": "5467540996491119",
+          "parent_sid": "1336496314225453",
+          "group": "Collisions",
+          "meaning": "Continuous layout AND Score greater than saved Highscore AND trigger once",
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
+          "status": "mapped",
+          "rust": "Game::finish_game_over -> Effect::SaveHighScore; quad-storage adapter"
+        },
+        {
+          "sid": "5644737791030659",
+          "parent_sid": "1336496314225453",
+          "group": "Collisions",
+          "meaning": "Continuous layout high-score display",
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
+          "status": "mapped_vector_ui",
+          "rust": "Game::finish_game_over; renderer displays high_score_text"
+        },
+        {
+          "sid": "9569398275688901",
+          "parent_sid": null,
+          "group": "Collisions",
+          "meaning": "Madruga is outside layout",
+          "actions": [],
+          "status": "source_no_op",
+          "rust": "No gameplay action, preserved as a source no-op"
+        },
+        {
+          "sid": "2833117000651784",
+          "parent_sid": null,
+          "group": "Scoring",
+          "meaning": "BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored",
+          "actions": [
+            "Score += 1",
+            "ScoreText=Score",
+            "BottomPipe.Scored=true"
+          ],
+          "status": "mapped",
+          "rust": "Game::score_pipes, PipePair.scored"
+        },
+        {
+          "sid": "2060048028150518",
+          "parent_sid": null,
+          "group": "Background",
+          "meaning": "TiledBackground.X <= -560",
+          "actions": [
+            "TiledBackground.X=0"
+          ],
+          "status": "mapped",
+          "rust": "Game::update_background_and_pipes"
+        },
+        {
+          "sid": "30454140128404",
+          "parent_sid": null,
+          "group": "Background",
+          "meaning": "TiledBackground2.X <= -410",
+          "actions": [
+            "TiledBackground2.X=0"
+          ],
+          "status": "mapped",
+          "rust": "Game::update_background_and_pipes"
+        },
+        {
+          "sid": "1385689931601852",
+          "parent_sid": null,
+          "group": "Background",
+          "meaning": "Every tick",
+          "actions": [
+            "BottomPipe.X -= SCROLLSPEED*dt",
+            "TopPipe.X -= SCROLLSPEED*dt",
+            "TiledBackground2.X -= SCROLLSPEED*dt",
+            "TiledBackground.X -= SCROLLSPEED*dt"
+          ],
+          "status": "mapped",
+          "rust": "Game::update_background_and_pipes using source dt"
+        },
+        {
+          "sid": "6231531170117115",
+          "parent_sid": null,
+          "group": "Background",
+          "meaning": "TopPipe.X < -50",
+          "actions": [
+            "Destroy TopPipe instance"
+          ],
+          "status": "mapped",
+          "rust": "PipePair.top_alive is cleared independently"
+        },
+        {
+          "sid": "7423873857133321",
+          "parent_sid": null,
+          "group": "Background",
+          "meaning": "BottomPipe.X < -50",
+          "actions": [
+            "Destroy BottomPipe instance"
+          ],
+          "status": "mapped",
+          "rust": "PipePair.bottom_alive is cleared independently"
+        },
+        {
+          "sid": "6640649658259165",
+          "parent_sid": null,
+          "group": "Obstacle",
+          "meaning": "Every SECONDSPEROBSTACLE seconds",
+          "actions": [
+            "Create TopPipe at (440, random(-70,-250))",
+            "Create BottomPipe at (440, TopPipe.Y+750)",
+            "Move ScoreText to top",
+            "BottomPipe.Scored=false"
+          ],
+          "status": "mapped_with_rng_policy",
+          "rust": "Game::update_obstacle_timer; seeded xorshift RNG; PipePair::spawned"
+        },
+        {
+          "sid": "9708342499359544",
+          "parent_sid": null,
+          "meaning": "Retry button click OR Return key",
+          "actions": [],
+          "status": "mapped",
+          "rust": "Game::update_restart input edge",
+          "section": "Root events after the Obstacle group"
+        },
+        {
+          "sid": "3112928811038152",
+          "parent_sid": "9708342499359544",
+          "meaning": "Madruga.Queda is true",
+          "actions": [
+            "Wait 0.1 seconds",
+            "Restart current layout"
+          ],
+          "status": "mapped",
+          "rust": "Game::update_restart; Game::enter_layout(current)",
+          "section": "Root events after the Obstacle group"
+        }
+      ]
+    },
+    {
+      "path": "Event sheets/Common in-levels.xml",
+      "includes": [],
+      "events": [
+        {
+          "sid": "2515117097232158",
+          "parent_sid": null,
+          "meaning": "Score == Required_Score",
+          "actions": [
+            "Go to next layout"
+          ],
+          "status": "source_semantics_preserved",
+          "rust": "Game::update_level_progression; no-op at last layout, matching Construct's documented behavior"
+        }
+      ]
+    },
+    {
+      "path": "Event sheets/Chaves.xml",
+      "includes": [
+        "Common in-game",
+        "Common in-levels"
+      ],
+      "events": [
+        {
+          "sid": "9305905589121505",
+          "parent_sid": null,
+          "meaning": "On start of layout",
+          "actions": [
+            "Required_Score=10",
+            "TopPipe animation=Chaves from frame 1",
+            "BottomPipe animation=Chaves from frame 1"
+          ],
+          "status": "mapped_with_instance_lifetime_interaction",
+          "rust": "Game::enter_layout(Layout::Chaves) sets Required_Score=10. The Chaves animation actions are preserved as source behavior, but their targets are the editor-time pipe instances that Common in-game has already queued for destruction; later timer-created pairs use Default animation pending a source-runtime differential test."
+        }
+      ]
+    }
+  ],
+  "source_level_notes": [
+    "The design-time TopPipe and BottomPipe instances visible in Continuous and Chaves layout XML are destroyed by event SID 2246972820014324 at layout start. The first runtime pair is spawned by event SID 6640649658259165 after SECONDSPEROBSTACLE seconds.",
+    "The source project has exactly three layouts. Chaves is last in project order, so Go to next layout is a no-op at Required_Score.",
+    "The source project declares Facebook and Browser plugins but the checked-in Event Sheets contain no actions or conditions for those plugins.",
+    "Google Play SignIn is used on Android in Start events. This port exposes a callback boundary and an offline fallback; it does not claim to include a configured Google Play Games SDK client.",
+    "Original media bytes are intentionally pending. Audio/font integrations resolve project-relative paths and emit warnings while placeholders are empty.",
+    "The generic Construct 2/3 importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project.",
+    "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh Construct event group.",
+    "The Chaves layout-start animation event must be considered together with the included Common in-game layout-start Destroy actions. Construct 2 treats Destroy as deferred until event-sheet processing completes; the editor-time pipe instances therefore do not establish a skin for later timer-created instances. The Rust gameplay model keeps spawned pipe pairs on Default animation until a differential run proves otherwise.",
+    "Construct 2 defaults to max dt=1/30 second for per-tick and behavior movement. Every-X-seconds and Wait are time-based System events and must not be accumulated from the capped movement dt."
+  ]
+}

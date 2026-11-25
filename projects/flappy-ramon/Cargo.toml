@@ -1,0 +1,19 @@
+[package]
+name = "flappy-madruga"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "First native Rust reference game for ImpossibleEngine"
+
+[package.metadata.android]
+assets = "assets"
+
+[dependencies]
+macroquad = { version = "=0.4.16", features = ["audio"] }
+quad-storage = "=0.1.3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "s"
+panic = "abort"

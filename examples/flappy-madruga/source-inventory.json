@@ -1,0 +1,109 @@
+{
+  "source": {
+    "repository": "danimesq/Flappy-Ramon",
+    "default_branch": "master",
+    "project_file": "Flappy Madruga.caproj",
+    "project_name": "Flappy Madruga",
+    "project_version": "0.6.1.6",
+    "construct_saved_with_version": 21400,
+    "exporter": "HTML5",
+    "viewport": { "width": 400, "height": 500, "orientation": "portrait" }
+  },
+  "layouts": ["Start", "Continuous", "Chaves"],
+  "event_sheets": [
+    {
+      "path": "Event sheets/Start events.xml",
+      "includes": [],
+      "initial_status": "inventory_required"
+    },
+    {
+      "path": "Event sheets/Continuous events.xml",
+      "includes": ["Common in-game"],
+      "initial_status": "inventory_required"
+    },
+    {
+      "path": "Event sheets/Common in-game.xml",
+      "includes": [],
+      "initial_status": "partially_inspected"
+    },
+    {
+      "path": "Event sheets/Common in-levels.xml",
+      "includes": [],
+      "initial_status": "partially_inspected"
+    },
+    {
+      "path": "Event sheets/Chaves.xml",
+      "includes": ["Common in-game", "Common in-levels"],
+      "initial_status": "partially_inspected"
+    }
+  ],
+  "plugins": [
+    "Audio",
+    "Browser",
+    "Button",
+    "Facebook",
+    "Keyboard",
+    "Sprite",
+    "Text",
+    "TiledBg",
+    "Touch",
+    "WebStorage",
+    "googleplay"
+  ],
+  "behaviors": ["Platform", "Solid"],
+  "global_variables": {
+    "JumpStrength": { "type": "number", "initial": 500, "constant": true },
+    "SCROLLSPEED": { "type": "number", "initial": 150, "comment": "pixels per second" },
+    "SECONDSPEROBSTACLE": { "type": "number", "initial": 1 },
+    "Score": { "type": "number", "initial": 0 }
+  },
+  "known_object_state": {
+    "Madruga": {
+      "plugin": "Sprite",
+      "instance_variables": { "Queda": "boolean" },
+      "behaviors": ["Platform"]
+    },
+    "BottomPipe": {
+      "plugin": "Sprite",
+      "instance_variables": { "Scored": "boolean" },
+      "behaviors": ["Solid"]
+    },
+    "TopPipe": { "plugin": "Sprite", "behaviors": ["Solid"] },
+    "TiledBackground": { "plugin": "TiledBg", "behaviors": ["Solid"] },
+    "TiledBackground2": { "plugin": "TiledBg", "behaviors": ["Solid"] }
+  },
+  "source_mappings": [
+    {
+      "event_sheet": "Event sheets/Chaves.xml",
+      "event_sid": "9305905589121505",
+      "status": "source_derived_unverified",
+      "covered_by": "event-sheet.json:c2-chaves-layout-start"
+    },
+    {
+      "event_sheet": "Event sheets/Common in-game.xml",
+      "event_sid": "2246972820014324",
+      "status": "source_derived_unverified",
+      "covered_by": "event-sheet.json:c2-common-game-layout-start"
+    },
+    {
+      "event_sheet": "Event sheets/Common in-game.xml",
+      "event_sid": "1385689931601852",
+      "status": "source_derived_unverified",
+      "covered_by": "event-sheet.json:c2-background-and-pipe-scroll"
+    }
+  ],
+  "not_yet_mapped": [
+    "Touch-start OR Space-key event and nested Queda guard",
+    "Platform behavior configuration and Set vector Y action",
+    "Wait continuation and animation restoration",
+    "Collision handling against TiledBackground2, TopPipe and BottomPipe",
+    "BottomPipe instance picking and one-score-per-pipe logic",
+    "Every-X-seconds timer, object creation and pipe relationship",
+    "Source random expression and deterministic RNG mapping",
+    "Pipe destruction and background wrap conditions",
+    "Audio, WebStorage, font, Facebook, Google Play, Browser and Button services",
+    "Layout progression and restart behavior",
+    "Full event-group/include execution semantics"
+  ],
+  "warning": "This is an initial source inventory, not a complete importer report. Re-scan every project file and asset during implementation. Do not infer missing mappings from this document."
+}

@@ -1,0 +1,93 @@
+{
+  "format": "impossible.asset-placeholders",
+  "version": 1,
+  "project": "flappy-ramon",
+  "media_state": "pending_population",
+  "policy": "Do not fabricate source media. Keep source references and destination paths; replace placeholders only with verified project assets.",
+  "assets": [
+    {
+      "source_reference": "Madruga.Default",
+      "source_hint": "Ramon.png",
+      "destination": "assets/sprites/madruga-default.png",
+      "kind": "sprite",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Madruga.Flying",
+      "source_hint": "Ramon Fly.gif",
+      "destination": "assets/sprites/madruga-flying.gif",
+      "kind": "animation",
+      "status": "pending"
+    },
+    {
+      "source_reference": "TiledBackground.texture",
+      "source_hint": "test.png",
+      "destination": "assets/backgrounds/ground-tile.png",
+      "kind": "background_texture",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Background.Default",
+      "source_hint": "Vila_do_Chaves_-_divulgacao.jpg",
+      "destination": "assets/backgrounds/vila-do-chaves.jpg",
+      "kind": "background",
+      "status": "pending"
+    },
+    {
+      "source_reference": "TopPipe.Chaves.frames",
+      "source_hint": "1.png, 2.png, 3.png, 4.png",
+      "destination": "assets/animation-frames/top-pipe/chaves/",
+      "kind": "animation_frames",
+      "status": "pending"
+    },
+    {
+      "source_reference": "BottomPipe.Chaves.frames",
+      "source_hint": "1.png, 2.png, 3.png, 4.png",
+      "destination": "assets/animation-frames/bottom-pipe/chaves/",
+      "kind": "animation_frames",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Splash.Default",
+      "source_hint": "Splash.png",
+      "destination": "assets/ui/splash.png",
+      "kind": "ui_image",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Audio.beat",
+      "source_hint": "beat.m4a, beat.ogg",
+      "destination": "assets/audio/sfx/beat/",
+      "kind": "sound_effect",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Audio.Queda",
+      "source_hint": "Queda.m4a, Queda.ogg",
+      "destination": "assets/audio/sfx/queda/",
+      "kind": "sound_effect",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Music",
+      "source_hint": "Music.m4a, Music.ogg",
+      "destination": "assets/audio/music/",
+      "kind": "music",
+      "status": "pending"
+    },
+    {
+      "source_reference": "ScoreText.web_font",
+      "source_hint": "PressStart2P.ttf",
+      "destination": "assets/fonts/press-start-2p.ttf",
+      "kind": "font",
+      "status": "pending"
+    },
+    {
+      "source_reference": "Icons",
+      "source_hint": "icon-16.png, icon-32.png, icon-114.png, icon-128.png, icon-256.png, loading-logo.png",
+      "destination": "assets/icons/",
+      "kind": "icons_and_loader",
+      "status": "pending"
+    }
+  ]
+}

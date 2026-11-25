@@ -1,0 +1,601 @@
+{
+  "format": "impossible.source-game-model",
+  "version": 1,
+  "project": "Flappy Madruga",
+  "upstream": {
+    "repository": "danimesq/Flappy-Ramon",
+    "revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
+    "project_file": "Flappy Madruga.caproj",
+    "project_version": "0.6.1.6",
+    "construct_saved_with_version": 21400,
+    "exporter": "html5",
+    "viewport": {
+      "width": 400,
+      "height": 500,
+      "orientation": "portrait"
+    }
+  },
+  "layouts_in_project_order": [
+    {
+      "name": "Start",
+      "event_sheet": "Start events",
+      "instances": [
+        {
+          "type": "Sprite",
+          "uid": 8,
+          "position": [
+            200,
+            250
+          ],
+          "size": [
+            400,
+            500
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "media_ref": "Splash.png"
+        },
+        {
+          "type": "Play_Continuous",
+          "uid": 1,
+          "position": [
+            13,
+            255
+          ],
+          "size": [
+            162,
+            32
+          ],
+          "text": "Continuous Play"
+        }
+      ]
+    },
+    {
+      "name": "Continuous",
+      "event_sheet": "Continuous events",
+      "includes": [
+        "Common in-game"
+      ],
+      "instances": [
+        {
+          "type": "Background",
+          "uid": 5,
+          "position": [
+            200,
+            250
+          ],
+          "size": [
+            400,
+            500
+          ],
+          "media_ref": "Vila_do_Chaves_-_divulgacao.jpg"
+        },
+        {
+          "type": "Madruga",
+          "uid": 0,
+          "position": [
+            69.332038879,
+            240.193328857
+          ],
+          "size": [
+            73.076919556,
+            56.447761536
+          ],
+          "hotspot": [
+            0.513157904,
+            0.524590135
+          ],
+          "variables": {
+            "Queda": false
+          },
+          "behaviors": {
+            "Platform": {
+              "max-speed": 0,
+              "acceleration": 300,
+              "deceleration": 1500,
+              "jump-strength": 0,
+              "gravity": 1500,
+              "max-fall-speed": 1000,
+              "double-jump": "Disabled",
+              "jump-sustain": 0,
+              "default-controls": true,
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "TiledBackground",
+          "uid": 3,
+          "position": [
+            -69,
+            472
+          ],
+          "size": [
+            1118,
+            28
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "media_ref": "test.png",
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "TiledBackground2",
+          "uid": 4,
+          "position": [
+            0,
+            453
+          ],
+          "size": [
+            1107,
+            19
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "media_ref": "test.png",
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "BottomPipe",
+          "uid": 6,
+          "position": [
+            450,
+            630
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {
+            "Scored": false
+          },
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "TopPipe",
+          "uid": 7,
+          "position": [
+            447,
+            -117
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "ScoreText",
+          "uid": 9,
+          "position": [
+            1,
+            1
+          ],
+          "size": [
+            398,
+            70
+          ],
+          "text": "0",
+          "initially_visible": true
+        },
+        {
+          "type": "Play_Continuous",
+          "uid": 13,
+          "position": [
+            120,
+            211
+          ],
+          "size": [
+            181,
+            81
+          ],
+          "text": "Try again!",
+          "initially_visible": false
+        },
+        {
+          "type": "Highscore",
+          "uid": 10,
+          "position": [
+            156,
+            179
+          ],
+          "size": [
+            200,
+            30
+          ],
+          "text": "Highscore:",
+          "initially_visible": false
+        }
+      ],
+      "layout_start_runtime_actions": "The source Common in-game event destroys the design-time TopPipe and BottomPipe instances before the first timed spawn."
+    },
+    {
+      "name": "Chaves",
+      "event_sheet": "Chaves",
+      "includes": [
+        "Common in-game",
+        "Common in-levels"
+      ],
+      "instances": [
+        {
+          "type": "Background",
+          "uid": 18,
+          "position": [
+            200,
+            250
+          ],
+          "size": [
+            400,
+            500
+          ],
+          "media_ref": "Vila_do_Chaves_-_divulgacao.jpg"
+        },
+        {
+          "type": "Madruga",
+          "uid": 19,
+          "position": [
+            69.332038879,
+            240.193328857
+          ],
+          "size": [
+            73.076919556,
+            56.447761536
+          ],
+          "hotspot": [
+            0.513157904,
+            0.524590135
+          ],
+          "variables": {
+            "Queda": false
+          },
+          "behaviors": {
+            "Platform": {
+              "max-speed": 0,
+              "acceleration": 300,
+              "deceleration": 1500,
+              "jump-strength": 0,
+              "gravity": 1500,
+              "max-fall-speed": 1000,
+              "double-jump": "Disabled",
+              "jump-sustain": 0,
+              "default-controls": true,
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "TiledBackground",
+          "uid": 20,
+          "position": [
+            -69,
+            472
+          ],
+          "size": [
+            1118,
+            28
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "media_ref": "test.png",
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "TiledBackground2",
+          "uid": 21,
+          "position": [
+            0,
+            453
+          ],
+          "size": [
+            1107,
+            19
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "media_ref": "test.png",
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "BottomPipe",
+          "uid": 22,
+          "position": [
+            450,
+            630
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {
+            "Scored": false
+          },
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "TopPipe",
+          "uid": 23,
+          "position": [
+            447,
+            -117
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          }
+        },
+        {
+          "type": "ScoreText",
+          "uid": 24,
+          "position": [
+            1,
+            1
+          ],
+          "size": [
+            398,
+            70
+          ],
+          "text": "0",
+          "initially_visible": true
+        },
+        {
+          "type": "Play_Continuous",
+          "uid": 25,
+          "position": [
+            120,
+            211
+          ],
+          "size": [
+            181,
+            81
+          ],
+          "text": "Try again!",
+          "initially_visible": false
+        },
+        {
+          "type": "Highscore",
+          "uid": 26,
+          "position": [
+            156,
+            179
+          ],
+          "size": [
+            200,
+            30
+          ],
+          "text": "Highscore:",
+          "initially_visible": false
+        }
+      ],
+      "layout_start_runtime_actions": "The Chaves event sets Required_Score=10 and switches both pipe objects to the Chaves animation. Common in-game then resets gameplay state and destroys design-time pipe instances."
+    }
+  ],
+  "global_variables": {
+    "JumpStrength": {
+      "type": "number",
+      "initial": 500,
+      "constant": true
+    },
+    "SCROLLSPEED": {
+      "type": "number",
+      "initial": 150,
+      "comment": "pixels per second; set to 300 on layout start"
+    },
+    "SECONDSPEROBSTACLE": {
+      "type": "number",
+      "initial": 1,
+      "set_on_layout_start": 1
+    },
+    "Score": {
+      "type": "number",
+      "initial": 0
+    },
+    "Required_Score": {
+      "type": "number",
+      "initial": 0,
+      "set_on_chaves_layout_start": 10
+    },
+    "Layout_Name": {
+      "type": "text",
+      "initial": ""
+    }
+  },
+  "objects": {
+    "Madruga": {
+      "plugin": "Sprite",
+      "instance_variables": {
+        "Queda": "boolean"
+      },
+      "behavior": "Platform",
+      "default_animation": {
+        "frames": 1,
+        "speed": 5,
+        "media_ref": "Ramon.png"
+      },
+      "flying_animation": {
+        "frames": 1,
+        "speed": 5,
+        "media_ref": "Ramon Fly.gif"
+      },
+      "collision_polygons": "src/geometry.rs"
+    },
+    "TopPipe": {
+      "plugin": "Sprite",
+      "behavior": "Solid",
+      "default_animation": {
+        "frames": 1,
+        "speed": 5
+      },
+      "chaves_animation": {
+        "frames": 4,
+        "speed": 4,
+        "media_refs": [
+          "1.png",
+          "2.png",
+          "3.png",
+          "4.png"
+        ]
+      },
+      "collision_polygons": "src/geometry.rs"
+    },
+    "BottomPipe": {
+      "plugin": "Sprite",
+      "behavior": "Solid",
+      "instance_variables": {
+        "Scored": "boolean"
+      },
+      "default_animation": {
+        "frames": 1,
+        "speed": 5
+      },
+      "chaves_animation": {
+        "frames": 4,
+        "speed": 4,
+        "media_refs": [
+          "1.png",
+          "2.png",
+          "3.png",
+          "4.png"
+        ]
+      },
+      "collision_polygons": "src/geometry.rs"
+    },
+    "TiledBackground": {
+      "plugin": "TiledBg",
+      "behavior": "Solid",
+      "media_ref": "test.png"
+    },
+    "TiledBackground2": {
+      "plugin": "TiledBg",
+      "behavior": "Solid",
+      "media_ref": "test.png"
+    },
+    "Background": {
+      "plugin": "Sprite",
+      "media_ref": "Vila_do_Chaves_-_divulgacao.jpg"
+    },
+    "ScoreText": {
+      "plugin": "Text",
+      "font_ref": "PressStart2P.ttf"
+    },
+    "Highscore": {
+      "plugin": "Text"
+    },
+    "Play_Continuous": {
+      "plugin": "Button"
+    },
+    "Sprite": {
+      "plugin": "Sprite",
+      "media_ref": "Splash.png"
+    }
+  },
+  "plugin_policy": {
+    "Audio": "Used. Mapped to Macroquad audio; original audio files pending.",
+    "WebStorage": "Used for Highscore; mapped to quad-storage local persistence.",
+    "GooglePlay": "Used for Android sign-in; adapter callback exists, SDK/client credentials are not present, offline fallback is explicit.",
+    "Facebook": "Declared but unused by the source Event Sheets.",
+    "Browser": "Declared but unused by the source Event Sheets.",
+    "Touch": "Used for touch-start input; mapped to host touch and mouse input.",
+    "Keyboard": "Used for Space and Return input.",
+    "Button": "Used for Start and Retry controls; mapped to vector-rendered controls while media is pending.",
+    "Sprite": "Used; source media pending.",
+    "Text": "Used; PressStart2P font pending.",
+    "TiledBg": "Used; source texture pending."
+  },
+  "runtime_semantics": {
+    "event_group_order": [
+      "Start",
+      "Movement",
+      "Collisions",
+      "Scoring",
+      "Background",
+      "Obstacle"
+    ],
+    "time_source": "Construct per-frame dt, sampled once per host frame",
+    "initial_pipe_instances_destroyed_on_layout_start": true,
+    "first_pipe_spawn_seconds": 1,
+    "pipe_pair": {
+      "x": 440,
+      "gap_y_distance": 750,
+      "random_top_y_bounds": [
+        -250,
+        -70
+      ]
+    },
+    "score_condition": "BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored",
+    "score_increment": 1,
+    "high_score_key": "Highscore",
+    "retry_wait_seconds": 0.1,
+    "flying_animation_wait_seconds": 0.5,
+    "top_pipe_game_over_wait_seconds": 0.5,
+    "layout_order": [
+      "Start",
+      "Continuous",
+      "Chaves"
+    ],
+    "root_event_sections_after_groups": [
+      "Restart"
+    ],
+    "chaves_pipe_animation_action": "applies to editor-time pipe instances during the Chaves layout-start event pass; Common-in-game has already queued those instances for destruction; subsequently spawned pipe pairs use Default animation pending differential verification",
+    "maximum_dt_seconds": 0.03333333333333333,
+    "delta_time_policy": "source Every-tick and Platform movement use min(host_frame_dt, 1/30); System Every-X-seconds and Wait continuations consume elapsed time independently"
+  }
+}

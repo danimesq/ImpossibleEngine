@@ -13,7 +13,9 @@
           "sid": "868568479922385",
           "parent_sid": null,
           "meaning": "On start of layout",
-          "actions": ["Audio.StopAll"],
+          "actions": [
+            "Audio.StopAll"
+          ],
           "status": "mapped",
           "rust": "Game::new(Layout::Start) -> Effect::StopAllAudio"
         },
@@ -29,7 +31,9 @@
           "sid": "6960960697050587",
           "parent_sid": "8450924142424696",
           "meaning": "Android platform child",
-          "actions": ["GooglePlay.SignIn"],
+          "actions": [
+            "GooglePlay.SignIn"
+          ],
           "status": "policy_fallback",
           "rust": "Effect::RequestGooglePlaySignIn; Services falls back to offline mode because no client ID/SDK credentials are present"
         },
@@ -37,7 +41,9 @@
           "sid": "3050908862004944",
           "parent_sid": "8450924142424696",
           "meaning": "Else child for non-Android targets",
-          "actions": ["System.GoToLayout(Continuous)"],
+          "actions": [
+            "System.GoToLayout(Continuous)"
+          ],
           "status": "mapped",
           "rust": "Game::update_start -> Game::enter_layout(Layout::Continuous)"
         },
@@ -45,7 +51,9 @@
           "sid": "2086025640003727",
           "parent_sid": null,
           "meaning": "Google Play On signed in",
-          "actions": ["System.GoToLayout(Continuous)"],
+          "actions": [
+            "System.GoToLayout(Continuous)"
+          ],
           "status": "adapter_callback",
           "rust": "Game::on_google_play_signed_in"
         }
@@ -53,19 +61,39 @@
     },
     {
       "path": "Event sheets/Continuous events.xml",
-      "includes": ["Common in-game"],
+      "includes": [
+        "Common in-game"
+      ],
       "events": []
     },
     {
       "path": "Event sheets/Common in-game.xml",
       "includes": [],
       "groups": [
-        {"sid": "7994164912570463", "title": "Start"},
-        {"sid": "2529645185920532", "title": "Movement"},
-        {"sid": "4185334038513319", "title": "Collisions"},
-        {"sid": "5546985916789968", "title": "Scoring"},
-        {"sid": "3343506472260997", "title": "Background"},
-        {"sid": "2110401972330273", "title": "Obstacle"}
+        {
+          "sid": "7994164912570463",
+          "title": "Start"
+        },
+        {
+          "sid": "2529645185920532",
+          "title": "Movement"
+        },
+        {
+          "sid": "4185334038513319",
+          "title": "Collisions"
+        },
+        {
+          "sid": "5546985916789968",
+          "title": "Scoring"
+        },
+        {
+          "sid": "3343506472260997",
+          "title": "Background"
+        },
+        {
+          "sid": "2110401972330273",
+          "title": "Obstacle"
+        }
       ],
       "events": [
         {
@@ -96,7 +124,10 @@
           "parent_sid": "2246972820014324",
           "group": "Start",
           "meaning": "Trigger once while layout music condition remains true",
-          "actions": ["Audio.Play(Music, loop=true)", "Audio.AddGainEffect(+40dB)"],
+          "actions": [
+            "Audio.Play(Music, loop=true)",
+            "Audio.AddGainEffect(+40dB)"
+          ],
           "status": "mapped_with_host_limit",
           "rust": "Effect::PlayMusic; Services maps source gain to Macroquad normalized full-scale volume"
         },
@@ -129,7 +160,9 @@
           "parent_sid": null,
           "group": "Movement",
           "meaning": "Every tick AND NOT Madruga.Queda",
-          "actions": ["Madruga.RotateClockwise(60*dt)"],
+          "actions": [
+            "Madruga.RotateClockwise(60*dt)"
+          ],
           "status": "mapped",
           "rust": "Game::update angle integration using source dt"
         },
@@ -163,7 +196,9 @@
           "parent_sid": "170743918900562",
           "group": "Collisions",
           "meaning": "Continuous layout AND Score greater than saved Highscore AND trigger once",
-          "actions": ["WebStorage.SetLocalValue(Highscore, Score)"],
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
           "status": "mapped",
           "rust": "Game::finish_game_over -> Effect::SaveHighScore; quad-storage adapter"
         },
@@ -172,7 +207,11 @@
           "parent_sid": "170743918900562",
           "group": "Collisions",
           "meaning": "Continuous layout high-score display",
-          "actions": ["Set Highscore text", "Move Highscore to top", "Show Highscore"],
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
           "status": "mapped_vector_ui",
           "rust": "Game::finish_game_over; renderer displays high_score_text"
         },
@@ -199,7 +238,9 @@
           "parent_sid": "3130471190776897",
           "group": "Collisions",
           "meaning": "Continuous layout AND Score greater than saved Highscore AND trigger once",
-          "actions": ["WebStorage.SetLocalValue(Highscore, Score)"],
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
           "status": "mapped",
           "rust": "Game::finish_game_over -> Effect::SaveHighScore; quad-storage adapter"
         },
@@ -208,7 +249,11 @@
           "parent_sid": "3130471190776897",
           "group": "Collisions",
           "meaning": "Continuous layout high-score display",
-          "actions": ["Set Highscore text", "Move Highscore to top", "Show Highscore"],
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
           "status": "mapped_vector_ui",
           "rust": "Game::finish_game_over; renderer displays high_score_text"
         },
@@ -233,7 +278,9 @@
           "parent_sid": "1336496314225453",
           "group": "Collisions",
           "meaning": "Continuous layout AND Score greater than saved Highscore AND trigger once",
-          "actions": ["WebStorage.SetLocalValue(Highscore, Score)"],
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
           "status": "mapped",
           "rust": "Game::finish_game_over -> Effect::SaveHighScore; quad-storage adapter"
         },
@@ -242,7 +289,11 @@
           "parent_sid": "1336496314225453",
           "group": "Collisions",
           "meaning": "Continuous layout high-score display",
-          "actions": ["Set Highscore text", "Move Highscore to top", "Show Highscore"],
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
           "status": "mapped_vector_ui",
           "rust": "Game::finish_game_over; renderer displays high_score_text"
         },
@@ -260,7 +311,11 @@
           "parent_sid": null,
           "group": "Scoring",
           "meaning": "BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored",
-          "actions": ["Score += 1", "ScoreText=Score", "BottomPipe.Scored=true"],
+          "actions": [
+            "Score += 1",
+            "ScoreText=Score",
+            "BottomPipe.Scored=true"
+          ],
           "status": "mapped",
           "rust": "Game::score_pipes, PipePair.scored"
         },
@@ -269,7 +324,9 @@
           "parent_sid": null,
           "group": "Background",
           "meaning": "TiledBackground.X <= -560",
-          "actions": ["TiledBackground.X=0"],
+          "actions": [
+            "TiledBackground.X=0"
+          ],
           "status": "mapped",
           "rust": "Game::update_background_and_pipes"
         },
@@ -278,7 +335,9 @@
           "parent_sid": null,
           "group": "Background",
           "meaning": "TiledBackground2.X <= -410",
-          "actions": ["TiledBackground2.X=0"],
+          "actions": [
+            "TiledBackground2.X=0"
+          ],
           "status": "mapped",
           "rust": "Game::update_background_and_pipes"
         },
@@ -301,7 +360,9 @@
           "parent_sid": null,
           "group": "Background",
           "meaning": "TopPipe.X < -50",
-          "actions": ["Destroy TopPipe instance"],
+          "actions": [
+            "Destroy TopPipe instance"
+          ],
           "status": "mapped",
           "rust": "PipePair.top_alive is cleared independently"
         },
@@ -310,7 +371,9 @@
           "parent_sid": null,
           "group": "Background",
           "meaning": "BottomPipe.X < -50",
-          "actions": ["Destroy BottomPipe instance"],
+          "actions": [
+            "Destroy BottomPipe instance"
+          ],
           "status": "mapped",
           "rust": "PipePair.bottom_alive is cleared independently"
         },
@@ -331,20 +394,23 @@
         {
           "sid": "9708342499359544",
           "parent_sid": null,
-          "group": "Restart",
           "meaning": "Retry button click OR Return key",
           "actions": [],
           "status": "mapped",
-          "rust": "Game::update_restart input edge"
+          "rust": "Game::update_restart input edge",
+          "section": "Root events after the Obstacle group"
         },
         {
           "sid": "3112928811038152",
           "parent_sid": "9708342499359544",
-          "group": "Restart",
           "meaning": "Madruga.Queda is true",
-          "actions": ["Wait 0.1 seconds", "Restart current layout"],
+          "actions": [
+            "Wait 0.1 seconds",
+            "Restart current layout"
+          ],
           "status": "mapped",
-          "rust": "Game::update_restart; Game::enter_layout(current)"
+          "rust": "Game::update_restart; Game::enter_layout(current)",
+          "section": "Root events after the Obstacle group"
         }
       ]
     },
@@ -356,7 +422,9 @@
           "sid": "2515117097232158",
           "parent_sid": null,
           "meaning": "Score == Required_Score",
-          "actions": ["Go to next layout"],
+          "actions": [
+            "Go to next layout"
+          ],
           "status": "source_semantics_preserved",
           "rust": "Game::update_level_progression; no-op at last layout, matching Construct's documented behavior"
         }
@@ -364,7 +432,10 @@
     },
     {
       "path": "Event sheets/Chaves.xml",
-      "includes": ["Common in-game", "Common in-levels"],
+      "includes": [
+        "Common in-game",
+        "Common in-levels"
+      ],
       "events": [
         {
           "sid": "9305905589121505",
@@ -387,6 +458,7 @@
     "The source project declares Facebook and Browser plugins but the checked-in Event Sheets contain no actions or conditions for those plugins.",
     "Google Play SignIn is used on Android in Start events. This port exposes a callback boundary and an offline fallback; it does not claim to include a configured Google Play Games SDK client.",
     "Original media bytes are intentionally pending. Audio/font integrations resolve project-relative paths and emit warnings while placeholders are empty.",
-    "The generic Construct 2/3 importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project."
+    "The generic Construct 2/3 importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project.",
+    "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh Construct event group."
   ]
 }

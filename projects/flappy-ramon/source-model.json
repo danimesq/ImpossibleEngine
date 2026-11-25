@@ -594,6 +594,8 @@
     "root_event_sections_after_groups": [
       "Restart"
     ],
-    "chaves_pipe_animation_action": "applies to editor-time pipe instances during the Chaves layout-start event pass; Common-in-game has already queued those instances for destruction; subsequently spawned pipe pairs use Default animation pending differential verification"
+    "chaves_pipe_animation_action": "applies to editor-time pipe instances during the Chaves layout-start event pass; Common-in-game has already queued those instances for destruction; subsequently spawned pipe pairs use Default animation pending differential verification",
+    "maximum_dt_seconds": 0.03333333333333333,
+    "delta_time_policy": "source Every-tick and Platform movement use min(host_frame_dt, 1/30); System Every-X-seconds and Wait continuations consume elapsed time independently"
   }
 }

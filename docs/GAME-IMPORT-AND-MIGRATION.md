@@ -181,3 +181,64 @@ When the original cannot run, use surviving recordings, save files, assets, docu
 7. Port recovered Pascal routines into typed IR or native Rust in independently testable slices.
 
 The importer must never block unrelated editor work, and it must never make the engine depend on an original game project at runtime.
+
+
+## 7. First Impossible project: complete Flappy Madruga port
+
+**Round objective:** make the existing Flappy Madruga / Flappy Ramon Construct 2 project the first complete end-to-end Impossible project. This is a full-project migration goal, not merely a compiler demo or a three-event sample. The current PR establishes the source-derived specification, the initial typed JSON/Rust slice, source inventory, and an asset-ready project scaffold. It does **not** claim that the full port is already implemented.
+
+Project workspace: projects/flappy-ramon/
+
+### Complete-port scope
+
+The port is complete only when all source-project responsibilities have an explicit destination and verified behavior:
+
+- All three layouts, all five Event Sheets, their includes, groups, comments/provenance, nested events and declaration order.
+- All object types, global and instance variables, instances, layers, transforms, visibility, animation state, frame timing, origins and collision polygons.
+- The Platform and Solid behaviors, including movement/gravity semantics and their exact property values.
+- Input paths: touch, mouse where enabled, Space and Return key interactions, button clicks and edge/trigger behavior.
+- Gameplay: start/reset, jump/fall, collision/game-over, pipe spawning, pipe movement/destruction, background wrapping, per-instance score-once behavior, level progression and retry.
+- Timing: every-tick delta, every-X-seconds timers, Wait continuations, trigger-once and event-group scheduling.
+- Randomness: preserve source range and call semantics; provide recorded seeds/streams for repeatable tests without accidentally changing normal gameplay distribution.
+- Audio, custom font loading, WebStorage/high-score behavior, browser-specific operations, Facebook and Google Play integrations, with a capability-aware native/web service mapping or explicit documented target policy.
+- Asset identity and reference mapping for every sprite, animation frame, background, icon, sound, music track and font. Media binaries are intentionally not copied in this scaffold; placeholders reserve their final destinations.
+
+No source construct may disappear silently. Each event/action/condition/behavior/plugin must be marked exact, mapped-with-constraints, native implementation, target-specific replacement, or preserved-blocking-unsupported. A complete port requires zero unexplained source constructs.
+
+### Asset placeholders
+
+The initial workspace reserves these folders:
+
+- projects/flappy-ramon/assets/sprites/
+- projects/flappy-ramon/assets/backgrounds/
+- projects/flappy-ramon/assets/animation-frames/
+- projects/flappy-ramon/assets/audio/sfx/
+- projects/flappy-ramon/assets/audio/music/
+- projects/flappy-ramon/assets/fonts/
+- projects/flappy-ramon/assets/ui/
+- projects/flappy-ramon/assets/icons/
+
+The manifest records known media references from the Construct project, including Ramon.png, Ramon Fly.gif, the Chaves pipe frames 1.png through 4.png, the Vila do Chaves background, Splash.png, beat and Queda sound effects, Music tracks, PressStart2P.ttf and the icon/loading-logo set. Original Windows absolute paths are source metadata only; they must be converted into portable project-relative asset IDs. Missing files remain placeholders until the original media is supplied and verified. Do not fabricate or silently substitute copyrighted media.
+
+### Build and fidelity gates
+
+1. The imported project opens in Impossible and keeps a round-trippable source-preservation package.
+2. The complete event graph and asset/object references pass structural and semantic validation.
+3. Every supported gameplay event maps into typed Event Sheet IR or a documented native Rust module.
+4. The generated game compiles as a normal Rust project for the initial desktop target.
+5. A browser/WebAssembly target is a separate build gate, not a substitute for native compilation.
+6. Golden scenarios compare source behavior with the port: startup, touch/keyboard jump, repeated input, pipe spawn, scoring exactly once per pipe, every collision/game-over path, background wrap, wait/animation sequence, retry, progression, audio requests and high-score persistence.
+7. Timing, collision boundaries, random placement and event order are compared within declared tolerances.
+8. Missing media is reported as an asset-completeness warning; the game may use explicit debug placeholders during development, but a visually faithful release is not complete until media is populated and verified.
+
+The initial JSON/Rust example under examples/flappy-madruga is only a tiny source-derived compiler fixture. The full project import belongs under projects/flappy-ramon and must grow until the complete-port gates above pass.
+
+## 8. Definition of done for the first Impossible project
+
+- All source files are inventoried with hashes and a pinned source revision.
+- All original event sheets, layouts, object definitions and media references are accounted for.
+- Every source event node has a stable imported ID and migration status.
+- Every unsupported construct is either implemented, replaced by a documented equivalent, or explicitly blocks the complete-port claim.
+- Native Rust build and regression tests pass.
+- Asset placeholders are all either populated and verified or clearly marked as pending, with no silent fallbacks.
+- The project can be rebuilt from its portable manifest without depending on the Construct 2 editor/runtime.

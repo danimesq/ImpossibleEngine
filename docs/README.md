@@ -17,3 +17,8 @@
 - [WebAssembly](WEB-WASM.md)
 
 These documents describe a proposal and research direction unless a section explicitly says otherwise. A roadmap item is not evidence that the corresponding implementation exists.
+
+
+## First Impossible project
+
+- [Flappy Madruga / Flappy Ramon](../projects/flappy-ramon/README.md) — the complete Construct 2 to native Rust port is the first end-to-end project objective. Media folders are scaffolded and waiting for verified original assets.

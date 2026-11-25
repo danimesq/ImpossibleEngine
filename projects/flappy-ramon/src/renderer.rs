@@ -82,11 +82,12 @@ pub fn draw(game: &Game, font: Option<&Font>) {
     }
 
     draw_sky_and_background(&view, game);
-    draw_pipes(&view, game);
-    draw_ground(&view, game);
     draw_bird(&view, game);
+    draw_ground(&view, game);
+    draw_pipes(&view, game);
 
-    // ScoreText occupies the upper 398x70 region in the original layouts.
+    // ScoreText is drawn above gameplay objects; the source moves it to top
+    // whenever a new pipe pair is created.
     view.centered_text(
         &game.score.to_string(),
         200.0,
@@ -96,12 +97,13 @@ pub fn draw(game: &Game, font: Option<&Font>) {
         font,
     );
 
-    if game.high_score_visible && game.layout_name == "Continuous" {
-        view.text(&game.high_score_text, 156.0, 197.0, 12.0, WHITE, font);
-    }
-
     if game.retry_visible && game.retry_enabled {
         draw_retry_button(&view, font);
+    }
+
+    // The source explicitly moves Highscore to the top during game over.
+    if game.high_score_visible && game.layout_name == "Continuous" {
+        view.text(&game.high_score_text, 156.0, 197.0, 12.0, WHITE, font);
     }
 
     view.text(

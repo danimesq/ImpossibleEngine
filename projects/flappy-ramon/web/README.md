@@ -1,32 +1,51 @@
-# Browser/WebAssembly host notes
+# Browser/WebAssembly package
 
-The gameplay model and renderer are written in Rust with Macroquad. The native desktop target is the first build gate. The browser target is a separate packaging gate.
+The gameplay core is compiled to WebAssembly with Macroquad. The repository includes a minimal HTML5 runner and a Bash packaging script. The WebAssembly binary and third-party JavaScript runtime files are build/vendor inputs, not committed assets.
 
-## Persistent high-score storage
-
-The project uses quad-storage to preserve the original Construct WebStorage behavior:
-
-- Native builds save the Highscore key in local.data.
-- WebAssembly builds use the browser Web Storage API.
-
-The quad-storage WebAssembly host requires two JavaScript support files from their upstream projects:
-
-- quad-storage.js from https://github.com/optozorax/quad-storage/tree/master/js
-- sapp-jsutils.js from https://github.com/not-fl3/sapp-jsutils/tree/master/js
-
-Load both scripts after the miniquad/Macroquad gl.js runner and before instantiating the game WebAssembly module, as documented by quad-storage:
-
-https://docs.rs/quad-storage/0.1.3/quad_storage/
-
-Do not replace these shims with a wasm-bindgen import: Macroquad/miniquad uses its own browser loader.
-
-## WebAssembly build
-
-Install the wasm32-unknown-unknown target, then build:
+## 1. Install the WebAssembly target
 
     rustup target add wasm32-unknown-unknown
-    cargo build --release --target wasm32-unknown-unknown
 
-Use the miniquad WebAssembly runner/HTML template for the selected Macroquad version. The exact runner files and script order must be pinned in the eventual web release package.
+## 2. Supply the browser runtime files
 
-The current PR does not claim that the browser bundle has been assembled or tested. Native Rust tests/build and WebAssembly packaging are independent acceptance gates.
+Place these files next to this README:
+
+- mq_js_bundle.js: Macroquad/miniquad browser loader matching the pinned Macroquad 0.4.16 dependency.
+- sapp_jsutils.js: upstream miniquad browser utility shim.
+- quad-storage.js: upstream quad-storage browser storage shim.
+
+The storage shims are required by quad-storage 0.1.3. Load them after the miniquad GL/browser loader and before the WASM module starts.
+
+Upstream references:
+
+- Macroquad 0.4.16 build and HTML5 loader: https://docs.rs/crate/macroquad/0.4.16/source/README.md
+- quad-storage 0.1.3 and required JavaScript shims: https://docs.rs/quad-storage/0.1.3/quad_storage/
+- quad-storage source: https://github.com/optozorax/quad-storage
+- miniquad browser utilities: https://github.com/not-fl3/sapp-jsutils
+
+Do not replace these files with arbitrary newer loader builds without testing them against the pinned Cargo dependencies.
+
+## 3. Build the WASM package
+
+From any working directory:
+
+    bash projects/flappy-ramon/web/build-web.sh
+
+The script verifies the vendor files, installs the Rust target if missing, compiles the game, copies the WASM, HTML runner, JavaScript runtime files and project-relative assets into web/dist/.
+
+The script does not download third-party code. This keeps dependency provenance explicit.
+
+## 4. Serve locally
+
+For example:
+
+    cd projects/flappy-ramon/web/dist
+    python3 -m http.server 8000
+
+Open http://localhost:8000/ in a browser. Use HTTP rather than opening the HTML file with file://.
+
+## 5. What is and is not validated
+
+The CI WebAssembly job checks that the Rust game compiles for wasm32-unknown-unknown. It does not yet prove that a browser package has been assembled or tested in a real browser.
+
+The original game media remains pending. The current renderer is a vector fallback, and missing audio/font files are reported rather than silently replaced with invented media.

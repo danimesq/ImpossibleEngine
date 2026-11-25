@@ -38,3 +38,19 @@ jobs:
 
       - name: Build native desktop executable
         run: cargo build --release --manifest-path projects/flappy-ramon/Cargo.toml
+
+
+  web-wasm:
+    name: Compile the browser WebAssembly target
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install stable Rust with WebAssembly target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Compile browser game
+        run: cargo build --release --target wasm32-unknown-unknown --manifest-path projects/flappy-ramon/Cargo.toml

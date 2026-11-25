@@ -6,17 +6,16 @@ mod services;
 use flappy_madruga::game::{Game, InputFrame, Layout};
 use macroquad::prelude::*;
 use services::Services;
-use std::time::{SystemTime, UNIX_EPOCH};
 
 #[macroquad::main(window_conf)]
 async fn main() {
     let mut services = Services::load().await;
     let high_score = services.load_high_score();
     let initial_layout = initial_layout_from_args();
-    let seed = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|duration| duration.as_nanos() as u64)
-        .unwrap_or(0x1234_5678_9abc_def0);
+    // Macroquad's monotonic clock is available in native and browser builds.
+    let seed = ((get_time() * 1_000_000.0) as u64)
+        .wrapping_add((screen_width() as u64) << 32)
+        .max(1);
 
     let mut game = Game::new(initial_layout, high_score, seed);
     apply_pending_effects(&mut game, &mut services);

@@ -242,3 +242,10 @@ The initial JSON/Rust example under examples/flappy-madruga is only a tiny sourc
 - Native Rust build and regression tests pass.
 - Asset placeholders are all either populated and verified or clearly marked as pending, with no silent fallbacks.
 - The project can be rebuilt from its portable manifest without depending on the Construct 2 editor/runtime.
+
+
+## Current migration-round boundary (2026-11-25)
+
+This round is **not** implementing a general Construct 2/3 importer. The team is directly porting the one known Flappy Madruga project from its checked-in source files into the native Rust project under projects/flappy-ramon/. The manual event map and source model preserve the exact source IDs and the current implementation status.
+
+A future generic importer can be designed after this first game establishes and tests the runtime/IR boundary. Do not broaden the current work into a generic C2/C3 parser, plugin registry or arbitrary-project conversion pipeline.

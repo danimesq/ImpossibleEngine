@@ -28,7 +28,7 @@ One logical object or asset can have different realizations per target:
 The current profiles are authoring presets. Actual console builds require
 verified platform adapters, SDKs/toolchains and target-specific validation.
 
-See [docs/README.md](docs/README.md) for the documentation index, including the proposed [product and ecosystem strategy](docs/PRODUCT-AND-ECOSYSTEM.md), [licensing and NFT2 model](docs/LICENSING-AND-NFT2.md), and [publishing and physical media direction](docs/PUBLISHING-AND-PHYSICAL-MEDIA.md).
+See [docs/README.md](docs/README.md) for the documentation index, including the proposed [typed Event Sheet compiler design](docs/EVENT-SHEETS-JSON-TO-RUST.md), [Construct/Delphi migration strategy](docs/GAME-IMPORT-AND-MIGRATION.md), [product and ecosystem strategy](docs/PRODUCT-AND-ECOSYSTEM.md), [licensing and NFT2 model](docs/LICENSING-AND-NFT2.md), and [publishing and physical media direction](docs/PUBLISHING-AND-PHYSICAL-MEDIA.md).
 
 ## GUI stack
 

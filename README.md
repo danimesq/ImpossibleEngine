@@ -75,3 +75,8 @@ generation, browser WASM output and console toolchains are future work.
 The UI is replaceable. Project data, Event Sheets, assets, object properties
 and platform-variant resolution belong to toolkit-independent modules. GTK is
 the first frontend, not the definition of the project format.
+
+
+## First Impossible project
+
+The first end-to-end migration target is the existing [Flappy Madruga / Flappy Ramon](https://github.com/danimesq/Flappy-Ramon) Construct 2 project. Its full port is the current migration-round objective; it is not yet complete. See the [project workspace](projects/flappy-ramon/README.md), [typed Event Sheet compiler design](docs/EVENT-SHEETS-JSON-TO-RUST.md), and [game import strategy](docs/GAME-IMPORT-AND-MIGRATION.md). Media placeholders are reserved until verified original files are supplied.

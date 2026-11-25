@@ -1,0 +1,66 @@
+{
+  "format": "impossible.import-project",
+  "manifest_version": 1,
+  "project_id": "flappy-ramon",
+  "display_name": "Flappy Madruga",
+  "aliases": ["Flappy Ramon"],
+  "status": "scaffold_only_full_port_is_round_objective",
+  "source": {
+    "repository": "https://github.com/danimesq/Flappy-Ramon",
+    "default_branch": "master",
+    "revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
+    "project_file": "Flappy Madruga.caproj",
+    "construct_project_version": "0.6.1.6",
+    "construct_saved_with_version": 21400,
+    "exporter": "html5",
+    "application_id": "com.gamlr.flappymadruga"
+  },
+  "profile": {
+    "logical_resolution": { "width": 400, "height": 500 },
+    "orientation": "portrait",
+    "initial_native_target": "desktop",
+    "additional_target": "web-wasm"
+  },
+  "source_structure": {
+    "layouts": ["Start", "Continuous", "Chaves"],
+    "event_sheets": [
+      "Event sheets/Start events.xml",
+      "Event sheets/Continuous events.xml",
+      "Event sheets/Common in-game.xml",
+      "Event sheets/Common in-levels.xml",
+      "Event sheets/Chaves.xml"
+    ],
+    "plugins": [
+      "Audio",
+      "Browser",
+      "Button",
+      "Facebook",
+      "Keyboard",
+      "Sprite",
+      "Text",
+      "TiledBg",
+      "Touch",
+      "WebStorage",
+      "googleplay"
+    ],
+    "behaviors": ["Platform", "Solid"]
+  },
+  "destination": {
+    "root": "projects/flappy-ramon",
+    "asset_manifest": "asset-placeholders.json",
+    "event_sheet_fixture": "examples/flappy-madruga/event-sheet.json",
+    "generated_rust_fixture": "examples/flappy-madruga/generated.rs",
+    "media_policy": "placeholders_until_original_media_is_supplied"
+  },
+  "completion_requirements": [
+    "all_layouts_imported",
+    "all_event_sheets_and_includes_imported",
+    "all_object_types_instances_variables_behaviors_and_animation_data_imported",
+    "all_source_conditions_and_actions_accounted_for",
+    "all_plugins_have_target_policy_or_explicit_blocking_status",
+    "all_collision_geometry_and_timing_semantics_verified",
+    "all_media_references_mapped_to_relative_asset_ids",
+    "native_rust_build_passes",
+    "differential_gameplay_tests_pass"
+  ]
+}

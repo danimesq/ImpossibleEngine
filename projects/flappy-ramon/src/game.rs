@@ -373,11 +373,17 @@ impl Game {
     }
 
     pub fn update(&mut self, input: InputFrame, source_dt: f32) {
-        let dt = if source_dt.is_finite() && source_dt > 0.0 {
+        let elapsed_dt = if source_dt.is_finite() && source_dt > 0.0 {
             source_dt
         } else {
             0.0
         };
+
+        // Construct 2 defaults to a maximum dt of 1/30 second. When a frame
+        // takes longer, per-tick movement goes into slow motion instead of
+        // jumping through collision surfaces. System timers and Wait
+        // continuations still consume elapsed time independently.
+        let simulation_dt = elapsed_dt.min(1.0 / 30.0);
 
         if self.layout == Layout::Start {
             self.update_start(input);
@@ -386,7 +392,7 @@ impl Game {
 
         // Existing Wait continuations advance before new ones are scheduled.
         // A Wait created by this frame's input starts counting next frame.
-        self.update_wait_continuations(dt);
+        self.update_wait_continuations(elapsed_dt);
 
         // Movement group: Touch-start OR Space, with a Queda=false subevent.
         if input.flap_pressed && !self.bird.queda {
@@ -398,12 +404,13 @@ impl Game {
 
         // Movement group: Every tick AND NOT Madruga.Queda.
         if !self.bird.queda {
-            self.bird.angle_degrees = (self.bird.angle_degrees + 60.0 * dt) % 360.0;
+            self.bird.angle_degrees =
+                (self.bird.angle_degrees + 60.0 * simulation_dt) % 360.0;
         }
 
         // Platform behavior: gravity=1500, max-fall-speed=1000.
-        self.update_platform_behavior(dt);
-        self.update_pipe_animations(dt);
+        self.update_platform_behavior(simulation_dt);
+        self.update_pipe_animations(elapsed_dt);
 
         // Event Sheet group order: collision checks before scoring/background.
         self.check_collisions();
@@ -412,13 +419,14 @@ impl Game {
         self.score_pipes();
 
         // Background group: wrap checks, Every tick movement, then destroy.
-        self.update_background_and_pipes(dt);
+        self.update_background_and_pipes(simulation_dt);
 
-        // Obstacle group: Every SECONDSPEROBSTACLE seconds.
-        self.update_obstacle_timer(dt);
+        // Every-X-seconds and Wait are time-based System events, not dt-based
+        // movement expressions, so they receive uncapped elapsed time.
+        self.update_obstacle_timer(elapsed_dt);
 
         // Restart event is at the end of Common in-game.xml.
-        self.update_restart(input, dt);
+        self.update_restart(input, elapsed_dt);
 
         // Common in-levels is included only by the Chaves event sheet.
         self.update_level_progression();
@@ -840,11 +848,11 @@ mod tests {
         game.pipes.push(PipePair::spawned(1, -150.0));
         let initial_x = game.pipes[0].top.x;
 
-        game.update(InputFrame::default(), 0.5);
+        game.update(InputFrame::default(), 1.0 / 60.0);
 
-        assert!((game.pipes[0].top.x - (initial_x - 150.0)).abs() < 0.001);
-        assert!((game.tiled_background_x - (-150.0)).abs() < 0.001);
-        assert!((game.tiled_background2_x - (-150.0)).abs() < 0.001);
+        assert!((game.pipes[0].top.x - (initial_x - 5.0)).abs() < 0.001);
+        assert!((game.tiled_background_x - (-5.0)).abs() < 0.001);
+        assert!((game.tiled_background2_x - (-5.0)).abs() < 0.001);
     }
 
     #[test]
@@ -865,6 +873,18 @@ mod tests {
         game.update_background_and_pipes(0.0);
 
         assert!(game.pipes.is_empty());
+    }
+
+    #[test]
+    fn simulation_dt_is_capped_at_construct_default_maximum() {
+        let mut game = playing_game();
+        game.pipes.push(PipePair::spawned(1, -150.0));
+        let initial_x = game.pipes[0].top.x;
+
+        game.update(InputFrame::default(), 0.5);
+
+        // Construct's default maximum delta is 1/30 second: 300 px/s * 1/30.
+        assert!((game.pipes[0].top.x - (initial_x - 10.0)).abs() < 0.001);
     }
 
     #[test]

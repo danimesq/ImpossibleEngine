@@ -3,8 +3,10 @@
   "manifest_version": 1,
   "project_id": "flappy-ramon",
   "display_name": "Flappy Madruga",
-  "aliases": ["Flappy Ramon"],
-  "status": "scaffold_only_full_port_is_round_objective",
+  "aliases": [
+    "Flappy Ramon"
+  ],
+  "status": "native_port_in_progress",
   "source": {
     "repository": "https://github.com/danimesq/Flappy-Ramon",
     "default_branch": "master",
@@ -16,13 +18,20 @@
     "application_id": "com.gamlr.flappymadruga"
   },
   "profile": {
-    "logical_resolution": { "width": 400, "height": 500 },
+    "logical_resolution": {
+      "width": 400,
+      "height": 500
+    },
     "orientation": "portrait",
     "initial_native_target": "desktop",
     "additional_target": "web-wasm"
   },
   "source_structure": {
-    "layouts": ["Start", "Continuous", "Chaves"],
+    "layouts": [
+      "Start",
+      "Continuous",
+      "Chaves"
+    ],
     "event_sheets": [
       "Event sheets/Start events.xml",
       "Event sheets/Continuous events.xml",
@@ -43,7 +52,10 @@
       "WebStorage",
       "googleplay"
     ],
-    "behaviors": ["Platform", "Solid"]
+    "behaviors": [
+      "Platform",
+      "Solid"
+    ]
   },
   "destination": {
     "root": "projects/flappy-ramon",
@@ -62,5 +74,22 @@
     "all_media_references_mapped_to_relative_asset_ids",
     "native_rust_build_passes",
     "differential_gameplay_tests_pass"
-  ]
+  ],
+  "implementation": {
+    "language": "Rust",
+    "host": "Macroquad",
+    "native_crate": "projects/flappy-ramon",
+    "gameplay_core": "src/game.rs",
+    "geometry": "src/geometry.rs",
+    "renderer": "src/renderer.rs",
+    "services": "src/services.rs",
+    "source_coverage": "event-sheets/source-coverage.json",
+    "validation": {
+      "native_cargo_test": "passed_in_github_actions",
+      "native_release_build": "passed_in_github_actions",
+      "web_wasm_packaging": "pending",
+      "source_differential_tests": "pending",
+      "original_media_population": "pending"
+    }
+  }
 }

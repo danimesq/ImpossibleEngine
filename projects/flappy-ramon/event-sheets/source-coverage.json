@@ -460,6 +460,7 @@
     "Original media bytes are intentionally pending. Audio/font integrations resolve project-relative paths and emit warnings while placeholders are empty.",
     "The generic Construct 2/3 importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project.",
     "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh Construct event group.",
-    "The Chaves layout-start animation event must be considered together with the included Common in-game layout-start Destroy actions. Construct 2 treats Destroy as deferred until event-sheet processing completes; the editor-time pipe instances therefore do not establish a skin for later timer-created instances. The Rust gameplay model keeps spawned pipe pairs on Default animation until a differential run proves otherwise."
+    "The Chaves layout-start animation event must be considered together with the included Common in-game layout-start Destroy actions. Construct 2 treats Destroy as deferred until event-sheet processing completes; the editor-time pipe instances therefore do not establish a skin for later timer-created instances. The Rust gameplay model keeps spawned pipe pairs on Default animation until a differential run proves otherwise.",
+    "Construct 2 defaults to max dt=1/30 second for per-tick and behavior movement. Every-X-seconds and Wait are time-based System events and must not be accumulated from the capped movement dt."
   ]
 }

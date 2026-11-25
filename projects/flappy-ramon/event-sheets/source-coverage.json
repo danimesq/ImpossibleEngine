@@ -446,8 +446,8 @@
             "TopPipe animation=Chaves from frame 1",
             "BottomPipe animation=Chaves from frame 1"
           ],
-          "status": "mapped",
-          "rust": "Game::enter_layout(Layout::Chaves); PipeSkin::Chaves"
+          "status": "mapped_with_instance_lifetime_interaction",
+          "rust": "Game::enter_layout(Layout::Chaves) sets Required_Score=10. The Chaves animation actions are preserved as source behavior, but their targets are the editor-time pipe instances that Common in-game has already queued for destruction; later timer-created pairs use Default animation pending a source-runtime differential test."
         }
       ]
     }
@@ -459,6 +459,7 @@
     "Google Play SignIn is used on Android in Start events. This port exposes a callback boundary and an offline fallback; it does not claim to include a configured Google Play Games SDK client.",
     "Original media bytes are intentionally pending. Audio/font integrations resolve project-relative paths and emit warnings while placeholders are empty.",
     "The generic Construct 2/3 importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project.",
-    "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh Construct event group."
+    "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh Construct event group.",
+    "The Chaves layout-start animation event must be considered together with the included Common in-game layout-start Destroy actions. Construct 2 treats Destroy as deferred until event-sheet processing completes; the editor-time pipe instances therefore do not establish a skin for later timer-created instances. The Rust gameplay model keeps spawned pipe pairs on Default animation until a differential run proves otherwise."
   ]
 }

@@ -593,6 +593,7 @@
     ],
     "root_event_sections_after_groups": [
       "Restart"
-    ]
+    ],
+    "chaves_pipe_animation_action": "applies to editor-time pipe instances during the Chaves layout-start event pass; Common-in-game has already queued those instances for destruction; subsequently spawned pipe pairs use Default animation pending differential verification"
   }
 }

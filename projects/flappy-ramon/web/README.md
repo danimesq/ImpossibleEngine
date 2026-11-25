@@ -49,3 +49,12 @@ Open http://localhost:8000/ in a browser. Use HTTP rather than opening the HTML 
 The CI WebAssembly job checks that the Rust game compiles for wasm32-unknown-unknown. It does not yet prove that a browser package has been assembled or tested in a real browser.
 
 The original game media remains pending. The current renderer is a vector fallback, and missing audio/font files are reported rather than silently replaced with invented media.
+
+
+## Rust WebAssembly host imports
+
+Macroquad/miniquad and quad-storage use JavaScript-provided host functions. Rust 1.96+ no longer passes the historical --allow-undefined linker option automatically. This crate therefore scopes that option to its own wasm32-unknown-unknown target in the .cargo/config.toml file.
+
+That setting intentionally emits host imports; it does not implement the functions. The matching miniquad loader and quad-storage/sapp-jsutils plugins must provide them. A missing or mismatched browser plugin will still fail at WASM instantiation. The setting is not applied to native builds.
+
+Rust release note: https://blog.rust-lang.org/2026/04/04/changes-to-webassembly-targets-and-handling-undefined-symbols/

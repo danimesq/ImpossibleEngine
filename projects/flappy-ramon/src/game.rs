@@ -450,22 +450,32 @@ impl Game {
             self.bird.animation = BirdAnimation::Default;
         }
 
-        if let Some(wait) = self.top_pipe_game_over_wait.as_mut() {
-            *wait -= dt;
-            if *wait <= 0.0 {
-                self.top_pipe_game_over_wait = None;
-                self.effects.push(Effect::PlayQueda);
-                self.finish_game_over();
+        let top_pipe_wait_finished = match self.top_pipe_game_over_wait.as_mut() {
+            Some(wait) => {
+                *wait -= dt;
+                *wait <= 0.0
             }
+            None => false,
+        };
+
+        if top_pipe_wait_finished {
+            self.top_pipe_game_over_wait = None;
+            self.effects.push(Effect::PlayQueda);
+            self.finish_game_over();
         }
 
-        if let Some(wait) = self.retry_show_wait.as_mut() {
-            *wait -= dt;
-            if *wait <= 0.0 {
-                self.retry_show_wait = None;
-                self.retry_visible = true;
-                self.retry_enabled = true;
+        let retry_wait_finished = match self.retry_show_wait.as_mut() {
+            Some(wait) => {
+                *wait -= dt;
+                *wait <= 0.0
             }
+            None => false,
+        };
+
+        if retry_wait_finished {
+            self.retry_show_wait = None;
+            self.retry_visible = true;
+            self.retry_enabled = true;
         }
     }
 
@@ -506,7 +516,13 @@ impl Game {
 
         // Chaves pipe animations have four frames at speed=4.
         for pair in &mut self.pipes {
-            for pipe in [&mut pair.top, &mut pair.bottom] {
+            for (alive, pipe) in [
+                (pair.top_alive, &mut pair.top),
+                (pair.bottom_alive, &mut pair.bottom),
+            ] {
+                if !alive {
+                    continue;
+                }
                 pipe.animation_clock += dt;
                 while pipe.animation_clock >= 0.25 {
                     pipe.animation_clock -= 0.25;
@@ -825,6 +841,26 @@ mod tests {
         assert!((game.pipes[0].top.x - (initial_x - 150.0)).abs() < 0.001);
         assert!((game.tiled_background_x - (-150.0)).abs() < 0.001);
         assert!((game.tiled_background2_x - (-150.0)).abs() < 0.001);
+    }
+
+    #[test]
+    fn pipe_instances_are_destroyed_independently_at_the_source_threshold() {
+        let mut game = playing_game();
+        let mut pair = PipePair::spawned(1, -150.0);
+        pair.top.x = PIPE_DESTROY_X - 0.01;
+        pair.bottom.x = PIPE_DESTROY_X + 2.0;
+        game.pipes.push(pair);
+
+        game.update_background_and_pipes(0.0);
+
+        assert_eq!(game.pipes.len(), 1);
+        assert!(!game.pipes[0].top_alive);
+        assert!(game.pipes[0].bottom_alive);
+
+        game.pipes[0].bottom.x = PIPE_DESTROY_X - 0.01;
+        game.update_background_and_pipes(0.0);
+
+        assert!(game.pipes.is_empty());
     }
 
     #[test]

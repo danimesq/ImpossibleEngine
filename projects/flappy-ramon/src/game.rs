@@ -206,17 +206,6 @@ pub struct PipePair {
 }
 
 impl PipePair {
-    fn initial(id: u64) -> Self {
-        Self {
-            // Preserve the original layout's slight three-pixel X difference.
-            top: Pipe::new(id, 447.0, -117.0),
-            bottom: Pipe::new(id + 1, 450.0, 630.0),
-            top_alive: true,
-            bottom_alive: true,
-            scored: false,
-        }
-    }
-
     fn spawned(id: u64, top_y: f32) -> Self {
         Self {
             top: Pipe::new(id, 440.0, top_y),
@@ -355,9 +344,10 @@ impl Game {
         self.tiled_background_x = 0.0;
         self.tiled_background2_x = 0.0;
         self.spawn_elapsed = 0.0;
+        // The source layouts contain editor-time pipe instances at x=447/450,
+        // but Common in-game destroys both at layout start. The first visible
+        // pair is created by the one-second obstacle timer below.
         self.pipes.clear();
-        self.pipes.push(PipePair::initial(self.next_entity_id));
-        self.next_entity_id += 2;
 
         self.retry_visible = false;
         self.retry_enabled = false;
@@ -757,11 +747,7 @@ mod tests {
         assert_eq!(game.seconds_per_obstacle, 1.0);
         assert_eq!(game.bird.velocity_y, -500.0);
         assert_eq!(game.bird.angle_degrees, 320.0);
-        assert_eq!(game.pipes.len(), 1);
-        assert_eq!(game.pipes[0].top.x, 447.0);
-        assert_eq!(game.pipes[0].bottom.x, 450.0);
-        assert!(game.pipes[0].top_alive);
-        assert!(game.pipes[0].bottom_alive);
+        assert!(game.pipes.is_empty());
         assert!(!game.retry_visible);
     }
 
@@ -831,6 +817,7 @@ mod tests {
     #[test]
     fn source_dt_moves_pipes_and_backgrounds() {
         let mut game = playing_game();
+        game.pipes.push(PipePair::spawned(1, -150.0));
         let initial_x = game.pipes[0].top.x;
 
         game.update(InputFrame::default(), 0.5);
@@ -846,12 +833,12 @@ mod tests {
 
         // Isolate the Every-X-seconds event from gravity/collision updates.
         game.update_obstacle_timer(0.99);
-        assert_eq!(game.pipes.len(), 1);
+        assert!(game.pipes.is_empty());
 
         game.update_obstacle_timer(0.02);
-        assert_eq!(game.pipes.len(), 2);
+        assert_eq!(game.pipes.len(), 1);
 
-        let spawned = &game.pipes[1];
+        let spawned = &game.pipes[0];
         assert_eq!(spawned.top.x, 440.0);
         assert_eq!(spawned.bottom.x, 440.0);
         assert!((spawned.bottom.y - spawned.top.y - 750.0).abs() < 0.001);
@@ -863,6 +850,7 @@ mod tests {
     #[test]
     fn a_bottom_pipe_scores_only_once() {
         let mut game = playing_game();
+        game.pipes.push(PipePair::spawned(1, -150.0));
         game.pipes[0].bottom.x = game.bird.position[0] - 1.0;
 
         game.score_pipes();

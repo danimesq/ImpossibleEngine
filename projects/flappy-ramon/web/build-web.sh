@@ -37,10 +37,8 @@ if ! rustup target list --installed | grep -qx "$TARGET"; then
 fi
 
 log "Compiling Flappy Madruga for $TARGET"
-cargo build \
-    --manifest-path "$PROJECT_DIR/Cargo.toml" \
-    --release \
-    --target "$TARGET"
+cd -- "$PROJECT_DIR"
+cargo build --release --target "$TARGET"
 
 WASM_FILE="$(find "$BUILD_DIR" -maxdepth 1 -type f -name '*.wasm' -print -quit)"
 [[ -s "$WASM_FILE" ]] || die "No WebAssembly binary found in $BUILD_DIR"

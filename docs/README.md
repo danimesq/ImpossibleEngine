@@ -7,6 +7,11 @@
 - [Delayed Open Source and verifiable releases](DELAYED-OPEN-SOURCE-AND-VERIFIABLE-RELEASES.md) — DUL distributor-side licensing framework, fifteen-year per-release publication proposal, DOSP manifests, DOV verification, reproducible builds, transparency and opening procedures.
 - [Game publishing, editions and physical media](PUBLISHING-AND-PHYSICAL-MEDIA.md) — digital and physical editions, item identity, creator incentives and pilot criteria.
 
+## Physical interfaces and XR
+
+- [IPIX device compatibility index](IPIX-DEVICE-COMPATIBILITY.md) — entry point to the native physical-device architecture and Rust integration catalogue.
+- [Physical Interface & XR System](PHYSICAL-INTERFACE-XR.md) — device families, representative products, Rust crate mapping, capabilities, safety and implementation phases.
+
 ## Engine architecture
 
 - [Rust Gaming Eclipse integration plan](RUST-GAMING-ECLIPSE.md) — compiler boundary, Foundation dependency gates, optional Bevy/Rapier integration, and StreetChaves migration strategy.

@@ -10,37 +10,6 @@ use macroquad::audio::{
 use macroquad::file::set_pc_assets_folder;
 use macroquad::text::{load_ttf_font, Font};
 
-#[cfg(target_arch = "wasm32")]
-use wasm_bindgen::prelude::*;
-
-#[cfg(target_arch = "wasm32")]
-#[wasm_bindgen(
-    inline_js = r#"
-export function impossibleLoadHighScore() {
-    try {
-        return window.localStorage.getItem("flappy-madruga.highscore");
-    } catch (_) {
-        return null;
-    }
-}
-export function impossibleSaveHighScore(value) {
-    try {
-        window.localStorage.setItem("flappy-madruga.highscore", value);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}
-"#
-)]
-extern "C" {
-    #[wasm_bindgen(js_name = impossibleLoadHighScore)]
-    fn impossible_load_high_score() -> Option<String>;
-
-    #[wasm_bindgen(js_name = impossibleSaveHighScore)]
-    fn impossible_save_high_score(value: &str) -> bool;
-}
-
 #[derive(Default)]
 pub struct Services {
     music: Option<Sound>,
@@ -99,42 +68,27 @@ impl Services {
         services
     }
 
-    pub fn load_high_score(&self) -> u32 {
-        #[cfg(target_arch = "wasm32")]
-        {
-            return impossible_load_high_score()
+    /// The Construct project uses WebStorage.localvalue("Highscore").
+    /// quad-storage maps that key to Web Storage on WASM and local.data natively.
+    pub fn load_high_score(&mut self) -> u32 {
+        match quad_storage::STORAGE.lock() {
+            Ok(storage) => storage
+                .get("Highscore")
                 .and_then(|value| value.parse::<u32>().ok())
-                .unwrap_or(0);
-        }
-
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            std::fs::read_to_string("save/highscore.txt")
-                .ok()
-                .and_then(|value| value.trim().parse::<u32>().ok())
-                .unwrap_or(0)
+                .unwrap_or(0),
+            Err(error) => {
+                self.warnings.push(format!("High-score storage lock failed: {error}"));
+                0
+            }
         }
     }
 
     pub fn save_high_score(&mut self, value: u32) {
-        #[cfg(target_arch = "wasm32")]
-        {
-            if !impossible_save_high_score(&value.to_string()) {
-                self.warnings.push(
-                    "Browser localStorage rejected the high-score write.".to_string(),
-                );
-            }
-        }
-
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            let result = std::fs::create_dir_all("save")
-                .and_then(|_| std::fs::write("save/highscore.txt", value.to_string()));
-
-            if let Err(error) = result {
-                self.warnings
-                    .push(format!("Could not persist high score: {error}"));
-            }
+        match quad_storage::STORAGE.lock() {
+            Ok(mut storage) => storage.set("Highscore", &value.to_string()),
+            Err(error) => self
+                .warnings
+                .push(format!("Could not lock high-score storage: {error}")),
         }
     }
 
@@ -152,9 +106,9 @@ impl Services {
                         sound,
                         PlaySoundParams {
                             looped: true,
-                            // Construct's source volume is 0 dB, then adds a
-                            // +40 dB effect. Macroquad exposes normalized
-                            // output volume instead of a tagged gain DSP chain.
+                            // Source volume is zero dB, followed by a +40 dB
+                            // gain effect. Macroquad exposes normalized volume,
+                            // so full-scale output is the closest host mapping.
                             volume: 1.0,
                         },
                     );
@@ -180,13 +134,15 @@ impl Services {
             }
             Effect::SaveHighScore(value) => self.save_high_score(value),
             Effect::RequestGooglePlaySignIn => {
-                // No Google Play credentials/SDK adapter is included in this
-                // first desktop/web port. The caller performs offline fallback.
+                // This build does not include the Android Google Play Games
+                // SDK client or credentials. The caller performs offline fallback.
                 return false;
             }
             Effect::NextLayoutUnavailable => {
+                // Construct's official behavior is a no-op when there is no
+                // next layout. Keep a diagnostic without inventing a new scene.
                 self.warnings.push(
-                    "Chaves reached Required_Score, but the source project has no fourth layout."
+                    "The Chaves score threshold was reached; source project has no next layout."
                         .to_string(),
                 );
             }
@@ -195,20 +151,20 @@ impl Services {
         true
     }
 
-    /// The Construct project declares Google Play, but its sign-in integration
-    /// needs an Android SDK client ID and credentials that are not in source.
+    /// Google Play is declared and used in the Start event sheet on Android,
+    /// but the project does not contain client credentials or an SDK adapter.
     pub fn google_play_status(&self) -> IntegrationStatus {
         IntegrationStatus::NotConfigured
     }
 
-    /// Facebook is declared as a Construct plugin but no Facebook event
-    /// condition/action is present in the checked-in Event Sheets.
+    /// Facebook is declared as a Construct plugin but no event-sheet operation
+    /// uses it in this source project.
     pub fn facebook_status(&self) -> IntegrationStatus {
         IntegrationStatus::NotUsedBySourceEvents
     }
 
-    /// Browser is declared by the source project but no Browser plugin
-    /// action/condition is used by the inspected Event Sheets.
+    /// Browser is declared as a Construct plugin but no event-sheet operation
+    /// uses it in this source project.
     pub fn browser_status(&self) -> IntegrationStatus {
         IntegrationStatus::NotUsedBySourceEvents
     }
@@ -229,9 +185,6 @@ async fn load_first_sound(paths: &[&str]) -> Option<Sound> {
         }
     }
 
-    eprintln!(
-        "[media] Pending audio asset; tried: {}",
-        paths.join(", ")
-    );
+    eprintln!("[media] Pending audio asset; tried: {}", paths.join(", "));
     None
 }

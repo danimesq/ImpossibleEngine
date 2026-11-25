@@ -3,13 +3,11 @@ name = "flappy-madruga"
 version = "0.1.0"
 edition = "2021"
 publish = false
-description = "First native Rust reference game for ImpossibleEngine: Flappy Madruga"
+description = "First native Rust reference game for ImpossibleEngine"
 
 [dependencies]
 macroquad = { version = "=0.4.16", features = ["audio"] }
-
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-wasm-bindgen = "0.2"
+quad-storage = "=0.1.3"
 
 [profile.release]
 lto = true

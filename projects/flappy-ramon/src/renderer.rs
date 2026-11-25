@@ -183,22 +183,17 @@ fn draw_sky_and_background(view: &Viewport, game: &Game) {
         view.circle(x, y, radius, Color::from_rgba(221, 239, 236, 180));
     }
 
-    let bg_x = game.tiled_background_x;
-    for offset in [0.0, 560.0, 1120.0] {
-        view.rect(
-            bg_x + offset,
-            472.0,
-            560.0,
-            28.0,
-            Color::from_rgba(71, 133, 75, 255),
-        );
-    }
+    // Both tiled strips are drawn separately in draw_ground below.
 }
 
 fn draw_pipes(view: &Viewport, game: &Game) {
     for pair in &game.pipes {
-        draw_pipe(view, pair.top.x, pair.top.y, true, game.pipe_skin);
-        draw_pipe(view, pair.bottom.x, pair.bottom.y, false, game.pipe_skin);
+        if pair.top_alive {
+            draw_pipe(view, pair.top.x, pair.top.y, true, game.pipe_skin);
+        }
+        if pair.bottom_alive {
+            draw_pipe(view, pair.bottom.x, pair.bottom.y, false, game.pipe_skin);
+        }
     }
 }
 

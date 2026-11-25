@@ -282,3 +282,14 @@ Do not invent a Foundation crate path or add an unverified dependency. Generated
 ## Non-goals of this proposal
 
 This document and its fixtures do not implement a Construct importer, Delphi decompiler, Pascal parser, typed compiler, Rust generator, runtime VM, renderer, physics engine or production platform adapter. They establish an explicit, testable design target for those future implementations.
+
+
+## 14. Full-project acceptance target: Flappy Madruga
+
+The first production-scale validation is the complete project at danimesq/Flappy-Ramon. The small source-derived JSON/Rust fixture in this repository demonstrates only three event slices; it is not the game port.
+
+The full import must cover the source .caproj, all three layouts, all five Event Sheets, includes, groups, nested event trees, all object/instance data, both behaviors, all plugin integrations, animation data, collision polygons and every media reference. The complete port must preserve source IDs and action order, and must not silently omit unsupported plugin operations.
+
+For this project, a successful native build is necessary but insufficient. Acceptance also requires behavior tests for touch/keyboard triggers, Platform behavior, wait continuations, pipe collision and scoring, per-instance picked objects, obstacle timers/spawning, deterministic test RNG, background wrapping, audio and persistence. Social/service integrations need an explicit target capability policy.
+
+The project workspace and pending media placeholders live under projects/flappy-ramon/. The separate examples/flappy-madruga fixture remains a small compiler conformance input/output pair. This separation prevents a sample from being mistaken for a complete migration.

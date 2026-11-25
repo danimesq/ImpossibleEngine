@@ -8,6 +8,8 @@
 
 ## Engine architecture
 
+- [Rust Gaming Eclipse integration plan](RUST-GAMING-ECLIPSE.md) — compiler boundary, Foundation dependency gates, optional Bevy/Rapier integration, and StreetChaves migration strategy.
+
 - [Architecture](ARCHITECTURE.md)
 - [Platform variants](PLATFORM-VARIANTS.md)
 - [WebAssembly](WEB-WASM.md)

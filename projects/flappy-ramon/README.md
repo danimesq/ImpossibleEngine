@@ -65,6 +65,13 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 ## Validation status
 
-**Native CI validation passed** on GitHub Actions run #14: `cargo test` and `cargo build --release` both completed successfully on Ubuntu 24.04. This validates the current native Rust code and test suite, not yet source-level equivalence against the original Construct runtime.
+**Native and WebAssembly CI validation passed** on GitHub Actions run #45 (Ubuntu 24.04):
 
-A separate `wasm32-unknown-unknown` compile job has now been added. Browser package assembly, loading the quad-storage JavaScript shims, and testing the game in an actual browser remain separate acceptance steps.
+- 17 gameplay/geometry tests passed.
+- Optimized native desktop executable built successfully.
+- The `wasm32-unknown-unknown` game binary compiled successfully.
+- The Bash web packaging script passed `bash -n`.
+
+This validates compilation for both targets, not yet source-level behavior equivalence or real-browser execution.
+
+The browser package still needs the matching Macroquad/miniquad and quad-storage JavaScript vendor files. Browser instantiation, storage behavior and touch/audio testing remain separate acceptance steps.

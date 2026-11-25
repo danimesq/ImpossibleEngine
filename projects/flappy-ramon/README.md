@@ -2,54 +2,67 @@
 
 **Source:** [danimesq/Flappy-Ramon](https://github.com/danimesq/Flappy-Ramon)  
 **Original project:** Flappy Madruga, Construct 2, version 0.6.1.6  
-**Port status:** Scaffold and source-derived compiler slice only. The complete port is the objective of the current migration round; it is not yet complete.
+**Port status:** First native Rust implementation is in progress. The source project is mapped directly; a general-purpose Construct importer is not part of this round.
 
-This folder is the destination for the full native Impossible project. The original Construct project remains the source of truth until each source construct has been imported, mapped and verified.
+## Run
 
-## Project rules
+From this directory:
 
-1. Preserve the original source package read-only, with pinned revision and file hashes.
-2. Import all layouts, objects, instances, event sheets, includes, groups, behaviors, plugins, variables, animations and collision data.
-3. Preserve source SIDs and source-file paths in provenance metadata.
-4. Map bounded gameplay to typed Event Sheet JSON and generate ordinary Rust code.
-5. Keep complex or source-specific behavior in explicit native Rust modules, not an untyped JSON escape hatch.
-6. Do not require Construct 2 at runtime.
-7. Do not claim a complete port while any source construct is unexplained or silently omitted.
-8. Keep media references portable and relative. Original Windows paths are evidence only.
-9. The asset folders contain placeholders until the original media is supplied. Do not invent replacement artwork, sound or fonts.
+    cargo run
 
-## Workspace
+The default launch opens the original Start screen. You can also launch a gameplay layout directly for testing:
 
-- migration-manifest.json — pinned source identity, game profile and migration gates.
-- asset-placeholders.json — source media inventory and destination paths.
-- assets/ — empty category folders reserved for media.
-- src/ — generated and handwritten Rust game code will live here in later implementation steps.
-- event-sheets/ — complete imported typed Event Sheet documents will live here.
+    cargo run -- --layout=continuous
+    cargo run -- --layout=chaves
 
-## Media placeholder categories
+Run the platform-neutral gameplay and collision tests:
 
-- sprites
-- backgrounds
-- animation-frames
-- audio/sfx
-- audio/music
-- fonts
-- ui
-- icons
+    cargo test
 
-Each category README documents intended content and the pending state. Media population is a later task; the project should still be structurally importable and testable without pretending the final artwork is present.
+Build an optimized native executable:
 
-## Complete-port checklist
+    cargo build --release
 
-- [ ] Inventory every source file and hash it.
-- [ ] Import all three layouts and all five Event Sheets, including includes and nested subevents.
-- [ ] Import every object type, instance, variable, layer, behavior and property.
-- [ ] Reproduce Platform and Solid behavior semantics.
-- [ ] Reproduce input, timing, wait, collision, spawning, random, scoring, progression and restart behavior.
-- [ ] Map audio, font, persistence, browser, Facebook and Google Play operations to target-aware services.
-- [ ] Map every media reference to a project-relative asset ID.
-- [ ] Generate and compile the native Rust project.
-- [ ] Pass differential behavior tests against the original game.
-- [ ] Populate and verify all media placeholders before claiming visual/content completeness.
+## Controls
 
-The small example under examples/flappy-madruga is a compiler fixture only. It does not replace this full project workspace.
+- Start: click Continuous Play or press Enter.
+- Flap: touch anywhere in the game viewport, click, or press Space.
+- Retry: click Try Again! or press Enter after a collision.
+
+The viewport preserves the original 400 × 500 portrait layout using letterbox scaling.
+
+## What is implemented in the first native slice
+
+- Start, Continuous and Chaves layout states.
+- Source layout-start variables and design-time pipe destruction.
+- Platform-style vertical motion using the source gravity and max-fall-speed values.
+- Bird angle and Flying/Default animation wait.
+- TopPipe/BottomPipe timed spawning, source positions, gap offset and independent cleanup.
+- Scoring once per BottomPipe instance.
+- Ground, TopPipe and BottomPipe collision checks using source polygons.
+- Background wrap and per-frame source-delta scrolling.
+- Game-over transitions, source waits, retry visibility and layout restart.
+- Continuous high-score update and persistent Highscore key.
+- Music, beat and Queda audio effect adapters, pending the original sound files.
+- Explicit policy for Google Play sign-in (offline fallback until an Android SDK client is configured).
+
+The actual source-event-to-Rust map is in event-sheets/source-coverage.json. Layout, object, behavior, variable and animation source data is in source-model.json. These are manually transcribed source references, not output from a generic importer.
+
+## Assets
+
+All original media folders are placeholders until the verified files are supplied. The current renderer draws temporary vector artwork and logs missing audio/font files. It does not claim that this fallback artwork is the original game.
+
+See asset-placeholders.json for the complete source-to-destination media list.
+
+## Important compatibility notes
+
+- The original Start/Continuous/Chaves layout order is preserved.
+- Common in-game destroys the design-time TopPipe and BottomPipe instances at layout start. The first runtime pair is created after the one-second obstacle interval.
+- Construct delta time is passed to the gameplay update once per rendered frame. It is not silently replaced with a fixed tick.
+- Chaves is the last source layout. Construct's Go to next layout action does nothing when already on the last layout.
+- The original project declares Facebook and Browser plugins but does not use either in its checked-in event sheets.
+- Google Play is used on Android but the checked-in project does not provide an SDK client ID/credentials. The current port falls back to offline play and exposes a callback boundary for a future configured adapter.
+
+## Validation status
+
+The source model, event map, gameplay code and geometry tests are committed. The current execution environment did not have Cargo/rustc installed, so this PR cannot claim a successful local cargo test or native build. GitHub Actions now performs both as a PR check.

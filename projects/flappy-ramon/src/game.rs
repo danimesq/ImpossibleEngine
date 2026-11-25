@@ -200,6 +200,8 @@ impl Pipe {
 pub struct PipePair {
     pub top: Pipe,
     pub bottom: Pipe,
+    pub top_alive: bool,
+    pub bottom_alive: bool,
     pub scored: bool,
 }
 
@@ -209,6 +211,8 @@ impl PipePair {
             // Preserve the original layout's slight three-pixel X difference.
             top: Pipe::new(id, 447.0, -117.0),
             bottom: Pipe::new(id + 1, 450.0, 630.0),
+            top_alive: true,
+            bottom_alive: true,
             scored: false,
         }
     }
@@ -217,6 +221,8 @@ impl PipePair {
         Self {
             top: Pipe::new(id, 440.0, top_y),
             bottom: Pipe::new(id + 1, 440.0, top_y + 750.0),
+            top_alive: true,
+            bottom_alive: true,
             scored: false,
         }
     }
@@ -384,6 +390,10 @@ impl Game {
             return;
         }
 
+        // Existing Wait continuations advance before new ones are scheduled.
+        // A Wait created by this frame's input starts counting next frame.
+        self.update_wait_continuations(dt);
+
         // Movement group: Touch-start OR Space, with a Queda=false subevent.
         if input.flap_pressed && !self.bird.queda {
             self.bird.velocity_y = -BIRD_JUMP_STRENGTH;
@@ -391,8 +401,6 @@ impl Game {
             self.bird.animation = BirdAnimation::Flying;
             self.bird.animation_reset_waits.push(0.5);
         }
-
-        self.update_wait_continuations(dt);
 
         // Movement group: Every tick AND NOT Madruga.Queda.
         if !self.bird.queda {
@@ -535,20 +543,22 @@ impl Game {
         }
 
         if self.pipes.iter().any(|pair| {
-            polygons_intersect(
-                &bird_polygon,
-                &pair.top.collision_polygon(self.pipe_skin, true),
-            )
+            pair.top_alive
+                && polygons_intersect(
+                    &bird_polygon,
+                    &pair.top.collision_polygon(self.pipe_skin, true),
+                )
         }) {
             self.handle_collision(CollisionKind::TopPipe);
             return;
         }
 
         if self.pipes.iter().any(|pair| {
-            polygons_intersect(
-                &bird_polygon,
-                &pair.bottom.collision_polygon(self.pipe_skin, false),
-            )
+            pair.bottom_alive
+                && polygons_intersect(
+                    &bird_polygon,
+                    &pair.bottom.collision_polygon(self.pipe_skin, false),
+                )
         }) {
             self.handle_collision(CollisionKind::BottomPipe);
         }
@@ -601,7 +611,10 @@ impl Game {
 
     fn score_pipes(&mut self) {
         for pair in &mut self.pipes {
-            if pair.bottom.x <= self.bird.position[0] && !pair.scored {
+            if pair.bottom_alive
+                && pair.bottom.x <= self.bird.position[0]
+                && !pair.scored
+            {
                 self.score += 1;
                 pair.scored = true;
             }
@@ -621,17 +634,28 @@ impl Game {
         if dt > 0.0 {
             let movement = self.scroll_speed * dt;
             for pair in &mut self.pipes {
-                pair.bottom.x -= movement;
-                pair.top.x -= movement;
+                if pair.bottom_alive {
+                    pair.bottom.x -= movement;
+                }
+                if pair.top_alive {
+                    pair.top.x -= movement;
+                }
             }
 
             self.tiled_background2_x -= movement;
             self.tiled_background_x -= movement;
         }
 
-        // Pipe cleanup happens after the Every tick movement event.
-        self.pipes
-            .retain(|pair| pair.top.x >= PIPE_DESTROY_X || pair.bottom.x >= PIPE_DESTROY_X);
+        // Construct destroys TopPipe and BottomPipe independently.
+        for pair in &mut self.pipes {
+            if pair.top_alive && pair.top.x < PIPE_DESTROY_X {
+                pair.top_alive = false;
+            }
+            if pair.bottom_alive && pair.bottom.x < PIPE_DESTROY_X {
+                pair.bottom_alive = false;
+            }
+        }
+        self.pipes.retain(|pair| pair.top_alive || pair.bottom_alive);
     }
 
     fn update_obstacle_timer(&mut self, dt: f32) {
@@ -660,16 +684,23 @@ impl Game {
         // Source event SID 9708342499359544: button click OR Return.
         // Child SID 3112928811038152 requires Queda=true, waits 0.1s,
         // then restarts the current layout.
-        if input.restart_pressed && self.bird.queda && self.restart_wait.is_none() {
-            self.restart_wait = Some(0.1);
+        let restart_now = if let Some(wait) = self.restart_wait.as_mut() {
+            *wait -= dt;
+            *wait <= 0.0
+        } else {
+            false
+        };
+
+        if restart_now {
+            self.restart_wait = None;
+            let layout = self.layout;
+            self.enter_layout(layout);
+            return;
         }
 
-        if let Some(wait) = self.restart_wait.as_mut() {
-            *wait -= dt;
-            if *wait <= 0.0 {
-                let layout = self.layout;
-                self.enter_layout(layout);
-            }
+        // A newly scheduled Construct Wait begins after this event action.
+        if input.restart_pressed && self.bird.queda && self.restart_wait.is_none() {
+            self.restart_wait = Some(0.1);
         }
     }
 
@@ -729,6 +760,8 @@ mod tests {
         assert_eq!(game.pipes.len(), 1);
         assert_eq!(game.pipes[0].top.x, 447.0);
         assert_eq!(game.pipes[0].bottom.x, 450.0);
+        assert!(game.pipes[0].top_alive);
+        assert!(game.pipes[0].bottom_alive);
         assert!(!game.retry_visible);
     }
 
@@ -811,16 +844,19 @@ mod tests {
     fn obstacle_timer_spawns_a_pair_after_one_second() {
         let mut game = playing_game();
 
-        game.update(InputFrame::default(), 0.99);
+        // Isolate the Every-X-seconds event from gravity/collision updates.
+        game.update_obstacle_timer(0.99);
         assert_eq!(game.pipes.len(), 1);
 
-        game.update(InputFrame::default(), 0.02);
+        game.update_obstacle_timer(0.02);
         assert_eq!(game.pipes.len(), 2);
 
         let spawned = &game.pipes[1];
         assert_eq!(spawned.top.x, 440.0);
         assert_eq!(spawned.bottom.x, 440.0);
         assert!((spawned.bottom.y - spawned.top.y - 750.0).abs() < 0.001);
+        assert!(spawned.top_alive);
+        assert!(spawned.bottom_alive);
         assert!(!spawned.scored);
     }
 

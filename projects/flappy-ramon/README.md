@@ -58,7 +58,7 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 - The original Start/Continuous/Chaves layout order is preserved.
 - Common in-game destroys the design-time TopPipe and BottomPipe instances at layout start. The first runtime pair is created after the one-second obstacle interval.
-- Construct delta time is passed to the gameplay update once per rendered frame. It is not silently replaced with a fixed tick.
+- Construct's per-frame dt is preserved for movement, including the default 1/30-second maximum delta cap. System Every-X-seconds timers and Wait continuations use elapsed time independently rather than accumulating the capped movement dt.
 - Chaves is the last source layout. Construct's Go to next layout action does nothing when already on the last layout.
 - The original project declares Facebook and Browser plugins but does not use either in its checked-in event sheets.
 - Google Play is used on Android but the checked-in project does not provide an SDK client ID/credentials. The current port falls back to offline play and exposes a callback boundary for a future configured adapter.

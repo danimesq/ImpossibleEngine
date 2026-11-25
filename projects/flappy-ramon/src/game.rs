@@ -931,7 +931,7 @@ mod tests {
         );
         assert_eq!(game.score, 7);
 
-        game.update(InputFrame::default(), 0.06);
+        game.update(InputFrame::default(), 0.11);
 
         assert_eq!(game.score, 0);
         assert!(!game.bird.queda);

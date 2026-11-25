@@ -65,4 +65,6 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 ## Validation status
 
-The source model, event map, gameplay code and geometry tests are committed. The current execution environment did not have Cargo/rustc installed, so this PR cannot claim a successful local cargo test or native build. GitHub Actions now performs both as a PR check.
+**Native CI validation passed** on GitHub Actions run #14: `cargo test` and `cargo build --release` both completed successfully on Ubuntu 24.04. This validates the current native Rust code and test suite, not yet source-level equivalence against the original Construct runtime.
+
+A separate `wasm32-unknown-unknown` compile job has now been added. Browser package assembly, loading the quad-storage JavaScript shims, and testing the game in an actual browser remain separate acceptance steps.

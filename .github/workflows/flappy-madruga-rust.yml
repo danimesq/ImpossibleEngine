@@ -52,5 +52,10 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
 
+      - name: Syntax-check browser packaging script
+        run: bash -n web/build-web.sh
+        working-directory: projects/flappy-ramon
+
       - name: Compile browser game
-        run: cargo build --release --target wasm32-unknown-unknown --manifest-path projects/flappy-ramon/Cargo.toml
+        run: cargo build --release --target wasm32-unknown-unknown
+        working-directory: projects/flappy-ramon

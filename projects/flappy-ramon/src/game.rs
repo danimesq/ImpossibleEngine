@@ -321,14 +321,18 @@ impl Game {
             return;
         }
 
-        // Chaves.xml's own On start of layout event.
+        // Chaves.xml sets Required_Score=10 and applies the Chaves
+        // animation to the editor-time TopPipe/BottomPipe instances.
+        // Common in-game is included before this event and queues those
+        // editor-time instances for destruction. Construct applies Destroy
+        // after event processing, so the animation action is accounted for,
+        // but the later timer-created instances start with Default animation.
         if layout == Layout::Chaves {
             self.required_score = 10;
-            self.pipe_skin = PipeSkin::Chaves;
         } else {
             self.required_score = 0;
-            self.pipe_skin = PipeSkin::Default;
         }
+        self.pipe_skin = PipeSkin::Default;
 
         self.common_game_layout_start();
     }
@@ -772,7 +776,7 @@ mod tests {
         let game = Game::new(Layout::Chaves, 0, 7);
 
         assert_eq!(game.required_score, 10);
-        assert_eq!(game.pipe_skin, PipeSkin::Chaves);
+        assert_eq!(game.pipe_skin, PipeSkin::Default);
         assert_eq!(game.layout_name, "Chaves");
     }
 

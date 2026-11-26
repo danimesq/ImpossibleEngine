@@ -101,4 +101,3 @@ For every fixture, record the Construct version, source file hashes, parsed feat
 - [Construct 3 project format](https://www.construct.net/en/tutorials/constructs-project-format-3275)
 - [Project structure](https://www.construct.net/en/make-games/manuals/construct-3/overview/project-structure)
 - [Project files](https://www.construct.net/en/make-games/manuals/construct-3/project-primitives/files)
-- [Event sheets](https://www.construct.net/en/make-games/manuals/construct-3/ Construct 3 event sheets) 

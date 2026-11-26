@@ -6,7 +6,7 @@ ImpossibleEngine projects use a native, folder-based source format. The canonica
 
 `.ieproj` is the project-index extension. It is not a compiled game, runtime bundle or archive extension. The project itself is a directory containing the index plus the JSON and media files referenced by it.
 
-The main file acts as an index of the project. It stores project-wide metadata and enumerates the project's layouts, Event Sheets, object types, families, scripts, timelines, flowcharts, models and categorized root files. Each indexed resource is stored separately, in its appropriate package subfolder. A file that is not referenced by the index is an untracked package file and must not silently become part of the project.
+The main file acts as an index of the project. It stores project-wide metadata and enumerates layouts, Event Sheets, object types, families, scripts, timelines, flowcharts, 3D models, palettes, tilemap brushes, add-ons and categorized root files. Each indexed resource is stored separately, in its appropriate package subfolder. A file that is not referenced by the index is not silently imported as project content.
 
 ## Canonical package layout
 
@@ -15,6 +15,12 @@ A project can be represented as:
 ```text
 MyGame/
   project.ieproj
+  objectTypes/
+    Player.json
+    Enemies/
+      Slime.json
+  families/
+    Enemies.json
   layouts/
     Main.json
     Levels/
@@ -23,45 +29,68 @@ MyGame/
     MainEvents.json
     Levels/
       Level01Events.json
-  objectTypes/
-    Player.json
-    Enemies/
-      Slime.json
-  families/
-    Enemies.json
+  timelines/
+  flowcharts/
+  3dmodels/
+  palettes/
   tilemapBrushes/
-    Terrain.json
   images/
     player-idle-000.png
     player-idle-001.png
   scripts/
     main.js
     gameplay.ts
-    ts-defs/
+    Gameplay/
+      boss.ts
+  sounds/
+  music/
+  videos/
+  fonts/
+  icons/
   files/
     data/
     shaders/
-  addons/
-  timelines/
-  flowcharts/
-  models/
+  uistate/
 ```
 
-Folders are created only when needed. The index's `items` and `subfolders` trees define the editor-visible hierarchy. A resource's nested folder path is preserved in the corresponding package directory. The examples above are illustrative; the index remains authoritative.
+Folders are created only when needed. The index's `items` and `subfolders` trees define the editor-visible hierarchy. Resource folders preserve that hierarchy. The `images/` directory is the exception: object images live directly in that folder, without further subfolders.
+
+The `uistate/` directory and files ending in `.uistate.json` contain editor-window state, not game content. They may be ignored by source-control tooling and can be regenerated without changing runtime behavior.
 
 ## Main project index
 
-The `project.ieproj` file is JSON. Its core shape is designed around resource categories with an ordered `items` list and recursively nested `subfolders`:
+The `project.ieproj` file is JSON. Its core shape uses a project-format version, project metadata, an add-on inventory and resource categories with an ordered `items` list and recursively nested `subfolders`:
 
 ```json
 {
   "format": "impossible-engine-project",
-  "schemaVersion": 1,
+  "projectFormatVersion": 1,
+  "savedWithRelease": "0.1.0",
   "name": "First Game",
-  "projectId": "org.example.first-game",
-  "engineVersion": "0.1",
-  "viewportWidth": 400,
-  "viewportHeight": 300,
+  "runtime": "impossible",
+  "useWorker": "auto",
+  "bundleAddons": false,
+  "viewport": {
+    "width": 400,
+    "height": 300
+  },
+  "usedAddons": [
+    {
+      "type": "plugin",
+      "id": "Sprite",
+      "name": "Sprite",
+      "author": "ImpossibleEngine",
+      "bundled": true
+    },
+    {
+      "type": "behavior",
+      "id": "Platform",
+      "name": "Platform",
+      "author": "ImpossibleEngine",
+      "bundled": true
+    }
+  ],
+  "uniqueId": "iegame-7r2k9m4q",
   "objectTypes": {
     "items": ["Player", "Slime"],
     "subfolders": [
@@ -72,6 +101,8 @@ The `project.ieproj` file is JSON. Its core shape is designed around resource ca
       }
     ]
   },
+  "autosaveData": null,
+  "containers": [],
   "families": {
     "items": ["Enemies"],
     "subfolders": []
@@ -90,28 +121,18 @@ The `project.ieproj` file is JSON. Its core shape is designed around resource ca
     "items": ["TitleEvents", "GameEvents"],
     "subfolders": []
   },
-  "scripts": {
-    "items": ["main.js", "gameplay.ts"],
-    "subfolders": []
-  },
-  "timelines": {
-    "items": [],
-    "subfolders": []
-  },
-  "flowcharts": {
-    "items": [],
-    "subfolders": []
-  },
-  "models": {
-    "items": [],
-    "subfolders": []
-  },
-  "tilemapBrushes": {
-    "items": [],
-    "subfolders": []
-  },
   "rootFileFolders": {
-    "script": { "items": [], "subfolders": [] },
+    "script": {
+      "items": [
+        {
+          "name": "main.js",
+          "type": "application/javascript",
+          "sid": 123456789012345,
+          "script-info": { "purpose": "none" }
+        }
+      ],
+      "subfolders": []
+    },
     "sound": { "items": [], "subfolders": [] },
     "music": { "items": [], "subfolders": [] },
     "video": { "items": [], "subfolders": [] },
@@ -119,39 +140,44 @@ The `project.ieproj` file is JSON. Its core shape is designed around resource ca
     "icon": { "items": [], "subfolders": [] },
     "file": { "items": [], "subfolders": [] }
   },
-  "autosaveData": null,
-  "containers": []
+  "timelines": { "items": [], "subfolders": [] },
+  "flowcharts": { "items": [], "subfolders": [] },
+  "3dmodels": { "items": [], "subfolders": [] },
+  "palettes": { "items": [], "subfolders": [] },
+  "tilemapBrushes": { "items": [], "subfolders": [] }
 }
 ```
 
-The JSON above is a small schema example, not a complete list of every optional top-level property. The reader must preserve recognized metadata and unknown properties. New features add versioned fields and resource categories without making older project files unreadable.
+This is a format example, not a complete list of every optional top-level property. The reader must preserve recognized metadata and unknown properties. New features add versioned fields and resource categories without making older project files unreadable.
 
-Each `items` list preserves editor order. A subfolder node has a `name`, its own `items` list and its own `subfolders` list. Categorized root files carry their relevant file metadata, such as filename, media type, serialization ID and script-specific metadata.
+Each `items` list preserves editor order. A subfolder node has a `name`, its own `items` list and its own `subfolders` list. Entries in `rootFileFolders` carry file metadata such as filename, MIME type, serialization ID and category-specific metadata.
 
 ## Resource files
 
 The main index identifies which resources belong to the project. The editor then reads each resource's own JSON document or media file.
 
 - **Object types:** JSON metadata, properties, behaviors, effects, animations and references to image frames.
-- **Families:** JSON definitions that group object types and preserve their member references.
-- **Tilemap brushes:** separate JSON documents for reusable tilemap data.
-- **Layouts:** JSON metadata plus a recursive layer tree. Layers preserve their properties and contain object instances in their ordered Z sequence.
+- **Families:** JSON definitions grouping object types and preserving member references.
+- **Layouts:** JSON metadata plus a recursive layer tree. Layers preserve their properties and ordered object instances, including sub-layers.
 - **Event Sheets:** JSON event trees, including nested subevents, groups, functions, custom actions, conditions, actions and inline script blocks.
-- **Images:** standalone source images referenced by object animation/frame metadata. Image dimensions recorded in metadata are advisory; the actual file remains the source of pixel dimensions.
-- **Scripts:** JavaScript and TypeScript source files, declaration files and script metadata.
-- **Root file categories:** scripts, sounds, music, videos, fonts, icons and arbitrary imported files, described by `rootFileFolders`.
-- **Optional systems:** timelines, flowcharts, 3D models, materials and other feature-specific resources when present.
+- **Timelines:** JSON definitions for sequences of changes over time.
+- **Flowcharts:** JSON node/connection graphs for conversation trees, state machines and related logic.
+- **3D models:** project-side JSON resources for imported models, materials and related metadata. Source GLTF/GLB files may be retained as import provenance.
+- **Palettes and tilemap brushes:** separate JSON resources that can be independently versioned in source control.
+- **Images:** standalone source images referenced by object animation/frame metadata. Image files are stored directly under `images/`, normally with lowercase names. A single-image object uses its object name; animated frames use `object-animation-000.ext` naming with a zero-padded frame index. The referenced MIME type determines the extension.
+- **Scripts:** JavaScript and TypeScript files stored under `scripts/`, with nested folders matching the project index.
+- **Sounds, music, videos, fonts, icons and arbitrary files:** standalone files stored in `sounds/`, `music/`, `videos/`, `fonts/`, `icons/` and `files/`, respectively. Their metadata and folder hierarchy are indexed by `rootFileFolders`.
 
-A loader must resolve paths from the index and each resource's references. It must not assume that every project contains every folder or that every object type has image data.
+A loader must resolve paths from the index and each resource's references. It must not assume that every project contains every folder or that every object type has image data. Media files remain standalone source assets; browser-specific encoding or optimization belongs to the publishing pipeline rather than the editable project package.
 
 ## Identity and relationships
 
 The format distinguishes project-resource identity from layout-instance identity:
 
-- **Serialization IDs (`sid`):** stable identifiers for serialized resources and members whose identity must survive renames. They should be generated with enough entropy to avoid collisions in collaborative source control. A 15-digit decimal identifier is the preferred convention for new resources.
-- **Instance UIDs (`uid`):** unique numeric identifiers for placed object instances. Every instance in a project must have a distinct UID; the value itself has no special semantic meaning.
+- **Serialization IDs (`sid`):** stable identifiers for serialized resources and members whose identity must survive renames. New IDs should use 15 decimal digits to reduce collision risk during collaboration.
+- **Instance UIDs (`uid`):** unique numeric identifiers for placed object instances. Every instance in the project must have a distinct UID; the value itself has no special semantic meaning. Six-digit random values are convenient for human inspection while still supporting safe collaboration at typical project scales.
 - **Resource names and paths:** names are editor-facing labels, not identity. A rename must not silently change a resource SID or break references.
-- **Ordering:** the order of items in the project index, layers and event trees is preserved whenever it affects editor presentation or runtime behavior.
+- **Ordering:** the order of items in the project index, layers, object instances and event trees is preserved whenever it affects editor presentation or runtime behavior.
 
 IDs must be validated for uniqueness in their defined scope. Importers and writers must retain existing identifiers instead of regenerating them during routine save operations.
 
@@ -163,19 +189,19 @@ ImpossibleEngine first loads the source tree losslessly. It then lowers supporte
 
 ## Serialization and round-trip rules
 
-- **Versioned schema:** every project declares `format` and `schemaVersion`. Migrations are explicit, ordered and testable.
+- **Versioned schema:** every project declares `format` and `projectFormatVersion`. Migrations are explicit, ordered and testable.
 - **Index-first loading:** the index defines the project inventory. Unreferenced files are not silently imported into the project.
 - **Loss-aware parsing:** unknown fields, resource categories and files survive round trips.
 - **Path safety:** references are package-relative, preserve filename case and cannot escape the project directory through absolute paths, traversal segments or symbolic-link escapes.
 - **Deterministic writing:** resource lists and JSON output use stable ordering where the schema makes ordering meaningful.
-- **External asset editing:** media files remain standalone files where practical; the reader must not replace original image data merely because metadata dimensions differ.
+- **External asset editing:** media files remain standalone where practical. If image metadata dimensions disagree with the actual image file, the decoder reads the dimensions from the file.
 - **Provenance:** imported or generated nodes may record origin, source path, hashes and transformation history without making provenance part of runtime semantics.
 
 ## ImpossibleEngine architecture
 
 1. **Package reader:** opens a project directory or supported archive without mutating it.
-2. **Index parser:** validates `project.ieproj`, schema version and all indexed resources.
-3. **Resource readers:** parse layout, Event Sheet, object type, family, brush and optional system files.
+2. **Index parser:** validates `project.ieproj`, project format version and all indexed resources.
+3. **Resource readers:** parse layout, Event Sheet, object type, family, brush, script and optional system files.
 4. **Version migrations:** upgrade older project schemas through explicit, testable transformations.
 5. **Source model:** represents editable project data while retaining unknown fields and provenance.
 6. **Semantic registry:** maps project operations and features to typed IR and runtime/compiler capabilities.
@@ -222,7 +248,7 @@ The exporter derives project identity, resource IDs and source paths from the ed
 
 ## Validation strategy
 
-Before declaring a project schema version stable, keep fixtures that exercise:
+Before declaring a project format version stable, keep fixtures that exercise:
 
 - multiple layouts, nested folders, layers, object types and instances;
 - recursive layer trees with mixed instance types and stable UIDs;
@@ -231,8 +257,8 @@ Before declaring a project schema version stable, keep fixtures that exercise:
 - global/instance variables, arrays, dictionaries and custom data;
 - animations, image points, collision polygons, tiled backgrounds and source image edits;
 - categorized root files, script metadata and nested arbitrary files;
-- audio, video, fonts, icons and screenshots;
-- timelines, flowcharts, 3D models and platform-specific variants;
-- schema migration from older `schemaVersion` values.
+- audio, video, fonts, icons and splash screens;
+- timelines, flowcharts, 3D models, palettes and platform-specific variants;
+- schema migration from older `projectFormatVersion` values.
 
 For every fixture, record source hashes, parsed feature inventory, validation diagnostics, unsupported nodes, round-trip differences and expected semantic behavior. A successful JSON parse alone is not evidence of project compatibility.

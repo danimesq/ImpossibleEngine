@@ -1,5 +1,5 @@
 //! Temporary vector renderer used while the original media assets are pending.
-//! All positions are rendered in the original 400x500 Construct layout space.
+//! All positions are rendered in the original 400x500 the source editor layout space.
 
 use flappy_madruga::game::{BirdAnimation, Game, Layout, PipeSkin, VIEW_HEIGHT, VIEW_WIDTH};
 use macroquad::prelude::*;
@@ -73,7 +73,7 @@ pub fn draw(game: &Game, font: Option<&Font>) {
     clear_background(Color::from_rgba(18, 27, 43, 255));
     let view = Viewport::new();
 
-    // The original Construct project uses letterbox scaling at 400x500.
+    // The original the source editor project uses letterbox scaling at 400x500.
     view.rect(0.0, 0.0, VIEW_WIDTH, VIEW_HEIGHT, Color::from_rgba(126, 197, 224, 255));
 
     if game.layout == Layout::Start {

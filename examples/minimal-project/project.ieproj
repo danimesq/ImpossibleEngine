@@ -1,26 +1,56 @@
 {
   "format": "impossible-engine-project",
-  "schema_version": 1,
-  "project": {
-    "id": "org.example.first-game",
-    "name": "First Game",
-    "engine_version": "0.1"
+  "schemaVersion": 1,
+  "name": "First Game",
+  "projectId": "org.example.first-game",
+  "engineVersion": "0.1",
+  "viewportWidth": 400,
+  "viewportHeight": 300,
+  "objectTypes": {
+    "items": ["Player"],
+    "subfolders": []
   },
-  "entry_points": {
-    "scenes": "scenes/index.json",
-    "event_sheets": "event-sheets/index.json",
-    "objects": "objects/index.json"
+  "families": {
+    "items": [],
+    "subfolders": []
   },
-  "resources": {
-    "manifest": "assets/index.json"
+  "layouts": {
+    "items": ["Main"],
+    "subfolders": []
   },
-  "platforms": [
-    "desktop",
-    "web",
-    "wasm"
-  ],
-  "features": {
-    "three_dimensional": false,
-    "timelines": false
-  }
+  "eventSheets": {
+    "items": ["MainEvents"],
+    "subfolders": []
+  },
+  "scripts": {
+    "items": ["main.js"],
+    "subfolders": []
+  },
+  "timelines": {
+    "items": [],
+    "subfolders": []
+  },
+  "flowcharts": {
+    "items": [],
+    "subfolders": []
+  },
+  "models": {
+    "items": [],
+    "subfolders": []
+  },
+  "tilemapBrushes": {
+    "items": [],
+    "subfolders": []
+  },
+  "rootFileFolders": {
+    "script": { "items": [], "subfolders": [] },
+    "sound": { "items": [], "subfolders": [] },
+    "music": { "items": [], "subfolders": [] },
+    "video": { "items": [], "subfolders": [] },
+    "font": { "items": [], "subfolders": [] },
+    "icon": { "items": [], "subfolders": [] },
+    "file": { "items": [], "subfolders": [] }
+  },
+  "autosaveData": null,
+  "containers": []
 }

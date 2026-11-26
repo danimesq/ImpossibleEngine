@@ -1,15 +1,23 @@
 {
   "format": "impossible-engine-project",
-  "schemaVersion": 1,
+  "projectFormatVersion": 1,
+  "savedWithRelease": "0.1.0",
   "name": "First Game",
-  "projectId": "org.example.first-game",
-  "engineVersion": "0.1",
-  "viewportWidth": 400,
-  "viewportHeight": 300,
+  "runtime": "impossible",
+  "useWorker": "auto",
+  "bundleAddons": false,
+  "viewport": {
+    "width": 400,
+    "height": 300
+  },
+  "usedAddons": [],
+  "uniqueId": "iegame-7r2k9m4q",
   "objectTypes": {
     "items": ["Player"],
     "subfolders": []
   },
+  "autosaveData": null,
+  "containers": [],
   "families": {
     "items": [],
     "subfolders": []
@@ -22,9 +30,24 @@
     "items": ["MainEvents"],
     "subfolders": []
   },
-  "scripts": {
-    "items": ["main.js"],
-    "subfolders": []
+  "rootFileFolders": {
+    "script": {
+      "items": [
+        {
+          "name": "main.js",
+          "type": "application/javascript",
+          "sid": 123456789012345,
+          "script-info": { "purpose": "none" }
+        }
+      ],
+      "subfolders": []
+    },
+    "sound": { "items": [], "subfolders": [] },
+    "music": { "items": [], "subfolders": [] },
+    "video": { "items": [], "subfolders": [] },
+    "font": { "items": [], "subfolders": [] },
+    "icon": { "items": [], "subfolders": [] },
+    "file": { "items": [], "subfolders": [] }
   },
   "timelines": {
     "items": [],
@@ -34,23 +57,16 @@
     "items": [],
     "subfolders": []
   },
-  "models": {
+  "3dmodels": {
+    "items": [],
+    "subfolders": []
+  },
+  "palettes": {
     "items": [],
     "subfolders": []
   },
   "tilemapBrushes": {
     "items": [],
     "subfolders": []
-  },
-  "rootFileFolders": {
-    "script": { "items": [], "subfolders": [] },
-    "sound": { "items": [], "subfolders": [] },
-    "music": { "items": [], "subfolders": [] },
-    "video": { "items": [], "subfolders": [] },
-    "font": { "items": [], "subfolders": [] },
-    "icon": { "items": [], "subfolders": [] },
-    "file": { "items": [], "subfolders": [] }
-  },
-  "autosaveData": null,
-  "containers": []
+  }
 }

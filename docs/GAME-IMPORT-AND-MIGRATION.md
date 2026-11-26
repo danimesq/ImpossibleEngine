@@ -1,16 +1,16 @@
 # Game import and migration strategy
 
 **Status:** Architecture proposal, 2026-11-25.  
-**Scope:** Source-preserving import paths for Construct 2/3 projects and Delphi/Object Pascal game recovery into ImpossibleEngine and native Rust.
+**Scope:** Source-preserving import paths for legacy visual-editor projects and Delphi/Object Pascal game recovery into ImpossibleEngine and native Rust.
 
 ## 1. Two source families, one destination model
 
 ImpossibleEngine should support multiple source adapters that converge on the same versioned project model and typed Event Sheet IR:
 
-- **Construct 2/3:** structured project container, layouts, object model, event graph and plugin/behavior ecosystem.
+- **legacy visual-editor:** structured project container, layouts, object model, event graph and plugin/behavior ecosystem.
 - **Delphi/Object Pascal:** surviving source or binary/resources, reverse-engineering evidence, reconstructed Pascal and semantic port.
 
-These are not the same reverse-engineering problem. A Construct project may expose a structured event graph. A Delphi executable may require substantial static and dynamic analysis to reconstruct behavior. The shared destination does not justify pretending the source formats are equivalent.
+These are not the same reverse-engineering problem. A the source editor project may expose a structured event graph. A Delphi executable may require substantial static and dynamic analysis to reconstruct behavior. The shared destination does not justify pretending the source formats are equivalent.
 
 ## 2. Import architecture
 
@@ -48,7 +48,7 @@ Original project / executable / assets
 
 Every import stores source identity, source version, source-file hashes, provenance and a coverage report. A failed mapping must not destroy original project data.
 
-## 3. Construct 2/3 adapter
+## 3. legacy visual-editor adapter
 
 The importer must be version-aware and preserve the original event graph before normalization. Plugins and behaviors are versioned semantic dependencies, not merely names displayed in an editor.
 
@@ -71,7 +71,7 @@ A mapping is not exact simply because operation names look similar. Object picki
 
 ### Actual pilot: Flappy Madruga
 
-The first source project is danimesq/Flappy-Ramon, whose checked-in Construct 2 project file is named Flappy Madruga.caproj. It is a real source project, not a placeholder fixture. Its project metadata records version 0.6.1.6, Construct save version 21400, HTML5 export configuration and a 400 × 500 portrait layout.
+The first source project is danimesq/Flappy-Ramon, whose checked-in legacy visual-editor project file is named Flappy Madruga.caproj. It is a real source project, not a placeholder fixture. Its project metadata records version 0.6.1.6, the source editor save version 21400, HTML5 export configuration and a 400 × 500 portrait layout.
 
 The project has Start, Continuous and Chaves layouts, and five event sheets. The Chaves sheet includes Common in-game and Common in-levels; Continuous events includes Common in-game. The source declares Audio, Browser, Button, Facebook, Keyboard, Sprite, Text, Tiled Background, Touch, WebStorage and Google Play plugins, plus Platform and Solid behaviors.
 
@@ -82,7 +82,7 @@ Known gameplay structure includes:
 - JumpStrength = 500, SCROLLSPEED = 150, SECONDSPEROBSTACLE = 1 and Score = 0 at source declaration; common layout initialization later sets SCROLLSPEED to 300 and Score to 0.
 - The Chaves layout-start event sets Required_Score = 10 and changes TopPipe/BottomPipe to their Chaves animation.
 - Touch-start OR Space-key input is guarded by Queda and sets Platform behavior vertical velocity to -JUMPSTRENGTH, angle to 320, and animation to Flying; a 0.5-second Wait then restores Default animation.
-- Background and pipes scroll on every tick using SCROLLSPEED multiplied by Construct's dt.
+- Background and pipes scroll on every tick using SCROLLSPEED multiplied by the source editor's dt.
 - Pipe pairs are created every SECONDSPEROBSTACLE seconds, with randomized TopPipe Y and BottomPipe positioned relative to it.
 - The first time each BottomPipe passes Madruga, Score increases and that pipe's Scored flag is set.
 - Collisions with TiledBackground2, TopPipe and BottomPipe initiate fall/game-over behavior, stop scrolling and obstacle creation, play audio, and reveal/enable retry UI.
@@ -113,7 +113,7 @@ The first implementation should parse and inventory all of these constructs befo
 | Every-X-seconds spawn, random Y and linked pipe placement | Timer + deterministic RNG + instance relationship support required |
 | WebStorage, Audio, font, Facebook and Google Play | Explicit host-service adapters or visible unsupported status |
 
-A Construct 3 adapter is separate from the Construct 2 adapter. The importer must read the actual source version and use the matching parser/semantic registry.
+A legacy visual-editor adapter is separate from the legacy visual-editor adapter. The importer must read the actual source version and use the matching parser/semantic registry.
 
 ## 4. Delphi -> reverse engineering -> Pascal -> native Rust
 
@@ -185,7 +185,7 @@ The importer must never block unrelated editor work, and it must never make the 
 
 ## 7. First Impossible project: complete Flappy Madruga port
 
-**Round objective:** make the existing Flappy Madruga / Flappy Ramon Construct 2 project the first complete end-to-end Impossible project. This is a full-project migration goal, not merely a compiler demo or a three-event sample. The current PR establishes the source-derived specification, the initial typed JSON/Rust slice, source inventory, and an asset-ready project scaffold. It does **not** claim that the full port is already implemented.
+**Round objective:** make the existing Flappy Madruga / Flappy Ramon legacy visual-editor project the first complete end-to-end Impossible project. This is a full-project migration goal, not merely a compiler demo or a three-event sample. The current PR establishes the source-derived specification, the initial typed JSON/Rust slice, source inventory, and an asset-ready project scaffold. It does **not** claim that the full port is already implemented.
 
 Project workspace: projects/flappy-ramon/
 
@@ -218,7 +218,7 @@ The initial workspace reserves these folders:
 - projects/flappy-ramon/assets/ui/
 - projects/flappy-ramon/assets/icons/
 
-The manifest records known media references from the Construct project, including Ramon.png, Ramon Fly.gif, the Chaves pipe frames 1.png through 4.png, the Vila do Chaves background, Splash.png, beat and Queda sound effects, Music tracks, PressStart2P.ttf and the icon/loading-logo set. Original Windows absolute paths are source metadata only; they must be converted into portable project-relative asset IDs. Missing files remain placeholders until the original media is supplied and verified. Do not fabricate or silently substitute copyrighted media.
+The manifest records known media references from the the source editor project, including Ramon.png, Ramon Fly.gif, the Chaves pipe frames 1.png through 4.png, the Vila do Chaves background, Splash.png, beat and Queda sound effects, Music tracks, PressStart2P.ttf and the icon/loading-logo set. Original Windows absolute paths are source metadata only; they must be converted into portable project-relative asset IDs. Missing files remain placeholders until the original media is supplied and verified. Do not fabricate or silently substitute copyrighted media.
 
 ### Build and fidelity gates
 
@@ -241,11 +241,11 @@ The initial JSON/Rust example under examples/flappy-madruga is only a tiny sourc
 - Every unsupported construct is either implemented, replaced by a documented equivalent, or explicitly blocks the complete-port claim.
 - Native Rust build and regression tests pass.
 - Asset placeholders are all either populated and verified or clearly marked as pending, with no silent fallbacks.
-- The project can be rebuilt from its portable manifest without depending on the Construct 2 editor/runtime.
+- The project can be rebuilt from its portable manifest without depending on the legacy visual-editor editor/runtime.
 
 
 ## Current migration-round boundary (2026-11-25)
 
-This round is **not** implementing a general Construct 2/3 importer. The team is directly porting the one known Flappy Madruga project from its checked-in source files into the native Rust project under projects/flappy-ramon/. The manual event map and source model preserve the exact source IDs and the current implementation status.
+This round is **not** implementing a general legacy visual-editor importer. The team is directly porting the one known Flappy Madruga project from its checked-in source files into the native Rust project under projects/flappy-ramon/. The manual event map and source model preserve the exact source IDs and the current implementation status.
 
 A future generic importer can be designed after this first game establishes and tests the runtime/IR boundary. Do not broaden the current work into a generic C2/C3 parser, plugin registry or arbitrary-project conversion pipeline.

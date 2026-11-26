@@ -1,5 +1,5 @@
 //! Illustrative typed Rust output for the source-derived Flappy Madruga slice.
-//! Source: danimesq/Flappy-Ramon, Construct 2 event sheets.
+//! Source: danimesq/Flappy-Ramon, legacy visual-editor event sheets.
 //! This is a reference output, not output from an implemented IGC compiler.
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -77,7 +77,7 @@ pub fn on_common_game_layout_start(state: &mut FlappyMadrugaState) {
 
 /// Source event SID 1385689931601852 in Event sheets/Common in-game.xml.
 ///
-/// Construct's dt is kept explicit. The importer must verify the source
+/// the source editor's dt is kept explicit. The importer must verify the source
 /// scheduler and delta semantics before claiming runtime equivalence.
 pub fn every_source_tick(state: &mut FlappyMadrugaState, source_dt_seconds: f32) {
     if !source_dt_seconds.is_finite() || source_dt_seconds < 0.0 {

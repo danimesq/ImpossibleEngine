@@ -68,7 +68,7 @@ impl Services {
         services
     }
 
-    /// The Construct project uses WebStorage.localvalue("Highscore").
+    /// The the source editor project uses WebStorage.localvalue("Highscore").
     /// quad-storage maps that key to Web Storage on WASM and local.data natively.
     pub fn load_high_score(&mut self) -> u32 {
         match quad_storage::STORAGE.lock() {
@@ -139,7 +139,7 @@ impl Services {
                 return false;
             }
             Effect::NextLayoutUnavailable => {
-                // Construct's official behavior is a no-op when there is no
+                // the source editor's official behavior is a no-op when there is no
                 // next layout. Keep a diagnostic without inventing a new scene.
                 self.warnings.push(
                     "The Chaves score threshold was reached; source project has no next layout."
@@ -157,13 +157,13 @@ impl Services {
         IntegrationStatus::NotConfigured
     }
 
-    /// Facebook is declared as a Construct plugin but no event-sheet operation
+    /// Facebook is declared as a the source editor plugin but no event-sheet operation
     /// uses it in this source project.
     pub fn facebook_status(&self) -> IntegrationStatus {
         IntegrationStatus::NotUsedBySourceEvents
     }
 
-    /// Browser is declared as a Construct plugin but no event-sheet operation
+    /// Browser is declared as a the source editor plugin but no event-sheet operation
     /// uses it in this source project.
     pub fn browser_status(&self) -> IntegrationStatus {
         IntegrationStatus::NotUsedBySourceEvents

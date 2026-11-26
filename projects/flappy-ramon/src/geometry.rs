@@ -82,7 +82,7 @@ pub const BOTTOM_PIPE_CHAVES: [[Point; 7]; 4] = [
     ],
 ];
 
-/// Transform normalized Construct collision points through the object's
+/// Transform normalized the source editor collision points through the object's
 /// hotspot and rotation into world coordinates.
 pub fn transform_polygon(
     points: &[Point],
@@ -100,7 +100,7 @@ pub fn transform_polygon(
             let local_x = (point[0] - hotspot[0]) * size[0];
             let local_y = (point[1] - hotspot[1]) * size[1];
 
-            // Construct's screen-space positive angle rotates clockwise.
+            // the source editor's screen-space positive angle rotates clockwise.
             [
                 position[0] + local_x * cos - local_y * sin,
                 position[1] + local_x * sin + local_y * cos,

@@ -12,8 +12,8 @@
     "default_branch": "master",
     "revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
     "project_file": "Flappy Madruga.caproj",
-    "construct_project_version": "0.6.1.6",
-    "construct_saved_with_version": 21400,
+    "source_editor_project_version": "0.6.1.6",
+    "source_editor_saved_with_version": 21400,
     "exporter": "html5",
     "application_id": "com.gamlr.flappymadruga"
   },

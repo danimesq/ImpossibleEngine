@@ -1,0 +1,72 @@
+{
+  "format": "impossible-engine-project",
+  "projectFormatVersion": 1,
+  "savedWithRelease": "0.1.0",
+  "name": "First Game",
+  "runtime": "impossible",
+  "useWorker": "auto",
+  "bundleAddons": false,
+  "viewport": {
+    "width": 400,
+    "height": 300
+  },
+  "usedAddons": [],
+  "uniqueId": "iegame-7r2k9m4q",
+  "objectTypes": {
+    "items": ["Player"],
+    "subfolders": []
+  },
+  "autosaveData": null,
+  "containers": [],
+  "families": {
+    "items": [],
+    "subfolders": []
+  },
+  "layouts": {
+    "items": ["Main"],
+    "subfolders": []
+  },
+  "eventSheets": {
+    "items": ["MainEvents"],
+    "subfolders": []
+  },
+  "rootFileFolders": {
+    "script": {
+      "items": [
+        {
+          "name": "main.js",
+          "type": "application/javascript",
+          "sid": 123456789012345,
+          "script-info": { "purpose": "none" }
+        }
+      ],
+      "subfolders": []
+    },
+    "sound": { "items": [], "subfolders": [] },
+    "music": { "items": [], "subfolders": [] },
+    "video": { "items": [], "subfolders": [] },
+    "font": { "items": [], "subfolders": [] },
+    "icon": { "items": [], "subfolders": [] },
+    "file": { "items": [], "subfolders": [] }
+  },
+  "timelines": {
+    "items": [],
+    "subfolders": []
+  },
+  "flowcharts": {
+    "items": [],
+    "subfolders": []
+  },
+  "3dmodels": {
+    "items": [],
+    "subfolders": []
+  },
+  "palettes": {
+    "items": [],
+    "subfolders": []
+  },
+  "tilemapBrushes": {
+    "items": [],
+    "subfolders": []
+  }
+}

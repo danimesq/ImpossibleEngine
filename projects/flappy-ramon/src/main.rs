@@ -48,7 +48,7 @@ async fn main() {
             return_pressed: enter_pressed,
         };
 
-        // Construct's Every tick uses its source dt value. Do not replace this
+        // the source editor's Every tick uses its source dt value. Do not replace this
         // with the renderer's fixed timestep or silently clamp it.
         let source_dt = get_frame_time();
         game.update(input, source_dt);

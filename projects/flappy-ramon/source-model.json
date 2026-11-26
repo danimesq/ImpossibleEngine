@@ -7,7 +7,7 @@
     "revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
     "project_file": "Flappy Madruga.caproj",
     "project_version": "0.6.1.6",
-    "construct_saved_with_version": 21400,
+    "source_editor_saved_with_version": 21400,
     "exporter": "html5",
     "viewport": {
       "width": 400,
@@ -569,7 +569,7 @@
       "Background",
       "Obstacle"
     ],
-    "time_source": "Construct per-frame dt, sampled once per host frame",
+    "time_source": "the source editor per-frame dt, sampled once per host frame",
     "initial_pipe_instances_destroyed_on_layout_start": true,
     "first_pipe_spawn_seconds": 1,
     "pipe_pair": {

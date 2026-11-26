@@ -3,7 +3,7 @@
   "version": 1,
   "project": "danimesq/Flappy-Ramon",
   "source_revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
-  "port_policy": "This is a hand-authored port of this known project. No generic Construct importer is part of this round.",
+  "port_policy": "This is a hand-authored port of this known project. No generic the source editor importer is part of this round.",
   "event_sheets": [
     {
       "path": "Event sheets/Start events.xml",
@@ -426,7 +426,7 @@
             "Go to next layout"
           ],
           "status": "source_semantics_preserved",
-          "rust": "Game::update_level_progression; no-op at last layout, matching Construct's documented behavior"
+          "rust": "Game::update_level_progression; no-op at last layout, matching the source editor's documented behavior"
         }
       ]
     },
@@ -458,9 +458,9 @@
     "The source project declares Facebook and Browser plugins but the checked-in Event Sheets contain no actions or conditions for those plugins.",
     "Google Play SignIn is used on Android in Start events. This port exposes a callback boundary and an offline fallback; it does not claim to include a configured Google Play Games SDK client.",
     "Original media bytes are intentionally pending. Audio/font integrations resolve project-relative paths and emit warnings while placeholders are empty.",
-    "The generic Construct 2/3 importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project.",
-    "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh Construct event group.",
-    "The Chaves layout-start animation event must be considered together with the included Common in-game layout-start Destroy actions. Construct 2 treats Destroy as deferred until event-sheet processing completes; the editor-time pipe instances therefore do not establish a skin for later timer-created instances. The Rust gameplay model keeps spawned pipe pairs on Default animation until a differential run proves otherwise.",
-    "Construct 2 defaults to max dt=1/30 second for per-tick and behavior movement. Every-X-seconds and Wait are time-based System events and must not be accumulated from the capped movement dt."
+    "The generic legacy visual-editor importer is explicitly out of scope for this round. This event coverage is a hand-authored mapping of the one known Flappy Madruga project.",
+    "The retry parent event and its Queda-guarded child are root events after the six named groups; they are not a seventh the source editor event group.",
+    "The Chaves layout-start animation event must be considered together with the included Common in-game layout-start Destroy actions. legacy visual-editor treats Destroy as deferred until event-sheet processing completes; the editor-time pipe instances therefore do not establish a skin for later timer-created instances. The Rust gameplay model keeps spawned pipe pairs on Default animation until a differential run proves otherwise.",
+    "legacy visual-editor defaults to max dt=1/30 second for per-tick and behavior movement. Every-X-seconds and Wait are time-based System events and must not be accumulated from the capped movement dt."
   ]
 }

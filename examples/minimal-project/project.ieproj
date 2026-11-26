@@ -1,0 +1,26 @@
+{
+  "format": "impossible-engine-project",
+  "schema_version": 1,
+  "project": {
+    "id": "org.example.first-game",
+    "name": "First Game",
+    "engine_version": "0.1"
+  },
+  "entry_points": {
+    "scenes": "scenes/index.json",
+    "event_sheets": "event-sheets/index.json",
+    "objects": "objects/index.json"
+  },
+  "resources": {
+    "manifest": "assets/index.json"
+  },
+  "platforms": [
+    "desktop",
+    "web",
+    "wasm"
+  ],
+  "features": {
+    "three_dimensional": false,
+    "timelines": false
+  }
+}

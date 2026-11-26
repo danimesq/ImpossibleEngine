@@ -1,6 +1,6 @@
 //! Direct, hand-authored Rust port of the Flappy Madruga event logic.
 //!
-//! This is not a Construct importer. The source project, layouts and event
+//! This is not a the source editor importer. The source project, layouts and event
 //! sheets were inspected and translated directly. The update order below
 //! follows the original Event Sheet group order:
 //! Start -> Movement -> Collisions -> Scoring -> Background -> Obstacle.
@@ -109,13 +109,13 @@ pub struct InputFrame {
 
 #[derive(Clone, Debug)]
 pub struct Bird {
-    /// Construct world position is the sprite hotspot, not its visual center.
+    /// the source editor world position is the sprite hotspot, not its visual center.
     pub position: [f32; 2],
     pub velocity_y: f32,
     pub angle_degrees: f32,
     pub queda: bool,
     pub animation: BirdAnimation,
-    /// Construct Wait actions are independent continuations. A repeated flap
+    /// the source editor Wait actions are independent continuations. A repeated flap
     /// can therefore enqueue another 0.5-second animation reset.
     animation_reset_waits: Vec<f32>,
 }
@@ -324,7 +324,7 @@ impl Game {
         // Chaves.xml sets Required_Score=10 and applies the Chaves
         // animation to the editor-time TopPipe/BottomPipe instances.
         // Common in-game is included before this event and queues those
-        // editor-time instances for destruction. Construct applies Destroy
+        // editor-time instances for destruction. the source editor applies Destroy
         // after event processing, so the animation action is accounted for,
         // but the later timer-created instances start with Default animation.
         if layout == Layout::Chaves {
@@ -379,7 +379,7 @@ impl Game {
             0.0
         };
 
-        // Construct 2 defaults to a maximum dt of 1/30 second. When a frame
+        // legacy visual-editor defaults to a maximum dt of 1/30 second. When a frame
         // takes longer, per-tick movement goes into slow motion instead of
         // jumping through collision surfaces. System timers and Wait
         // continuations still consume elapsed time independently.
@@ -664,7 +664,7 @@ impl Game {
             self.tiled_background_x -= movement;
         }
 
-        // Construct destroys TopPipe and BottomPipe independently.
+        // the source editor destroys TopPipe and BottomPipe independently.
         for pair in &mut self.pipes {
             if pair.top_alive && pair.top.x < PIPE_DESTROY_X {
                 pair.top_alive = false;
@@ -686,7 +686,7 @@ impl Game {
         while self.spawn_elapsed >= self.seconds_per_obstacle {
             self.spawn_elapsed -= self.seconds_per_obstacle;
 
-            // Construct expression random(-70, -250), represented as a
+            // the source editor expression random(-70, -250), represented as a
             // uniformly sampled Y in [-250, -70]. BottomPipe.Y = TopPipe.Y+750.
             let top_y = self.random_range(-250.0, -70.0);
             let pair = PipePair::spawned(self.next_entity_id, top_y);
@@ -716,7 +716,7 @@ impl Game {
             return;
         }
 
-        // A newly scheduled Construct Wait begins after this event action.
+        // A newly scheduled the source editor Wait begins after this event action.
         if input.restart_pressed && self.bird.queda && self.restart_wait.is_none() {
             self.restart_wait = Some(0.1);
         }
@@ -883,7 +883,7 @@ mod tests {
 
         game.update(InputFrame::default(), 0.5);
 
-        // Construct's default maximum delta is 1/30 second: 300 px/s * 1/30.
+        // the source editor's default maximum delta is 1/30 second: 300 px/s * 1/30.
         assert!((game.pipes[0].top.x - (initial_x - 10.0)).abs() < 0.001);
     }
 

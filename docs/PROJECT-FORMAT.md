@@ -123,6 +123,33 @@ ImpossibleEngine owns the editable `.ieproj` project and the high-level export c
 
 RustMultiConsoleFoundation owns the common `web-export.json` contract, package-path validation, browser resource loading and platform host. StreetChavesRust uses that same API and runtime contract as a game consumer. The editable project format and the published Web/WASM package are separate products with separate schemas.
 
+A Rust publishing backend can build the export descriptor with the public Foundation API:
+
+```rust
+use foundation_runtime::web_export::{
+    WebAssetKind, WebExportAsset, WebExportBuilder, WEB_EXPORT_MANIFEST_FILE,
+};
+
+let manifest = WebExportBuilder::new(project.application_id(), project.name())
+    .wasm_bundle(
+        "pkg/game.js",
+        "pkg/game_bg.wasm",
+    )
+    .asset(WebExportAsset::new(
+        "main_scene_atlas",
+        "assets/images/main-scene.webp",
+        WebAssetKind::Image,
+    ))
+    .build()?;
+
+std::fs::write(
+    output_dir.join(WEB_EXPORT_MANIFEST_FILE),
+    manifest.to_json()?,
+)?;
+```
+
+The exporter derives the application identity and asset catalog from the editable project/build result. The compiled WASM bundle and the copied resource files must be placed at the paths declared by the manifest. The current GTK/Python editor prototype is not yet wired to this Rust publishing backend; this documents the intended integration point rather than claiming that the editor already exports packages.
+
 ## Validation strategy
 
 Before declaring a project schema version stable, keep fixtures that exercise:

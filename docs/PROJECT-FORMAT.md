@@ -123,32 +123,34 @@ ImpossibleEngine owns the editable `.ieproj` project and the high-level export c
 
 RustMultiConsoleFoundation owns the common `web-export.json` contract, package-path validation, browser resource loading and platform host. StreetChavesRust uses that same API and runtime contract as a game consumer. The editable project format and the published Web/WASM package are separate products with separate schemas.
 
-A Rust publishing backend can build the export descriptor with the public Foundation API:
+A Rust publishing backend can stage the browser package through Foundation's public library API:
 
 ```rust
 use foundation_runtime::web_export::{
-    WebAssetKind, WebExportAsset, WebExportBuilder, WEB_EXPORT_MANIFEST_FILE,
+    WebAssetKind, WebExportAsset, WebExportBuilder,
 };
 
-let manifest = WebExportBuilder::new(project.application_id(), project.name())
-    .wasm_bundle(
+WebExportBuilder::new(project.application_id(), project.name())
+    .wasm_bundle_files(
+        "target/web/game.js",
+        "target/web/game_bg.wasm",
         "pkg/game.js",
         "pkg/game_bg.wasm",
     )
-    .asset(WebExportAsset::new(
-        "main_scene_atlas",
-        "assets/images/main-scene.webp",
-        WebAssetKind::Image,
-    ))
-    .build()?;
-
-std::fs::write(
-    output_dir.join(WEB_EXPORT_MANIFEST_FILE),
-    manifest.to_json()?,
-)?;
+    .asset_file(
+        WebExportAsset::new(
+            "main_scene_atlas",
+            "assets/images/main-scene.webp",
+            WebAssetKind::Image,
+        ),
+        project.asset_source_path("main_scene_atlas")?,
+    )
+    .package_file("web-template/index.html", "index.html")
+    .package_file("web-template/main.js", "main.js")
+    .write_to("dist/web")?;
 ```
 
-The exporter derives the application identity and asset catalog from the editable project/build result. The compiled WASM bundle and the copied resource files must be placed at the paths declared by the manifest. The current GTK/Python editor prototype is not yet wired to this Rust publishing backend; this documents the intended integration point rather than claiming that the editor already exports packages.
+The exporter derives project identity, resource IDs and source paths from the editable project/build result. The WASM compilation step creates the generated module and JavaScript glue; Foundation copies those outputs and declared resources into the package and writes `web-export.json`. The current GTK/Python editor prototype is not yet wired to this Rust publishing backend; this documents the intended integration point rather than claiming the editor already exports packages.
 
 ## Validation strategy
 

@@ -1,8 +1,8 @@
 # Flappy Madruga — first Impossible project
 
 **Source:** [danimesq/Flappy-Ramon](https://github.com/danimesq/Flappy-Ramon)  
-**Original project:** Flappy Madruga, Construct 2, version 0.6.1.6  
-**Port status:** First native Rust implementation is in progress. The source project is mapped directly; a general-purpose Construct importer is not part of this round.
+**Original project:** Flappy Madruga, legacy visual-editor, version 0.6.1.6  
+**Port status:** First native Rust implementation is in progress. The source project is mapped directly; a general-purpose the source editor importer is not part of this round.
 
 ## Run
 
@@ -58,8 +58,8 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 - The original Start/Continuous/Chaves layout order is preserved.
 - Common in-game destroys the design-time TopPipe and BottomPipe instances at layout start. The first runtime pair is created after the one-second obstacle interval.
-- Construct's per-frame dt is preserved for movement, including the default 1/30-second maximum delta cap. System Every-X-seconds timers and Wait continuations use elapsed time independently rather than accumulating the capped movement dt.
-- Chaves is the last source layout. Construct's Go to next layout action does nothing when already on the last layout.
+- the source editor's per-frame dt is preserved for movement, including the default 1/30-second maximum delta cap. System Every-X-seconds timers and Wait continuations use elapsed time independently rather than accumulating the capped movement dt.
+- Chaves is the last source layout. the source editor's Go to next layout action does nothing when already on the last layout.
 - The original project declares Facebook and Browser plugins but does not use either in its checked-in event sheets.
 - Google Play is used on Android but the checked-in project does not provide an SDK client ID/credentials. The current port falls back to offline play and exposes a callback boundary for a future configured adapter.
 

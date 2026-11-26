@@ -10,7 +10,7 @@ ImpossibleEngine can use JSON as a declarative gameplay authoring language and s
 The intended path is:
 
 ~~~text
-Construct / native editor events
+the source editor / native editor events
         |
         v
 versioned source-preserving project JSON
@@ -38,13 +38,13 @@ JSON is the authoring and interchange representation. It is **not required to be
 
 The hard part is not converting JSON fields into Rust syntax. It is defining the original game's execution semantics precisely enough that the generated program behaves the same way.
 
-## 2. This is grounded in a real Construct 2 project
+## 2. This is grounded in a real legacy visual-editor project
 
 The first migration fixture is not a made-up Flappy clone. The source project already exists at [danimesq/Flappy-Ramon](https://github.com/danimesq/Flappy-Ramon), and its project metadata identifies the game as **Flappy Madruga**.
 
 The source project contains:
 
-- Flappy Madruga.caproj, project version 0.6.1.6, saved with Construct version 21400.
+- Flappy Madruga.caproj, project version 0.6.1.6, saved with the source editor version 21400.
 - A 400 × 500 portrait game configured for the HTML5 exporter.
 - Layouts: Start, Continuous and Chaves.
 - Event sheets: Start events, Continuous events, Common in-game, Common in-levels and Chaves.
@@ -86,7 +86,7 @@ A compiler must not guess the meaning of an Event Sheet. Version 1 establishes t
 2. **Condition order:** conditions are evaluated in declaration order and combined with logical AND unless the source event explicitly declares OR semantics.
 3. **Action order:** actions execute sequentially in declaration order.
 4. **Immediate writes:** an action's state changes are visible to later actions and later events in the same dispatch, unless the source runtime specifies deferred behavior.
-5. **Delta-time provenance:** a source expression using Construct's dt must remain tied to the source runtime's per-tick delta semantics. Do not silently replace it with a fixed timestep or render-frame delta from another runtime.
+5. **Delta-time provenance:** a source expression using the source editor's dt must remain tied to the source runtime's per-tick delta semantics. Do not silently replace it with a fixed timestep or render-frame delta from another runtime.
 6. **Input edges:** touch-start and key-pressed triggers are edge events. They must not repeat because the renderer runs more than once.
 7. **Typed references:** every object, variable, behavior, animation and expression reference resolves against a symbol/type table. Unknown paths, incompatible types and unknown enum values are diagnostics.
 8. **No string evaluation:** expressions are an allowlisted AST. Source expression text is parsed into that AST; it is never passed to eval, a shell, a template engine or arbitrary Rust source generation.
@@ -115,7 +115,7 @@ The source-derived fixture deliberately compiles only a bounded subset whose mea
 
 - Chaves layout start: set Required_Score to 10 and select the Chaves animation for TopPipe and BottomPipe.
 - Common in-game layout start: reset the Queda flag and Score, set SCROLLSPEED to 300 and SECONDSPEROBSTACLE to 1, and reset the two tiled-background X coordinates.
-- Background group, every tick: move BottomPipe, TopPipe, TiledBackground2 and TiledBackground using their X coordinate minus SCROLLSPEED multiplied by Construct's dt.
+- Background group, every tick: move BottomPipe, TopPipe, TiledBackground2 and TiledBackground using their X coordinate minus SCROLLSPEED multiplied by the source editor's dt.
 
 The generated Rust reference mirrors these actions and keeps the source delta explicit. It does not invent a bird collision event or pretend the whole game has been ported.
 
@@ -127,7 +127,7 @@ The source project also contains additional behavior that must remain visible in
 - Background wrap thresholds, pipe destruction, obstacle creation every SECONDSPEROBSTACLE seconds, and random TopPipe Y placement.
 - High-score persistence through WebStorage, font loading, audio playback, Facebook and Google Play integrations, and layout navigation/restart behavior.
 
-These are not interchangeable with generic if statements. For example, the touch event is an OR-trigger with nested child conditions; the pipe scoring event uses per-instance picking and a one-time flag; obstacle creation uses a source-specific random expression and object-instance relationships; the game uses the Construct Platform behavior. Each requires explicit mappings and tests.
+These are not interchangeable with generic if statements. For example, the touch event is an OR-trigger with nested child conditions; the pipe scoring event uses per-instance picking and a one-time flag; obstacle creation uses a source-specific random expression and object-instance relationships; the game uses the the source editor Platform behavior. Each requires explicit mappings and tests.
 
 ## 7. Compiler stages and diagnostics
 
@@ -175,9 +175,9 @@ Successful source generation is not a successful game build. A compiler implemen
 
 A hybrid game is expected, not a failure. A project may compile most bounded Event Sheets to Rust and retain specialized native modules for the rest. The compiler must make that boundary visible.
 
-## 9. Construct 2 / Construct 3 migration contract
+## 9. legacy visual-editor / legacy visual-editor migration contract
 
-The Construct importer must preserve the original event graph before attempting Rust generation. It should record, at minimum:
+The the source editor importer must preserve the original event graph before attempting Rust generation. It should record, at minimum:
 
 - source application/version and project identity;
 - layout, layer, object, family and instance identifiers;
@@ -189,7 +189,7 @@ The Construct importer must preserve the original event graph before attempting 
 - asset references, animation frames, origins, collision polygons and audio metadata;
 - constructs unsupported, ambiguous or dependent on an unavailable plugin.
 
-Use a versioned adapter per source format/version and a registry mapping source condition/action/behavior IDs to typed IR operations. Do not assume similarly named operations in Construct 2 and Construct 3 have identical semantics.
+Use a versioned adapter per source format/version and a registry mapping source condition/action/behavior IDs to typed IR operations. Do not assume similarly named operations in legacy visual-editor and legacy visual-editor have identical semantics.
 
 Every imported construct gets a migration status:
 
@@ -212,7 +212,7 @@ A safe sequence:
 5. Add Touch/Keyboard OR triggers, Platform behavior and Wait continuations only after their semantics are implemented.
 6. Add collision, object picking, one-time pipe scoring, spawn/destruction and random placement with deterministic regression fixtures.
 7. Add audio, WebStorage, fonts, Google Play and Facebook behind explicit services or retain them as reported unsupported integrations.
-8. Compare state traces and play scenarios against the original Construct build before expanding the supported subset.
+8. Compare state traces and play scenarios against the original the source editor build before expanding the supported subset.
 
 Do not claim a full C2/C3 port because a game launches or looks similar. Timing, object picking, collision polygons, animation transitions, plugin behavior and event ordering are part of compatibility.
 
@@ -262,7 +262,7 @@ Do not invent a Foundation crate path or add an unverified dependency. Generated
 3. **Typed IR:** lower the fixture without importing GTK or platform code.
 4. **Rust backend:** generate the reference-equivalent functions and compile them in CI.
 5. **Conformance harness:** compare state snapshots from a source-compatible reference model and generated Rust.
-6. **Construct importer:** parse the actual Flappy Madruga project and publish an honest per-feature coverage report.
+6. **the source editor importer:** parse the actual Flappy Madruga project and publish an honest per-feature coverage report.
 7. **Pascal recovery adapter:** ingest reconstructed Pascal with provenance, then migrate bounded routines and native Rust islands.
 8. **Runtime/Foundation integration:** only after the selected public host contract and target adapter compile independently.
 
@@ -276,12 +276,12 @@ Do not invent a Foundation crate path or add an unverified dependency. Generated
 - Generated Rust compiles and tests pass.
 - Source IDs survive parsing, lowering and code generation for diagnostics.
 - Unsupported importer features are preserved and reported, not dropped.
-- Construct and Pascal importers use independent, testable adapters.
+- the source editor and Pascal importers use independent, testable adapters.
 - Platform/runtime limitations are explicit, and no unverified Foundation API is assumed.
 
 ## Non-goals of this proposal
 
-This document and its fixtures do not implement a Construct importer, Delphi decompiler, Pascal parser, typed compiler, Rust generator, runtime VM, renderer, physics engine or production platform adapter. They establish an explicit, testable design target for those future implementations.
+This document and its fixtures do not implement a the source editor importer, Delphi decompiler, Pascal parser, typed compiler, Rust generator, runtime VM, renderer, physics engine or production platform adapter. They establish an explicit, testable design target for those future implementations.
 
 
 ## 14. Full-project acceptance target: Flappy Madruga

@@ -7,7 +7,7 @@
 
 Impossible Engine should use a one-time purchase as its primary software licensing model. A qualifying purchase grants a perpetual license under clearly defined terms.
 
-The model is inspired by the appeal of classic perpetual desktop-software licenses, including the historical Construct 2 approach, but it should not assume that Impossible must copy Construct 2's exact packages, revenue thresholds or update policy.
+The model is inspired by the appeal of classic perpetual desktop-software licenses, including the historical legacy visual-editor approach, but it should not assume that Impossible must copy legacy visual-editor's exact packages, revenue thresholds or update policy.
 
 The commercial promise must be precise. "Lifetime" is not a complete legal or technical definition.
 

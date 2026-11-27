@@ -86,6 +86,30 @@ class AddonRegistry:
             raise AddonRegistryError("Registry must declare aceModel and addons.")
 
     @staticmethod
+    def _validate_parameters(parameters: Any, owner: str) -> None:
+        if not isinstance(parameters, list):
+            raise AddonRegistryError(f"Parameters must be an array on {owner}.")
+        names: set[str] = set()
+        for parameter in parameters:
+            required = {"name", "label", "description", "type", "required"}
+            if not isinstance(parameter, dict) or not required <= parameter.keys():
+                raise AddonRegistryError(f"Incomplete parameter metadata on {owner}.")
+            name, kind = parameter["name"], parameter["type"]
+            if not isinstance(name, str) or not name.strip():
+                raise AddonRegistryError(f"Parameter name must be non-empty on {owner}.")
+            if not isinstance(kind, str) or kind not in PARAMETER_TYPES:
+                raise AddonRegistryError(f"Unknown parameter type {kind!r} on {owner}.{name}.")
+            if name in names:
+                raise AddonRegistryError(f"Duplicate parameter {name!r} on {owner}.")
+            names.add(name)
+            if not isinstance(parameter["required"], bool):
+                raise AddonRegistryError(f"Parameter required flag must be boolean on {owner}.{name}.")
+            if kind == "enum" and (not isinstance(parameter.get("options"), list) or not parameter["options"]):
+                raise AddonRegistryError(f"Enum options are required on {owner}.{name}.")
+            if "minimum" in parameter and "maximum" in parameter and parameter["minimum"] > parameter["maximum"]:
+                raise AddonRegistryError(f"Minimum exceeds maximum on {owner}.{name}.")
+
+    @staticmethod
     def _parse_ace(item: Any, section: str, owner: str, seen: set[str]) -> AceDefinition:
         if not isinstance(item, dict):
             raise AddonRegistryError(f"Malformed {section} entry in {owner}.")
@@ -103,7 +127,7 @@ class AddonRegistry:
         for q in item["parameters"]:
             if not isinstance(q, dict) or not {"name", "label", "description", "type", "required"} <= q.keys():
                 raise AddonRegistryError(f"Incomplete parameter on {item['id']}")
-            if q["type"] not in PARAMETER_TYPES or q["name"] in names:
+            if not isinstance(q["type"], str) or q["type"] not in PARAMETER_TYPES or q["name"] in names:
                 raise AddonRegistryError(f"Unknown type or duplicate parameter on {item['id']}")
             names.add(q["name"])
             if q["type"] == "enum" and not q.get("options"):
@@ -114,18 +138,23 @@ class AddonRegistry:
             raise AddonRegistryError(f"Incomplete ACE UI metadata on {item['id']}")
         if item["execution"] == "trigger" and "trigger" not in ui["markers"]:
             raise AddonRegistryError(f"Trigger marker missing on {item['id']}")
+        if section == "expressions" and not isinstance(item.get("returns"), str):
+            raise AddonRegistryError(f"Expression return type missing on {item['id']}")
         return AceDefinition(item["id"], str(item["name"]), str(item["description"]), item["execution"],
             tuple(item["parameters"]), str(item["selection"]), item.get("returns"),
             tuple(item.get("writes", ())), ui)
 
     @classmethod
     def _parse_addon(cls, item: Any, seen: set[str]) -> AddonDefinition:
-        required = {"id", "kind", "version", "name", "category", "description", "icon", "editor",
-            "provides", "requires", "properties", "implementation", "conditions", "actions", "expressions"}
+        required = {"id", "kind", "version", "name", "category", "description", "author",
+            "documentation", "icon", "object", "editor", "provides", "requires",
+            "properties", "implementation", "conditions", "actions", "expressions", "isDeprecated"}
         if not isinstance(item, dict) or not required <= item.keys():
             raise AddonRegistryError(f"Malformed add-on entry; missing {required - item.keys() if isinstance(item, dict) else required}")
-        if item["kind"] not in KINDS or not item["id"].startswith(item["kind"] + "."):
+        if item["kind"] not in KINDS or not isinstance(item["id"], str) or not item["id"].startswith(item["kind"] + "."):
             raise AddonRegistryError(f"Invalid add-on namespace: {item['id']!r}")
+        if not isinstance(item["isDeprecated"], bool):
+            raise AddonRegistryError(f"isDeprecated must be boolean: {item['id']}")
         icon = item["icon"]
         if not isinstance(icon, dict) or icon.get("kind") not in {"builtin", "asset"} or not icon.get("name"):
             raise AddonRegistryError(f"Invalid icon reference: {item['id']}")
@@ -135,6 +164,7 @@ class AddonRegistry:
         for field in ("visible", "category", "category_label", "description_visible", "icon_visible"):
             if field not in editor["picker"]:
                 raise AddonRegistryError(f"Missing picker field {field}: {item['id']}")
+        cls._validate_parameters(item["properties"], item["id"])
         aces = {section: tuple(cls._parse_ace(q, section, item["id"], seen) for q in item[section]) for section in SECTIONS}
         declared = {q.get("id") for q in editor.get("ace_categories", [])}
         used = {q.ui["category_id"] for group in aces.values() for q in group}

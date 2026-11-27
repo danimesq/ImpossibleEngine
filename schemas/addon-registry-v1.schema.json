@@ -150,7 +150,11 @@
         "conditions",
         "actions",
         "expressions",
-        "implementation"
+        "implementation",
+        "author",
+        "documentation",
+        "object",
+        "isDeprecated"
       ],
       "properties": {
         "id": {
@@ -213,7 +217,12 @@
           }
         },
         "render": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "isDeprecated": {
+              "type": "boolean"
+            }
+          }
         },
         "implementation": {
           "type": "object",
@@ -237,6 +246,20 @@
               "type": "string"
             }
           }
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1
+        },
+        "documentation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object": {
+          "type": "object"
+        },
+        "isDeprecated": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false

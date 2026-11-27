@@ -40,6 +40,18 @@ class BuiltinAddonRegistryTests(unittest.TestCase):
         self.assertTrue(all(q.execution == "command" for q in sprite.actions))
         self.assertTrue(all(q.execution == "pure" for q in sprite.expressions))
 
+    def test_behavior_expression_return_types_are_typed(self):
+        self.assertEqual(self.registry.find_ace("behavior.platform.grounded")[1].returns, "boolean")
+        self.assertEqual(self.registry.find_ace("behavior.seek.desired_velocity")[1].returns, "vector2")
+        self.assertEqual(self.registry.find_ace("behavior.grid-movement.cell_x")[1].returns, "integer")
+
+    def test_debug_draw_duration_has_numeric_default(self):
+        found = self.registry.find_ace("plugin.debug.draw_shape")
+        duration = next(item for item in found[1].parameters if item["name"] == "duration")
+        self.assertEqual(duration["type"], "number")
+        self.assertFalse(duration["required"])
+        self.assertEqual(duration["default"], 0)
+
     def test_all_builtins_are_specification_only(self):
         self.assertTrue(all(not q.engine_runtime for q in self.registry.of_kind("plugin")))
         self.assertTrue(all(not q.engine_runtime for q in self.registry.of_kind("behavior")))

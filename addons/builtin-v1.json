@@ -69,7 +69,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -1092,7 +1092,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.object",
@@ -1912,7 +1913,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.sprite",
@@ -2477,7 +2479,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.tiled-background",
@@ -2730,7 +2733,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.text",
@@ -3159,7 +3163,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.keyboard",
@@ -3437,7 +3442,8 @@
           "host.keyboard"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.mouse",
@@ -3867,7 +3873,8 @@
           "host.pointer"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.touch",
@@ -4281,7 +4288,8 @@
           "host.pointer.multi"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.gamepad",
@@ -4783,7 +4791,8 @@
           "host.gamepad"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.input-actions",
@@ -5214,7 +5223,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.audio",
@@ -5821,7 +5831,8 @@
           "host.audio"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.camera",
@@ -6262,7 +6273,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.collision",
@@ -6757,7 +6769,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.function",
@@ -6776,7 +6789,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -6992,7 +7005,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.timer",
@@ -7011,7 +7025,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -7460,7 +7474,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.random",
@@ -7479,7 +7494,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -7758,7 +7773,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.array",
@@ -7777,7 +7793,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -8317,7 +8333,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.dictionary",
@@ -8336,7 +8353,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -8708,7 +8725,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.json",
@@ -8727,7 +8745,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -8954,7 +8972,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.xml",
@@ -8973,7 +8992,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -9363,7 +9382,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.storage",
@@ -9382,7 +9402,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -9783,7 +9803,8 @@
           "host.persistent_storage"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.http",
@@ -9802,7 +9823,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -10162,7 +10183,8 @@
           "foundation.http"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.websocket",
@@ -10181,7 +10203,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -10599,7 +10621,8 @@
           "foundation.websocket"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.multiplayer",
@@ -10618,7 +10641,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -11270,7 +11293,8 @@
           "foundation.session_transport"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.particles",
@@ -11563,7 +11587,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.tilemap",
@@ -12057,7 +12082,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.ui-controls",
@@ -12493,7 +12519,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.video",
@@ -12910,7 +12937,8 @@
           "host.video_decoder"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.user-media",
@@ -12929,7 +12957,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -13260,7 +13288,8 @@
           "host.user_media"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.haptics",
@@ -13279,7 +13308,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -13472,7 +13501,8 @@
           "host.haptics"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.text-to-speech",
@@ -13491,7 +13521,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -13799,7 +13829,8 @@
           "host.tts"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.browser",
@@ -13818,7 +13849,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -14324,7 +14355,8 @@
           "host.fullscreen"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.social",
@@ -14343,7 +14375,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -14601,7 +14633,8 @@
           "foundation.social"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.advertising",
@@ -14620,7 +14653,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -14913,7 +14946,8 @@
           "foundation.advertising"
         ],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.physics-world",
@@ -15385,7 +15419,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.pathfinding",
@@ -15741,7 +15776,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.model-3d",
@@ -16247,7 +16283,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.debug",
@@ -16266,7 +16303,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -16474,8 +16511,9 @@
               "name": "duration",
               "label": "Duration",
               "description": "duration parameter.",
-              "type": 0,
-              "required": true
+              "type": "number",
+              "required": false,
+              "default": 0
             }
           ],
           "selection": "picked_instances",
@@ -16583,7 +16621,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.timeline",
@@ -16602,7 +16641,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -16973,7 +17012,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "plugin.flowchart",
@@ -16992,7 +17032,7 @@
         "kind": "system",
         "placement": "project",
         "rotatable": false,
-        "single_instance": false
+        "single_instance": true
       },
       "editor": {
         "picker": {
@@ -17369,7 +17409,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Declarative editor/compiler contract only; runtime binding and conformance tests are separate work."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.platform",
@@ -17899,7 +17940,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "boolean",
           "ui": {
             "list_name": "Is grounded",
             "display_string": "Is grounded",
@@ -17924,7 +17965,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.eight-direction",
@@ -18319,7 +18361,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.bullet",
@@ -18704,7 +18747,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.vehicle",
@@ -19146,7 +19190,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.oscillator",
@@ -19573,7 +19618,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.scroll-to",
@@ -19921,7 +19967,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.anchor",
@@ -20144,7 +20191,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.bound-to-layout",
@@ -20294,7 +20342,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.destroy-outside-layout",
@@ -20462,7 +20511,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.solid",
@@ -20682,7 +20732,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Simple solid contacts must remain separate from dynamic physics-world behavior."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.physics-body",
@@ -21158,7 +21209,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "vector2",
           "ui": {
             "list_name": "Velocity",
             "display_string": "Velocity",
@@ -21209,7 +21260,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.fade",
@@ -21525,7 +21577,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.flash",
@@ -21764,7 +21817,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Flash count",
             "display_string": "Flash count",
@@ -21789,7 +21842,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.tween",
@@ -22229,7 +22283,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.rotate-to",
@@ -22475,7 +22530,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.turret",
@@ -22778,7 +22834,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.line-of-sight",
@@ -23070,7 +23127,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Visible target count",
             "display_string": "Visible target count",
@@ -23095,7 +23152,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.seek",
@@ -23360,7 +23418,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "vector2",
           "ui": {
             "list_name": "Desired velocity",
             "display_string": "Desired velocity",
@@ -23411,7 +23469,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.pursuit-evade",
@@ -23661,7 +23720,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "vector2",
           "ui": {
             "list_name": "Predicted position",
             "display_string": "Predicted position",
@@ -23686,7 +23745,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.arrive",
@@ -23926,7 +23986,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.wander",
@@ -24132,7 +24193,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.flocking",
@@ -24384,7 +24446,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Neighbor count",
             "display_string": "Neighbor count",
@@ -24409,7 +24471,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.path-follower",
@@ -24693,7 +24756,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "vector2",
           "ui": {
             "list_name": "Next point",
             "display_string": "Next point",
@@ -24718,7 +24781,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.drag-drop",
@@ -25044,7 +25108,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Pointer ID",
             "display_string": "Pointer ID",
@@ -25069,7 +25133,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.pin",
@@ -25406,7 +25471,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.orbit",
@@ -25720,7 +25786,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.spring",
@@ -26019,7 +26086,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.wrap",
@@ -26212,7 +26280,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.bounce",
@@ -26404,7 +26473,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Bounce count",
             "display_string": "Bounce count",
@@ -26429,7 +26498,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.grid-movement",
@@ -26688,7 +26758,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Cell X",
             "display_string": "Cell X",
@@ -26714,7 +26784,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "integer",
           "ui": {
             "list_name": "Cell Y",
             "display_string": "Cell Y",
@@ -26739,7 +26809,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "behavior.platform-solid",
@@ -26947,7 +27018,7 @@
           "execution": "pure",
           "parameters": [],
           "selection": "none",
-          "returns": "number",
+          "returns": "vector2",
           "ui": {
             "list_name": "Platform normal",
             "display_string": "Platform normal",
@@ -26972,7 +27043,8 @@
         "engine_runtime": false,
         "host_adapter_required": [],
         "notes": "Per-instance behavior contract only; update semantics and delta policy require conformance tests."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.alpha",
@@ -27040,7 +27112,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27049,7 +27122,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.blend-mode",
@@ -27144,7 +27218,8 @@
           "lighten",
           "difference",
           "subtract"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27153,7 +27228,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.color-matrix",
@@ -27229,7 +27305,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27238,7 +27315,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.grayscale",
@@ -27306,7 +27384,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27315,7 +27394,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.sepia",
@@ -27383,7 +27463,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27392,7 +27473,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.tint",
@@ -27468,7 +27550,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27477,7 +27560,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.hue-rotate",
@@ -27545,7 +27629,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27554,7 +27639,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.saturation",
@@ -27622,7 +27708,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27631,7 +27718,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.brightness-contrast",
@@ -27707,7 +27795,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27716,7 +27805,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.invert",
@@ -27784,7 +27874,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27793,7 +27884,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.threshold",
@@ -27881,7 +27973,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27890,7 +27983,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.blur",
@@ -27966,7 +28060,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -27975,7 +28070,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.gaussian-blur",
@@ -28064,7 +28160,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28073,7 +28170,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.directional-blur",
@@ -28157,7 +28255,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28166,7 +28265,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.radial-blur",
@@ -28253,7 +28353,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28262,7 +28363,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.zoom-blur",
@@ -28349,7 +28451,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28358,7 +28461,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.bloom",
@@ -28450,7 +28554,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28459,7 +28564,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.glow",
@@ -28543,7 +28649,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28552,7 +28659,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.outline",
@@ -28636,7 +28744,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28645,7 +28754,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.drop-shadow",
@@ -28740,7 +28850,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28749,7 +28860,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.vignette",
@@ -28841,7 +28953,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28850,7 +28963,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.pixelate",
@@ -28938,7 +29052,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -28947,7 +29062,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.mosaic",
@@ -29035,7 +29151,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29044,7 +29161,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.dissolve",
@@ -29136,7 +29254,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29145,7 +29264,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.displacement",
@@ -29237,7 +29357,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29246,7 +29367,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.ripple",
@@ -29349,7 +29471,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29358,7 +29481,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.wave",
@@ -29455,7 +29579,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29464,7 +29589,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.chromatic-aberration",
@@ -29540,7 +29666,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29549,7 +29676,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.scanlines",
@@ -29633,7 +29761,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29642,7 +29771,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.film-grain",
@@ -29726,7 +29856,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29735,7 +29866,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.crt",
@@ -29827,7 +29959,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29836,7 +29969,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.lens-distortion",
@@ -29915,7 +30049,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -29924,7 +30059,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.mask",
@@ -30015,7 +30151,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30024,7 +30161,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.motion-trail",
@@ -30113,7 +30251,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30122,7 +30261,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.distance-field-outline",
@@ -30206,7 +30346,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30215,7 +30356,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.fog",
@@ -30307,7 +30449,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30316,7 +30459,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.normal-map-lighting",
@@ -30411,7 +30555,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30420,7 +30565,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.tiling",
@@ -30502,7 +30648,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30511,7 +30658,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.glass",
@@ -30595,7 +30743,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30604,7 +30753,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.inner-shadow",
@@ -30691,7 +30841,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30700,7 +30851,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.edge-detect",
@@ -30784,7 +30936,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30793,7 +30946,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.posterize",
@@ -30861,7 +31015,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30870,7 +31025,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     },
     {
       "id": "effect.halftone",
@@ -30954,7 +31110,8 @@
         "alpha_policy": "preserve",
         "blend_modes": [
           "normal"
-        ]
+        ],
+        "isDeprecated": false
       },
       "implementation": {
         "status": "specification_only",
@@ -30963,7 +31120,8 @@
           "renderer.shader_pipeline"
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
-      }
+      },
+      "isDeprecated": false
     }
   ]
 }

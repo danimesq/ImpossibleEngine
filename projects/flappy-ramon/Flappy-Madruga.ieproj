@@ -1,0 +1,977 @@
+{
+  "format": "impossible.project",
+  "schema_version": 1,
+  "name": "Flappy Madruga",
+  "active_platform": "pc-modern",
+  "event_sheets": [
+    {
+      "id": "sheet-start",
+      "name": "Start events",
+      "source_path": "source/legacy-construct2/Event sheets/Start events.xml",
+      "includes": [],
+      "groups": [],
+      "events": [
+        {
+          "id": "event-868568479922385",
+          "name": "On start of layout",
+          "conditions": [
+            "On start of layout"
+          ],
+          "actions": [
+            "Audio.StopAll"
+          ],
+          "enabled": true,
+          "source_id": "868568479922385",
+          "parent_id": null,
+          "group": null,
+          "source_order": 0,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-8450924142424696",
+          "name": "Button click OR Return key",
+          "conditions": [
+            "Button click OR Return key"
+          ],
+          "actions": [],
+          "enabled": true,
+          "source_id": "8450924142424696",
+          "parent_id": null,
+          "group": null,
+          "source_order": 1,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-6960960697050587",
+          "name": "Android platform child",
+          "conditions": [
+            "Android platform child"
+          ],
+          "actions": [
+            "GooglePlay.SignIn"
+          ],
+          "enabled": true,
+          "source_id": "6960960697050587",
+          "parent_id": "8450924142424696",
+          "group": null,
+          "source_order": 2,
+          "source_status": "policy_fallback"
+        },
+        {
+          "id": "event-3050908862004944",
+          "name": "Else child for non-Android targets",
+          "conditions": [
+            "Else child for non-Android targets"
+          ],
+          "actions": [
+            "System.GoToLayout(Continuous)"
+          ],
+          "enabled": true,
+          "source_id": "3050908862004944",
+          "parent_id": "8450924142424696",
+          "group": null,
+          "source_order": 3,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-2086025640003727",
+          "name": "Google Play On signed in",
+          "conditions": [
+            "Google Play On signed in"
+          ],
+          "actions": [
+            "System.GoToLayout(Continuous)"
+          ],
+          "enabled": true,
+          "source_id": "2086025640003727",
+          "parent_id": null,
+          "group": null,
+          "source_order": 4,
+          "source_status": "adapter_callback"
+        }
+      ]
+    },
+    {
+      "id": "sheet-continuous",
+      "name": "Continuous events",
+      "source_path": "source/legacy-construct2/Event sheets/Continuous events.xml",
+      "includes": [
+        "sheet-common-game"
+      ],
+      "groups": [],
+      "events": []
+    },
+    {
+      "id": "sheet-common-game",
+      "name": "Common in-game",
+      "source_path": "source/legacy-construct2/Event sheets/Common in-game.xml",
+      "includes": [],
+      "groups": [
+        "Start",
+        "Movement",
+        "Collisions",
+        "Scoring",
+        "Background",
+        "Obstacle"
+      ],
+      "events": [
+        {
+          "id": "event-2246972820014324",
+          "name": "On start of layout",
+          "conditions": [
+            "On start of layout"
+          ],
+          "actions": [
+            "Set Layout_Name",
+            "Madruga.Queda=false",
+            "Disable Play_Continuous",
+            "ScoreText=0",
+            "Load Press Start 2P font",
+            "Reset TiledBackground2.X",
+            "Reset TiledBackground.X",
+            "Score=0",
+            "Destroy design-time TopPipe and BottomPipe",
+            "Madruga.Platform.VectorY=-JumpStrength",
+            "Madruga.Angle=320",
+            "SCROLLSPEED=300",
+            "SECONDSPEROBSTACLE=1"
+          ],
+          "enabled": true,
+          "source_id": "2246972820014324",
+          "parent_id": null,
+          "group": "Start",
+          "source_order": 0,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-7816572494785124",
+          "name": "Trigger once while layout music condition remains true",
+          "conditions": [
+            "Trigger once while layout music condition remains true"
+          ],
+          "actions": [
+            "Audio.Play(Music, loop=true)",
+            "Audio.AddGainEffect(+40dB)"
+          ],
+          "enabled": true,
+          "source_id": "7816572494785124",
+          "parent_id": "2246972820014324",
+          "group": "Start",
+          "source_order": 1,
+          "source_status": "mapped_with_host_limit"
+        },
+        {
+          "id": "event-9923654974799748",
+          "name": "Touch start OR Space key; parent has no direct actions",
+          "conditions": [
+            "Touch start OR Space key; parent has no direct actions"
+          ],
+          "actions": [],
+          "enabled": true,
+          "source_id": "9923654974799748",
+          "parent_id": null,
+          "group": "Movement",
+          "source_order": 2,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-2918399259058403",
+          "name": "NOT Madruga.Queda",
+          "conditions": [
+            "NOT Madruga.Queda"
+          ],
+          "actions": [
+            "Madruga.Platform.SetVectorY(-JumpStrength)",
+            "Madruga.SetAngle(320)",
+            "Madruga.SetAnimation(Flying, frame=1)",
+            "System.Wait(0.5)",
+            "Madruga.SetAnimation(Default, frame=1)"
+          ],
+          "enabled": true,
+          "source_id": "2918399259058403",
+          "parent_id": "9923654974799748",
+          "group": "Movement",
+          "source_order": 3,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-199979273240818",
+          "name": "Every tick AND NOT Madruga.Queda",
+          "conditions": [
+            "Every tick AND NOT Madruga.Queda"
+          ],
+          "actions": [
+            "Madruga.RotateClockwise(60*dt)"
+          ],
+          "enabled": true,
+          "source_id": "199979273240818",
+          "parent_id": null,
+          "group": "Movement",
+          "source_order": 4,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-7365620846625415",
+          "name": "Parent collision group guard: NOT Madruga.Queda",
+          "conditions": [
+            "Parent collision group guard: NOT Madruga.Queda"
+          ],
+          "actions": [],
+          "enabled": true,
+          "source_id": "7365620846625415",
+          "parent_id": null,
+          "group": "Collisions",
+          "source_order": 5,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-170743918900562",
+          "name": "Madruga collides with TiledBackground2",
+          "conditions": [
+            "Madruga collides with TiledBackground2"
+          ],
+          "actions": [
+            "Set Queda",
+            "SCROLLSPEED=0",
+            "SECONDSPEROBSTACLE=0",
+            "Play beat",
+            "Stop Music",
+            "Show and enable retry button"
+          ],
+          "enabled": true,
+          "source_id": "170743918900562",
+          "parent_id": "7365620846625415",
+          "group": "Collisions",
+          "source_order": 6,
+          "source_status": "mapped_media_pending"
+        },
+        {
+          "id": "event-4987440076445908",
+          "name": "Continuous layout AND Score greater than saved Highscore AND trigger once",
+          "conditions": [
+            "Continuous layout AND Score greater than saved Highscore AND trigger once"
+          ],
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
+          "enabled": true,
+          "source_id": "4987440076445908",
+          "parent_id": "170743918900562",
+          "group": "Collisions",
+          "source_order": 7,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-8821406997890014",
+          "name": "Continuous layout high-score display",
+          "conditions": [
+            "Continuous layout high-score display"
+          ],
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
+          "enabled": true,
+          "source_id": "8821406997890014",
+          "parent_id": "170743918900562",
+          "group": "Collisions",
+          "source_order": 8,
+          "source_status": "mapped_vector_ui"
+        },
+        {
+          "id": "event-3130471190776897",
+          "name": "Madruga collides with TopPipe",
+          "conditions": [
+            "Madruga collides with TopPipe"
+          ],
+          "actions": [
+            "Set Queda",
+            "SCROLLSPEED=0",
+            "SECONDSPEROBSTACLE=0",
+            "Play beat",
+            "Stop Music",
+            "Wait 0.5 seconds",
+            "Play Queda",
+            "Show and enable retry button"
+          ],
+          "enabled": true,
+          "source_id": "3130471190776897",
+          "parent_id": "7365620846625415",
+          "group": "Collisions",
+          "source_order": 9,
+          "source_status": "mapped_media_pending"
+        },
+        {
+          "id": "event-4999406637386386",
+          "name": "Continuous layout AND Score greater than saved Highscore AND trigger once",
+          "conditions": [
+            "Continuous layout AND Score greater than saved Highscore AND trigger once"
+          ],
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
+          "enabled": true,
+          "source_id": "4999406637386386",
+          "parent_id": "3130471190776897",
+          "group": "Collisions",
+          "source_order": 10,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-715855042734",
+          "name": "Continuous layout high-score display",
+          "conditions": [
+            "Continuous layout high-score display"
+          ],
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
+          "enabled": true,
+          "source_id": "715855042734",
+          "parent_id": "3130471190776897",
+          "group": "Collisions",
+          "source_order": 11,
+          "source_status": "mapped_vector_ui"
+        },
+        {
+          "id": "event-1336496314225453",
+          "name": "Madruga collides with BottomPipe",
+          "conditions": [
+            "Madruga collides with BottomPipe"
+          ],
+          "actions": [
+            "Set Queda",
+            "SCROLLSPEED=0",
+            "SECONDSPEROBSTACLE=0",
+            "Play beat",
+            "Stop Music",
+            "Show and enable retry button"
+          ],
+          "enabled": true,
+          "source_id": "1336496314225453",
+          "parent_id": "7365620846625415",
+          "group": "Collisions",
+          "source_order": 12,
+          "source_status": "mapped_media_pending"
+        },
+        {
+          "id": "event-5467540996491119",
+          "name": "Continuous layout AND Score greater than saved Highscore AND trigger once",
+          "conditions": [
+            "Continuous layout AND Score greater than saved Highscore AND trigger once"
+          ],
+          "actions": [
+            "WebStorage.SetLocalValue(Highscore, Score)"
+          ],
+          "enabled": true,
+          "source_id": "5467540996491119",
+          "parent_id": "1336496314225453",
+          "group": "Collisions",
+          "source_order": 13,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-5644737791030659",
+          "name": "Continuous layout high-score display",
+          "conditions": [
+            "Continuous layout high-score display"
+          ],
+          "actions": [
+            "Set Highscore text",
+            "Move Highscore to top",
+            "Show Highscore"
+          ],
+          "enabled": true,
+          "source_id": "5644737791030659",
+          "parent_id": "1336496314225453",
+          "group": "Collisions",
+          "source_order": 14,
+          "source_status": "mapped_vector_ui"
+        },
+        {
+          "id": "event-9569398275688901",
+          "name": "Madruga is outside layout",
+          "conditions": [
+            "Madruga is outside layout"
+          ],
+          "actions": [],
+          "enabled": true,
+          "source_id": "9569398275688901",
+          "parent_id": null,
+          "group": "Collisions",
+          "source_order": 15,
+          "source_status": "source_no_op"
+        },
+        {
+          "id": "event-2833117000651784",
+          "name": "BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored",
+          "conditions": [
+            "BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored"
+          ],
+          "actions": [
+            "Score += 1",
+            "ScoreText=Score",
+            "BottomPipe.Scored=true"
+          ],
+          "enabled": true,
+          "source_id": "2833117000651784",
+          "parent_id": null,
+          "group": "Scoring",
+          "source_order": 16,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-2060048028150518",
+          "name": "TiledBackground.X <= -560",
+          "conditions": [
+            "TiledBackground.X <= -560"
+          ],
+          "actions": [
+            "TiledBackground.X=0"
+          ],
+          "enabled": true,
+          "source_id": "2060048028150518",
+          "parent_id": null,
+          "group": "Background",
+          "source_order": 17,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-30454140128404",
+          "name": "TiledBackground2.X <= -410",
+          "conditions": [
+            "TiledBackground2.X <= -410"
+          ],
+          "actions": [
+            "TiledBackground2.X=0"
+          ],
+          "enabled": true,
+          "source_id": "30454140128404",
+          "parent_id": null,
+          "group": "Background",
+          "source_order": 18,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-1385689931601852",
+          "name": "Every tick",
+          "conditions": [
+            "Every tick"
+          ],
+          "actions": [
+            "BottomPipe.X -= SCROLLSPEED*dt",
+            "TopPipe.X -= SCROLLSPEED*dt",
+            "TiledBackground2.X -= SCROLLSPEED*dt",
+            "TiledBackground.X -= SCROLLSPEED*dt"
+          ],
+          "enabled": true,
+          "source_id": "1385689931601852",
+          "parent_id": null,
+          "group": "Background",
+          "source_order": 19,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-6231531170117115",
+          "name": "TopPipe.X < -50",
+          "conditions": [
+            "TopPipe.X < -50"
+          ],
+          "actions": [
+            "Destroy TopPipe instance"
+          ],
+          "enabled": true,
+          "source_id": "6231531170117115",
+          "parent_id": null,
+          "group": "Background",
+          "source_order": 20,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-7423873857133321",
+          "name": "BottomPipe.X < -50",
+          "conditions": [
+            "BottomPipe.X < -50"
+          ],
+          "actions": [
+            "Destroy BottomPipe instance"
+          ],
+          "enabled": true,
+          "source_id": "7423873857133321",
+          "parent_id": null,
+          "group": "Background",
+          "source_order": 21,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-6640649658259165",
+          "name": "Every SECONDSPEROBSTACLE seconds",
+          "conditions": [
+            "Every SECONDSPEROBSTACLE seconds"
+          ],
+          "actions": [
+            "Create TopPipe at (440, random(-70,-250))",
+            "Create BottomPipe at (440, TopPipe.Y+750)",
+            "Move ScoreText to top",
+            "BottomPipe.Scored=false"
+          ],
+          "enabled": true,
+          "source_id": "6640649658259165",
+          "parent_id": null,
+          "group": "Obstacle",
+          "source_order": 22,
+          "source_status": "mapped_with_rng_policy"
+        },
+        {
+          "id": "event-9708342499359544",
+          "name": "Retry button click OR Return key",
+          "conditions": [
+            "Retry button click OR Return key"
+          ],
+          "actions": [],
+          "enabled": true,
+          "source_id": "9708342499359544",
+          "parent_id": null,
+          "group": null,
+          "source_order": 23,
+          "source_status": "mapped"
+        },
+        {
+          "id": "event-3112928811038152",
+          "name": "Madruga.Queda is true",
+          "conditions": [
+            "Madruga.Queda is true"
+          ],
+          "actions": [
+            "Wait 0.1 seconds",
+            "Restart current layout"
+          ],
+          "enabled": true,
+          "source_id": "3112928811038152",
+          "parent_id": "9708342499359544",
+          "group": null,
+          "source_order": 24,
+          "source_status": "mapped"
+        }
+      ]
+    },
+    {
+      "id": "sheet-common-levels",
+      "name": "Common in-levels",
+      "source_path": "source/legacy-construct2/Event sheets/Common in-levels.xml",
+      "includes": [],
+      "groups": [],
+      "events": [
+        {
+          "id": "event-2515117097232158",
+          "name": "Score == Required_Score",
+          "conditions": [
+            "Score == Required_Score"
+          ],
+          "actions": [
+            "Go to next layout"
+          ],
+          "enabled": true,
+          "source_id": "2515117097232158",
+          "parent_id": null,
+          "group": null,
+          "source_order": 0,
+          "source_status": "source_semantics_preserved"
+        }
+      ]
+    },
+    {
+      "id": "sheet-chaves",
+      "name": "Chaves",
+      "source_path": "source/legacy-construct2/Event sheets/Chaves.xml",
+      "includes": [
+        "sheet-common-game",
+        "sheet-common-levels"
+      ],
+      "groups": [],
+      "events": [
+        {
+          "id": "event-9305905589121505",
+          "name": "On start of layout",
+          "conditions": [
+            "On start of layout"
+          ],
+          "actions": [
+            "Required_Score=10",
+            "TopPipe animation=Chaves from frame 1",
+            "BottomPipe animation=Chaves from frame 1"
+          ],
+          "enabled": true,
+          "source_id": "9305905589121505",
+          "parent_id": null,
+          "group": null,
+          "source_order": 0,
+          "source_status": "mapped_with_instance_lifetime_interaction"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset-madruga",
+      "name": "Madruga",
+      "kind": "sprite",
+      "source": "source/legacy-construct2/Animations/Madruga/Default/000.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-toppipe",
+      "name": "TopPipe",
+      "kind": "sprite",
+      "source": "source/legacy-construct2/Animations/TopPipe/Default/000.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-bottompipe",
+      "name": "BottomPipe",
+      "kind": "sprite",
+      "source": "source/legacy-construct2/Animations/BottomPipe/Default/000.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-tiledbackground",
+      "name": "TiledBackground",
+      "kind": "texture",
+      "source": "source/legacy-construct2/Textures/TiledBackground.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-tiledbackground2",
+      "name": "TiledBackground2",
+      "kind": "texture",
+      "source": "source/legacy-construct2/Textures/TiledBackground2.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-background",
+      "name": "Background",
+      "kind": "sprite",
+      "source": "source/legacy-construct2/Animations/Background/Default/000.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-scoretext",
+      "name": "ScoreText",
+      "kind": "text",
+      "source": "source/legacy-construct2/Files/PressStart2P.ttf",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-highscore",
+      "name": "Highscore",
+      "kind": "text",
+      "source": "",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-play-continuous",
+      "name": "Play_Continuous",
+      "kind": "ui",
+      "source": "",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    },
+    {
+      "id": "asset-sprite",
+      "name": "Sprite",
+      "kind": "sprite",
+      "source": "source/legacy-construct2/Animations/Sprite/Default/000.png",
+      "notes": "Original media bytes are intentionally not bundled in the headless logic import; see asset-placeholders.json."
+    }
+  ],
+  "objects": [
+    {
+      "id": "object-madruga",
+      "name": "Madruga",
+      "asset_id": "asset-madruga",
+      "base_properties": {
+        "plugin": "Sprite",
+        "instance_variables": {
+          "Queda": "boolean"
+        },
+        "behavior": "Platform",
+        "default_animation": {
+          "frames": 1,
+          "speed": 5,
+          "media_ref": "Ramon.png"
+        },
+        "flying_animation": {
+          "frames": 1,
+          "speed": 5,
+          "media_ref": "Ramon Fly.gif"
+        },
+        "collision_polygons": "src/geometry.rs",
+        "source_object_type": "Madruga",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-toppipe",
+      "name": "TopPipe",
+      "asset_id": "asset-toppipe",
+      "base_properties": {
+        "plugin": "Sprite",
+        "behavior": "Solid",
+        "default_animation": {
+          "frames": 1,
+          "speed": 5
+        },
+        "chaves_animation": {
+          "frames": 4,
+          "speed": 4,
+          "media_refs": [
+            "1.png",
+            "2.png",
+            "3.png",
+            "4.png"
+          ]
+        },
+        "collision_polygons": "src/geometry.rs",
+        "source_object_type": "TopPipe",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-bottompipe",
+      "name": "BottomPipe",
+      "asset_id": "asset-bottompipe",
+      "base_properties": {
+        "plugin": "Sprite",
+        "behavior": "Solid",
+        "instance_variables": {
+          "Scored": "boolean"
+        },
+        "default_animation": {
+          "frames": 1,
+          "speed": 5
+        },
+        "chaves_animation": {
+          "frames": 4,
+          "speed": 4,
+          "media_refs": [
+            "1.png",
+            "2.png",
+            "3.png",
+            "4.png"
+          ]
+        },
+        "collision_polygons": "src/geometry.rs",
+        "source_object_type": "BottomPipe",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-tiledbackground",
+      "name": "TiledBackground",
+      "asset_id": "asset-tiledbackground",
+      "base_properties": {
+        "plugin": "TiledBg",
+        "behavior": "Solid",
+        "media_ref": "test.png",
+        "source_object_type": "TiledBackground",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-tiledbackground2",
+      "name": "TiledBackground2",
+      "asset_id": "asset-tiledbackground2",
+      "base_properties": {
+        "plugin": "TiledBg",
+        "behavior": "Solid",
+        "media_ref": "test.png",
+        "source_object_type": "TiledBackground2",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-background",
+      "name": "Background",
+      "asset_id": "asset-background",
+      "base_properties": {
+        "plugin": "Sprite",
+        "media_ref": "Vila_do_Chaves_-_divulgacao.jpg",
+        "source_object_type": "Background",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-scoretext",
+      "name": "ScoreText",
+      "asset_id": "asset-scoretext",
+      "base_properties": {
+        "plugin": "Text",
+        "font_ref": "PressStart2P.ttf",
+        "source_object_type": "ScoreText",
+        "media_status": "pending"
+      }
+    },
+    {
+      "id": "object-highscore",
+      "name": "Highscore",
+      "asset_id": "asset-highscore",
+      "base_properties": {
+        "plugin": "Text",
+        "source_object_type": "Highscore",
+        "media_status": "not_required_for_logic"
+      }
+    },
+    {
+      "id": "object-play-continuous",
+      "name": "Play_Continuous",
+      "asset_id": "asset-play-continuous",
+      "base_properties": {
+        "plugin": "Button",
+        "source_object_type": "Play_Continuous",
+        "media_status": "not_required_for_logic"
+      }
+    },
+    {
+      "id": "object-sprite",
+      "name": "Sprite",
+      "asset_id": "asset-sprite",
+      "base_properties": {
+        "plugin": "Sprite",
+        "media_ref": "Splash.png",
+        "source_object_type": "Sprite",
+        "media_status": "pending"
+      }
+    }
+  ],
+  "metadata": {
+    "project_id": "flappy-ramon",
+    "display_name": "Flappy Madruga",
+    "aliases": [
+      "Flappy Ramon"
+    ],
+    "importer": "construct2",
+    "importer_version": 1,
+    "upstream": {
+      "repository": "https://github.com/danimesq/Flappy-Ramon",
+      "revision": "aab10559cea2d1283eafa2a8792aaf877cbffcf5",
+      "project_file": "source/legacy-construct2/Flappy Madruga.caproj",
+      "project_version": "0.6.1.6",
+      "saved_with_version": 21400
+    },
+    "source_model": "source-model.json",
+    "source_coverage": "event-sheets/source-coverage.json",
+    "migration_manifest": "migration-manifest.json",
+    "asset_manifest": "asset-placeholders.json",
+    "build": {
+      "cargo_workspace": "../../..",
+      "cargo_manifest": "Cargo.toml",
+      "cargo_package": "flappy-madruga",
+      "logic_target": "headless-rust-library",
+      "graphics": "deferred-to-RustMultiConsoleFoundation",
+      "entrypoint": "src/lib.rs"
+    },
+    "logical_resolution": {
+      "width": 400,
+      "height": 500,
+      "orientation": "portrait"
+    },
+    "layouts": [
+      {
+        "name": "Start",
+        "event_sheet": "sheet-start",
+        "includes": []
+      },
+      {
+        "name": "Continuous",
+        "event_sheet": "sheet-continuous",
+        "includes": [
+          "sheet-common-game"
+        ]
+      },
+      {
+        "name": "Chaves",
+        "event_sheet": "sheet-chaves",
+        "includes": [
+          "sheet-common-game",
+          "sheet-common-levels"
+        ]
+      }
+    ],
+    "global_variables": {
+      "JumpStrength": {
+        "type": "number",
+        "initial": 500,
+        "constant": true
+      },
+      "SCROLLSPEED": {
+        "type": "number",
+        "initial": 150,
+        "comment": "pixels per second; set to 300 on layout start"
+      },
+      "SECONDSPEROBSTACLE": {
+        "type": "number",
+        "initial": 1,
+        "set_on_layout_start": 1
+      },
+      "Score": {
+        "type": "number",
+        "initial": 0
+      },
+      "Required_Score": {
+        "type": "number",
+        "initial": 0,
+        "set_on_chaves_layout_start": 10
+      },
+      "Layout_Name": {
+        "type": "text",
+        "initial": ""
+      }
+    },
+    "runtime_semantics": {
+      "event_group_order": [
+        "Start",
+        "Movement",
+        "Collisions",
+        "Scoring",
+        "Background",
+        "Obstacle"
+      ],
+      "time_source": "the source editor per-frame dt, sampled once per host frame",
+      "initial_pipe_instances_destroyed_on_layout_start": true,
+      "first_pipe_spawn_seconds": 1,
+      "pipe_pair": {
+        "x": 440,
+        "gap_y_distance": 750,
+        "random_top_y_bounds": [
+          -250,
+          -70
+        ]
+      },
+      "score_condition": "BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored",
+      "score_increment": 1,
+      "high_score_key": "Highscore",
+      "retry_wait_seconds": 0.1,
+      "flying_animation_wait_seconds": 0.5,
+      "top_pipe_game_over_wait_seconds": 0.5,
+      "layout_order": [
+        "Start",
+        "Continuous",
+        "Chaves"
+      ],
+      "root_event_sections_after_groups": [
+        "Restart"
+      ],
+      "chaves_pipe_animation_action": "applies to editor-time pipe instances during the Chaves layout-start event pass; Common-in-game has already queued those instances for destruction; subsequently spawned pipe pairs use Default animation pending differential verification",
+      "maximum_dt_seconds": 0.03333333333333333,
+      "delta_time_policy": "source Every-tick and Platform movement use min(host_frame_dt, 1/30); System Every-X-seconds and Wait continuations consume elapsed time independently"
+    },
+    "import_notes": [
+      "The .ieproj file is a native ImpossibleEngine project container, not the original Construct 2 file.",
+      "Immutable upstream source snapshots are kept under source/legacy-construct2/.",
+      "The logic target compiles the platform-neutral Rust game model without building a renderer or opening a window.",
+      "Original media bytes and Foundation graphics integration remain outside this headless logic build."
+    ]
+  }
+}

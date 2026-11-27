@@ -24,11 +24,62 @@ All 114 add-ons currently declare `implementation.status = specification_only` a
 
 The Python `impossible.addons` module validates the catalogue, IDs, parameter metadata, categories, dependencies and presentation contracts. It does not compile an Event Sheet or execute an ACE.
 
-The existing Rust file under `examples/flappy-madruga/generated.rs` is explicitly an illustrative output, not compiler output. The Cargo project under `projects/flappy-ramon/` is a game-specific Macroquad application and its local host services; it is not a reusable ImpossibleEngine runtime crate.
+The existing Rust file under `examples/flappy-madruga/generated.rs` remains an illustrative fixture, not compiler output. A reusable `crates/impossible-runtime` now exists with the first shared primitives (clock, Wait queue, deterministic RNG and source-event binding validation), and the Flappy project-specific compiler generates its own source-event table. This is a real vertical slice, but not yet the full generic scheduler/IR/object model described by the proposal.
 
-The typed Event Sheet, semantic IR, Rust generator and build integration are still described as proposals in `EVENT-SHEETS-JSON-TO-RUST.md`. There is not yet a completed, reusable Rust execution core integrated into the repository's main line.
+The typed Event Sheet v1 format and universal registry-ACE-to-IR compiler remain proposals in `EVENT-SHEETS-JSON-TO-RUST.md`. The Flappy compiler currently uses explicit SIDs and project-specific Rust handlers.
 
 This distinction must stay visible in the README and release notes: an editor catalogue is not an executable engine.
+
+## 🌈 1A. First project-specific vertical slice
+
+The Flappy Madruga path now exists as a concrete, deliberately narrow
+implementation on this branch:
+
+- Native project container: `projects/flappy-ramon/Flappy-Madruga.ieproj`.
+- Pinned original Construct 2 project, five Event Sheets and three layout XMLs:
+  `projects/flappy-ramon/source/legacy-construct2/`.
+- Three native layouts, twenty source-UID-preserving placed instances, ten
+  object types and five Event Sheets, all checked against the pinned source.
+- All 32 source event-block SIDs have explicit typed Rust handler bindings in
+  `src/generated/source_events.rs`.
+- `crates/impossible-runtime` provides reusable timing, elapsed-vs-simulation
+  delta separation, ordered Wait continuations, deterministic RNG and source
+  binding validation.
+- `impossible.compiler` validates the source snapshot and native project,
+  regenerates the Rust binding table, runs workspace tests and builds the
+  headless gameplay library.
+- The GTK editor has a Layouts page that displays the three scenes and their
+  placed instances.
+
+The headless CI has passed 27 Python tests and 23 Rust tests; the release logic
+library has compiled. Separate optional preview checks also compile the legacy
+Macroquad desktop and WebAssembly hosts.
+
+This vertical slice is **specific to Flappy Madruga**, not a generic importer
+or the universal 640-ACE compiler. The game logic is still a source-specific
+Rust implementation linked to its 32 event SIDs; it does not yet lower
+arbitrary registry ACEs into a generic typed Event Sheet IR. The original
+media (12 groups), live source differential testing and Android Google Play
+SDK remain pending.
+
+### 🌈 Graphics integration boundary
+
+Rendering is intentionally outside the headless logic target. The intended
+adapter is the existing RustMultiConsoleFoundation `foundation-runtime`
+contract:
+
+- native host: `foundation_runtime::native_sdl::Sdl3Host`;
+- browser host: `foundation_runtime::web::Canvas2dHost`;
+- game-to-host boundary: `RuntimeHost`, `RuntimeConfig`,
+  `FrameContext`, `InputSnapshot`, `FrameOutput`, `DrawCommand`,
+  `TextureId` and semantic `AudioRequest` values.
+
+The Foundation API currently provides SDL3 native drawing and Canvas 2D
+browser output, not a WebGL/WebGPU effect renderer. ImpossibleEngine should
+own the logical 400×500 scene, object transforms, source collision geometry
+and draw-command generation; Foundation should own the native/browser window,
+canvas, texture/device and presentation lifecycle. Do not link the existing
+Macroquad preview as if it were the Foundation adapter.
 
 ## 🌈 2. What the Construct references teach us
 

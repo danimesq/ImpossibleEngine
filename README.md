@@ -3,80 +3,48 @@
 A Rust-first visual game authoring environment built around Event Sheets,
 platform-independent project data, and interchangeable runtime adapters.
 
-The first editor prototype uses **GTK 3 + PyGObject + GtkBuilder**, following
-the same Python GUI technology family used by CUBIC/UNIC. It does not import
-CUBIC's ISO-builder internals, and it does not introduce Qt/PySide6.
-
 ## Current prototype
+- GTK 3 + PyGObject + GtkBuilder desktop shell.
+- Toolkit-independent Python project model and JSON project persistence.
+- Event Sheets, Objects, Assets and Platform Variants authoring surfaces.
+- Platform-specific asset sources and sparse object-property overrides.
+- Built-in add-on registry with typed plugin ACEs, reusable behaviors, effect
+  descriptors, picker categories and icon references.
 
-- GTK desktop shell with Event Sheets, Objects, Assets and Platform Variants.
-- Editable condition/action rows in Event Sheets.
-- JSON project open/save.
-- Platform-specific sources for logical assets.
-- Sparse platform-specific object-property overrides.
-- Toolkit-independent Python project model, suitable for a future Rust GUI or
-  compiler frontend.
+The Event Sheet GUI remains a prototype. The registry prepares the metadata
+needed by future authoring dialogs, but does not claim runtime execution.
 
-## Platform variants from day one
+## Add-on registry
+The canonical built-in catalogue is `addons/builtin-v1.json`, validated by
+`impossible.addons`. It is independent from GTK and describes add-on picker
+identity, icon references, ACE categories, Conditions, Actions, Expressions,
+typed parameters and runtime status. See [docs/ADDON-SYSTEM.md](docs/ADDON-SYSTEM.md).
 
-One logical object or asset can have different realizations per target:
-
-- 3D game: modern PC mesh, PS1 mesh and Nintendo 64 mesh.
-- 2D game: modern mobile sprite sheet, GBA sprite sheet and GBC sprite sheet.
-- Browser game: Rust compiled to WebAssembly, hosted by browser APIs.
-
-The current profiles are authoring presets. Actual console builds require
-verified platform adapters, SDKs/toolchains and target-specific validation.
-
-See [docs/README.md](docs/README.md) for the documentation index, including the native [project.ieproj format](docs/PROJECT-FORMAT.md), the proposed [typed Event Sheet compiler design](docs/EVENT-SHEETS-JSON-TO-RUST.md), [Game import and Delphi migration strategy](docs/GAME-IMPORT-AND-MIGRATION.md), [product and ecosystem strategy](docs/PRODUCT-AND-ECOSYSTEM.md), [licensing and NFT2 model](docs/LICENSING-AND-NFT2.md), and [publishing and physical media direction](docs/PUBLISHING-AND-PHYSICAL-MEDIA.md).
+All current add-ons are marked specification-only until runtime code,
+platform adapters and conformance tests exist.
 
 ## GUI stack
-
-The editor follows the CUBIC/UNIC GUI stack:
-
 - GTK 3
-- PyGObject (gi)
-- GtkBuilder for the main application shell
-- GTK CSS for theming
+- PyGObject
+- GtkBuilder
+- GTK CSS
 
-It intentionally does not use PySide6 or Qt.
+The prototype intentionally does not use Qt/PySide6.
 
-### Ubuntu / Debian packages
-
-    sudo apt install python3 python3-gi gir1.2-gtk-3.0
-
-## Run from a checkout
-
+## Run
     python3 -m impossible
 
-Or install the project in editable mode:
-
+Or:
     python3 -m pip install -e .
     impossible
 
-On Debian/Ubuntu, prefer the distribution's PyGObject package so the Python
-binding matches the system GTK libraries.
-
 ## Tests
-
-The model tests do not require a graphical session or PyGObject:
-
     python3 -m unittest discover -s tests -v
 
-## Current limitations
+## Architecture
+The UI is replaceable. Project data, Event Sheets, assets, add-on metadata,
+compiler models and platform-variant resolution are toolkit-independent.
+Runtime adapters and RustMultiConsoleFoundation own concrete execution and
+platform integration boundaries.
 
-This is an early GUI prototype, not a game runtime or compiler yet. Event rows
-are currently authored as text expressions; typed condition/action schemas,
-validation, undo/redo, asset import pipelines, engine adapters, Rust code
-generation, browser WASM output and console toolchains are future work.
-
-## Architecture boundary
-
-The UI is replaceable. Project data, Event Sheets, assets, object properties
-and platform-variant resolution belong to toolkit-independent modules. GTK is
-the first frontend, not the definition of the project format.
-
-
-## First Impossible project
-
-The first end-to-end migration target is the existing legacy [Flappy Madruga / Flappy Ramon](https://github.com/danimesq/Flappy-Ramon) project. Its full port is the current migration-round objective; it is not yet complete. See the [project workspace](projects/flappy-ramon/README.md), [typed Event Sheet compiler design](docs/EVENT-SHEETS-JSON-TO-RUST.md), and [game import strategy](docs/GAME-IMPORT-AND-MIGRATION.md). Media placeholders are reserved until verified original files are supplied.
+See [docs/README.md](docs/README.md) for the documentation index.

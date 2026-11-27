@@ -1,69 +1,66 @@
 # Impossible Engine architecture notes
 
 ## Frontend
-
-The first GUI prototype uses the CUBIC/UNIC Python GUI stack:
-
-- GTK 3
-- PyGObject
-- GtkBuilder
-- GTK CSS
-
-The prototype reuses the technology family, not CUBIC's ISO-building internals.
-The editor shell is replaceable and must not own project semantics.
+The first GUI prototype uses GTK 3, PyGObject, GtkBuilder and GTK CSS. The
+editor shell is replaceable and must not own project semantics.
 
 ## Project model
+Project data, Event Sheets, logical objects, assets, platform profiles and
+sparse platform overrides are represented independently from GTK.
 
-Project data is represented independently of GTK. Event Sheets, logical
-objects, assets, platform profiles and sparse platform overrides are persisted
-as JSON. A future Rust GUI can read and write this format without inheriting
-the Python widget architecture.
+## Add-on registry
+Built-in plugins, behaviors and effects live in `addons/builtin-v1.json` and
+are validated by `impossible.addons`. The registry includes picker categories,
+icon references, ACE category groups, localization keys, typed parameters,
+execution kinds, selection policies, state writes and render-pipeline
+constraints.
 
-## Runtime and output targets
+Plugin picker categories, behavior categories, effect categories and ACE
+categories are different concepts. Add-on category helps find the object,
+behavior or effect. ACE category organizes commands inside Event Sheets.
+The Python GUI and add-on selector must consume the shared registry rather
+than duplicate definitions in widget code.
 
-Impossible may adapt existing game engines and runtimes instead of requiring a
-new renderer or physics engine immediately. Engine integrations belong behind
-adapters; project authoring data must not depend on one selected engine.
+All current descriptors report `specification_only`. The registry is an
+editor/compiler contract, not proof of runtime implementation.
 
-The browser output target should use **Rust compiled directly to WebAssembly**,
-initially investigating `wasm32-unknown-unknown` with `wasm-bindgen` and
-`web-sys`. The browser host should expose rendering through Canvas 2D and/or
-WebGL 2, selected behind an Impossible renderer adapter. WebGPU may be evaluated
-as an optional future backend, not assumed as the baseline.
+## Runtime subsystems
+Do not create one crate per behavior. Group behaviors by reusable runtime
+subsystems:
+- movement and steering;
+- collision, picking and physics;
+- camera and world bounds;
+- animation, timeline and tween;
+- AI sensing and navigation;
+- input normalization and semantic action maps;
+- renderer effects and render graph;
+- media and host services.
 
-WASM runs the Rust game logic; it does not draw to a canvas by itself. Browser
-APIs remain host APIs and are reached through bindings. The Emscripten toolchain
-is not the planned default for this Rust-first web target. See WEB-WASM.md for
-the initial investigation boundaries and caveats.
+Behaviors own per-instance state but consume shared engine services.
+Plugins expose capabilities and ACEs. Host adapters provide platform I/O.
 
-Native Rust and console targets are also backend/toolchain integrations. A
-console profile in the editor is an authoring target definition, not a claim
-that its SDK, licensing requirements, compiler or runtime adapter is already
-available.
+## Foundation boundary
+ImpossibleEngine owns add-on metadata, ACE resolution, typed Event Sheets,
+gameplay semantics and effect descriptors. RustMultiConsoleFoundation owns
+portable build/package services and concrete host/transport adapters below
+the engine.
 
-## Platform-aware content
+Separate networking layers into raw transport, session/signalling, rooms and
+peers, authority, input replication, state replication and interpolation.
+WebSocket is not a multiplayer implementation by itself.
 
-Platform variants are part of the project model from the beginning:
+## Validation
+Keep fixtures for:
+- add-on/ACE IDs, versioning, categories, icon references and localization;
+- parameter typing, enum options, defaults and bounds;
+- trigger/loop semantics, event order, object picking and mutation lifecycle;
+- Platform, Eight Direction, Bullet, Vehicle and Oscillation;
+- collision polygons, hotspots, frame geometry, solids and rigid bodies;
+- timers, continuations, RNG and animation lifecycle;
+- effect stack order, alpha, background/depth sampling and target diagnostics;
+- input hotplug, multiple controllers, deadzones and remapping;
+- explicit host-service errors for storage, audio, video, HTTP and networking.
 
-- Logical assets have one stable ID and may map to distinct source files per
-  target.
-- Logical objects have common base properties plus sparse per-target overrides.
-- The resolver prefers an exact platform variant, then a generic/base variant,
-  then the default asset source.
-- Event logic should remain shared unless a real gameplay rule differs by
-  platform; visual and resource constraints should not force duplicated logic.
-
-Examples include a 3D character using separate PC, PS1 and N64 meshes, and a 2D
-character using distinct modern-mobile, GBA and GBC sprite sheets.
-
-See PLATFORM-VARIANTS.md for the initial profile set and authoring direction.
-
-## Long-term validation projects
-
-The intended validation path is:
-
-1. Port Street Chaves into Impossible while preserving the behavior and
-   fidelity of its existing implementation.
-2. Use the Point Blank Rust port as the more demanding end-to-end validation.
-
-These are end goals, not capabilities delivered by the current GUI prototype.
+No source construct may disappear silently. Descriptor presence is not
+implementation: features become runtime-supported only after code, adapters
+and conformance tests.

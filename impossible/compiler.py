@@ -64,6 +64,7 @@ STATUS_BY_SOURCE = {
 }
 
 GROUP_BY_SOURCE = {
+    "Start": "Start",
     "Movement": "Movement",
     "Collisions": "Collisions",
     "Scoring": "Scoring",
@@ -191,7 +192,12 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
         raise ProjectCompileError("Logical viewport dimensions differ from the original project.")
 
     caproj_plugins = {node.attrib.get("id") for node in caproj.findall("./used-plugins/plugin")}
-    caproj_behaviors = {node.attrib.get("id") for node in caproj.findall("./used-behaviors/behavior")}
+    caproj_behaviors = {
+        value
+        for node in caproj.findall("./used-behaviors/behavior")
+        for value in (node.attrib.get("id"), _text(node))
+        if value
+    }
     for object_name, definition in source_model.get("objects", {}).items():
         plugin = definition.get("plugin")
         if plugin not in caproj_plugins:
@@ -200,10 +206,35 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
         if behavior and behavior not in caproj_behaviors:
             raise ProjectCompileError(f"Object {object_name} references undeclared source behavior {behavior!r}.")
 
+    source_object_names = set(source_model.get("objects", {}))
+    native_object_names = {item.get("name") for item in project.get("objects", [])}
+    if native_object_names != source_object_names:
+        raise ProjectCompileError(
+            f"Native object inventory differs from source model: "
+            f"missing={sorted(source_object_names - native_object_names)}, "
+            f"extra={sorted(native_object_names - source_object_names)}"
+        )
+
+    for native_object in project.get("objects", []):
+        source_name = native_object["name"]
+        properties = native_object.get("base_properties", {})
+        if properties.get("source_object_type") != source_name:
+            raise ProjectCompileError(f"Native object {source_name!r} lost its source type identity.")
+
     source_layout_names = [item["name"] for item in source_model.get("layouts_in_project_order", [])]
     manifest_layout_names = migration.get("source_structure", {}).get("layouts", [])
     if source_layout_names != manifest_layout_names:
         raise ProjectCompileError("Source-model layout order differs from the migration manifest.")
+
+    project_layouts = project.get("metadata", {}).get("layouts", [])
+    if [item.get("name") for item in project_layouts] != source_layout_names:
+        raise ProjectCompileError("Native .ieproj layout order differs from the pinned source project.")
+    for item in project_layouts:
+        expected_sheet = item.get("event_sheet")
+        if expected_sheet not in {sheet.get("id") for sheet in project.get("event_sheets", [])}:
+            raise ProjectCompileError(
+                f"Layout {item.get('name')!r} references an unknown native Event Sheet {expected_sheet!r}."
+            )
 
     layout_root = project_root / "source" / "legacy-construct2" / "Layouts"
     for layout_name in source_layout_names:
@@ -253,6 +284,12 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
         native_ids = [str(event.get("source_id", "")) for event in native_sheet.get("events", [])]
         if native_ids != expected_ids:
             raise ProjectCompileError(f"Native .ieproj event rows do not match {source_relative}.")
+        expected_native_includes = [
+            next((sheet["id"] for sheet in project.get("event_sheets", []) if sheet["name"] == name), None)
+            for name in source_sheet.get("includes", [])
+        ]
+        if native_sheet.get("includes", []) != expected_native_includes:
+            raise ProjectCompileError(f"Native .ieproj include graph differs from {source_relative}.")
 
         for event in expected_events:
             sid = str(event.get("sid", ""))

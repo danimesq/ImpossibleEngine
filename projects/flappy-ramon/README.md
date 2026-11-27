@@ -2,7 +2,7 @@
 
 **Source:** [danimesq/Flappy-Ramon](https://github.com/danimesq/Flappy-Ramon)  
 **Original project:** Flappy Madruga, legacy visual-editor, version 0.6.1.6  
-**Port status:** First native Rust implementation is in progress. The source project is mapped directly; a general-purpose the source editor importer is not part of this round.
+**Port status:** A source-pinned ImpossibleEngine project can be opened, validated and compiled to a headless Rust gameplay library. This is a project-specific Construct 2 adapter, not a general-purpose legacy project importer.
 
 ## Open and compile with ImpossibleEngine
 
@@ -34,7 +34,7 @@ The editor can also open the project directly:
 
 The viewport preserves the original 400 × 500 portrait layout using letterbox scaling.
 
-## What is implemented in the first native slice
+## Headless logic target
 
 - Start, Continuous and Chaves layout states.
 - Source layout-start variables and design-time pipe destruction.
@@ -49,7 +49,13 @@ The viewport preserves the original 400 × 500 portrait layout using letterbox s
 - Music, beat and Queda audio effect adapters, pending the original sound files.
 - Explicit policy for Google Play sign-in (offline fallback until an Android SDK client is configured).
 
-The actual source-event-to-Rust map is in event-sheets/source-coverage.json. Layout, object, behavior, variable and animation source data is in source-model.json. These are manually transcribed source references, not output from a generic importer.
+The source-event map is in event-sheets/source-coverage.json. The immutable original project, all five Event Sheets and all three layouts are pinned under source/legacy-construct2/ at revision aab10559cea2d1283eafa2a8792aaf877cbffcf5. The compiler compares the source XML, source model, coverage map and native .ieproj before generating the Rust binding table. This is an explicit adapter for this one project, not a generic Construct 2 importer.
+
+## Graphics and assets
+
+The default Impossible compile target is headless and does not depend on Macroquad or open a window. Rendering and presentation through RustMultiConsoleFoundation are deferred. The existing Macroquad display/audio host remains available only as an optional legacy preview via `cargo run --features graphics`; it is not the Foundation graphics integration.
+
+Original media bytes are still pending. The logic build does not claim visual or audio asset completeness.
 
 ## Assets
 
@@ -68,7 +74,11 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 ## Validation status
 
-**Native and WebAssembly CI validation passed** on GitHub Actions run #45 (Ubuntu 24.04):
+The headless Impossible compiler has a dedicated GitHub Actions workflow that validates the pinned source, generates bindings, runs runtime/gameplay tests and builds the optimized logic library. The optional legacy preview has a separate graphics-enabled CI path.
+
+The source differential test against a running original Construct 2 build, original media population, and Foundation renderer integration remain acceptance items.
+
+**Historical native and WebAssembly checks** passed on GitHub Actions run #45 (Ubuntu 24.04):
 
 - 17 gameplay/geometry tests passed.
 - Optimized native desktop executable built successfully.

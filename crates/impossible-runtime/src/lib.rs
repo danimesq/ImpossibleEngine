@@ -46,6 +46,7 @@ pub enum SourceEventHandler {
 /// Logical update groups retained from the imported source Event Sheets.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum SourceGroup {
+    Start,
     Movement,
     Collisions,
     Scoring,
@@ -179,7 +180,7 @@ impl<T> Default for WaitQueue<T> {
     }
 }
 
-impl<T: PartialEq> WaitQueue<T> {
+impl<T: PartialEq + Clone> WaitQueue<T> {
     pub fn schedule(&mut self, delay_seconds: f32, payload: T) -> Result<(), &'static str> {
         if !delay_seconds.is_finite() || delay_seconds <= 0.0 {
             return Err("wait duration must be finite and greater than zero");

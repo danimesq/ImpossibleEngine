@@ -118,6 +118,11 @@ enum WaitEvent {
     RetryVisible,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum RestartTask {
+    RestartCurrentLayout,
+}
+
 #[derive(Clone, Debug)]
 pub struct Bird {
     /// the source editor world position is the sprite hotspot, not its visual center.
@@ -247,8 +252,8 @@ pub struct Game {
     pub migration_warnings: Vec<String>,
     effects: Vec<Effect>,
     spawn_elapsed: f32,
-    restart_wait: Option<f32>,
     waits: WaitQueue<WaitEvent>,
+    restart_waits: WaitQueue<RestartTask>,
     progression_fired: bool,
     next_entity_id: u64,
     rng: DeterministicRng,
@@ -279,8 +284,8 @@ impl Game {
             migration_warnings: Vec::new(),
             effects: Vec::new(),
             spawn_elapsed: 0.0,
-            restart_wait: None,
             waits: WaitQueue::default(),
+            restart_waits: WaitQueue::default(),
             progression_fired: false,
             next_entity_id: 100,
             rng: DeterministicRng::seeded(seed),
@@ -289,6 +294,11 @@ impl Game {
 
         validate_source_program(crate::source::SOURCE_EVENTS)
             .expect("generated Flappy source-event bindings must be valid");
+        assert_eq!(
+            crate::source::SOURCE_EVENT_COUNT,
+            crate::source::SOURCE_EVENTS.len(),
+            "generated Flappy source-event count must match its binding table"
+        );
 
         match layout {
             Layout::Start => {
@@ -385,8 +395,8 @@ impl Game {
         self.high_score_text = format!("Highscore: {}", self.high_score);
         self.score_text_on_top = true;
         self.music_requested = true;
-        self.restart_wait = None;
         self.waits.clear();
+        self.restart_waits.clear();
         self.progression_fired = false;
 
         // Source action order sets the initial jump before movement begins.
@@ -654,7 +664,7 @@ impl Game {
             CollisionKind::Ground | CollisionKind::BottomPipe => {
                 self.retry_visible = true;
                 self.retry_enabled = true;
-                self.finish_game_over(CollisionKind::Ground);
+                self.finish_game_over(kind);
             }
         }
     }
@@ -770,30 +780,27 @@ impl Game {
 
     fn update_restart(&mut self, input: InputFrame, dt: f32) {
         // Source event SID 9708342499359544: button click OR Return.
-        // Child SID 3112928811038152 requires Queda=true, waits 0.1s,
-        // then restarts the current layout.
-        let restart_now = if let Some(wait) = self.restart_wait.as_mut() {
-            *wait -= dt;
-            *wait <= 0.0
-        } else {
-            false
-        };
-
-        if restart_now {
-            self.restart_wait = None;
-            let layout = self.layout;
-            self.enter_layout(layout);
-            return;
+        // Child SID 3112928811038152 schedules a 0.1-second Wait at the end
+        // of this event group, so its clock advances at the same phase.
+        for task in self.restart_waits.advance(dt) {
+            match task {
+                RestartTask::RestartCurrentLayout => {
+                    let layout = self.layout;
+                    self.enter_layout(layout);
+                    return;
+                }
+            }
         }
 
-        // A newly scheduled the source editor Wait begins after this event action.
         if input.restart_pressed
             && self.bird.queda
-            && self.restart_wait.is_none()
+            && self.restart_waits.is_empty()
             && self.has_source_handler(SourceEventHandler::RetryButtonOrReturn)
             && self.has_source_handler(SourceEventHandler::RestartAfterWait)
         {
-            self.restart_wait = Some(0.1);
+            self.restart_waits
+                .schedule(0.1, RestartTask::RestartCurrentLayout)
+                .expect("the source restart Wait duration is valid");
         }
     }
 

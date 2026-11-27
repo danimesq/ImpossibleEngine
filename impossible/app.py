@@ -455,7 +455,8 @@ class ImpossibleWindow:
                                        action=Gtk.FileChooserAction.OPEN)
         dialog.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK)
         file_filter = Gtk.FileFilter()
-        file_filter.set_name("Impossible project (*.json)")
+        file_filter.set_name("Impossible project (*.ieproj, *.json)")
+        file_filter.add_pattern("*.ieproj")
         file_filter.add_pattern("*.json")
         dialog.add_filter(file_filter)
         response = dialog.run()
@@ -478,7 +479,7 @@ class ImpossibleWindow:
                                            action=Gtk.FileChooserAction.SAVE)
             dialog.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK)
             dialog.set_do_overwrite_confirmation(True)
-            dialog.set_current_name("impossible-project.json")
+            dialog.set_current_name("impossible-project.ieproj")
             response = dialog.run()
             filename = dialog.get_filename() if response == Gtk.ResponseType.OK else None
             dialog.destroy()

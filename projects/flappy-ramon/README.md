@@ -4,24 +4,27 @@
 **Original project:** Flappy Madruga, legacy visual-editor, version 0.6.1.6  
 **Port status:** First native Rust implementation is in progress. The source project is mapped directly; a general-purpose the source editor importer is not part of this round.
 
-## Run
+## Open and compile with ImpossibleEngine
 
-From this directory:
+From the repository root:
 
-    cargo run
+    python -m impossible
 
-The default launch opens the original Start screen. You can also launch a gameplay layout directly for testing:
+Open `projects/flappy-ramon/Flappy-Madruga.ieproj` in the editor. The native project contains all five source Event Sheets, ten object types, source provenance, and the pinned Construct 2 snapshots.
 
-    cargo run -- --layout=continuous
-    cargo run -- --layout=chaves
+Validate the original source and project mapping:
 
-Run the platform-neutral gameplay and collision tests:
+    python -m impossible.compiler validate --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
 
-    cargo test
+Compile the headless gameplay motor:
 
-Build an optimized native executable:
+    python -m impossible.compiler compile --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
 
-    cargo build --release
+The compiler validates every source Event Sheet against the pinned XML, generates the typed Rust source-event table, runs the Rust workspace tests, and builds the optimized `flappy-madruga` library. Graphics are deliberately not part of this target.
+
+The editor can also open the project directly:
+
+    impossible
 
 ## Controls
 

@@ -973,5 +973,520 @@
       "The logic target compiles the platform-neutral Rust game model without building a renderer or opening a window.",
       "Original media bytes and Foundation graphics integration remain outside this headless logic build."
     ]
-  }
+  },
+  "layouts": [
+    {
+      "id": "layout-start",
+      "name": "Start",
+      "event_sheet_id": "sheet-start",
+      "includes": [],
+      "instances": [
+        {
+          "id": "instance-start-8",
+          "object_id": "object-sprite",
+          "source_uid": 8,
+          "position": [
+            200,
+            250
+          ],
+          "size": [
+            400,
+            500
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "media_ref": "Splash.png"
+          }
+        },
+        {
+          "id": "instance-start-1",
+          "object_id": "object-play-continuous",
+          "source_uid": 1,
+          "position": [
+            13,
+            255
+          ],
+          "size": [
+            162,
+            32
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "Continuous Play"
+          }
+        }
+      ],
+      "properties": {
+        "logical_resolution": {
+          "width": 400,
+          "height": 500
+        }
+      }
+    },
+    {
+      "id": "layout-continuous",
+      "name": "Continuous",
+      "event_sheet_id": "sheet-continuous",
+      "includes": [
+        "sheet-common-game"
+      ],
+      "instances": [
+        {
+          "id": "instance-continuous-5",
+          "object_id": "object-background",
+          "source_uid": 5,
+          "position": [
+            200,
+            250
+          ],
+          "size": [
+            400,
+            500
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "media_ref": "Vila_do_Chaves_-_divulgacao.jpg"
+          }
+        },
+        {
+          "id": "instance-continuous-0",
+          "object_id": "object-madruga",
+          "source_uid": 0,
+          "position": [
+            69.332038879,
+            240.193328857
+          ],
+          "size": [
+            73.076919556,
+            56.447761536
+          ],
+          "hotspot": [
+            0.513157904,
+            0.524590135
+          ],
+          "variables": {
+            "Queda": false
+          },
+          "behaviors": {
+            "Platform": {
+              "max-speed": 0,
+              "acceleration": 300,
+              "deceleration": 1500,
+              "jump-strength": 0,
+              "gravity": 1500,
+              "max-fall-speed": 1000,
+              "double-jump": "Disabled",
+              "jump-sustain": 0,
+              "default-controls": true,
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {}
+        },
+        {
+          "id": "instance-continuous-3",
+          "object_id": "object-tiledbackground",
+          "source_uid": 3,
+          "position": [
+            -69,
+            472
+          ],
+          "size": [
+            1118,
+            28
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "variables": {},
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {
+            "media_ref": "test.png"
+          }
+        },
+        {
+          "id": "instance-continuous-4",
+          "object_id": "object-tiledbackground2",
+          "source_uid": 4,
+          "position": [
+            0,
+            453
+          ],
+          "size": [
+            1107,
+            19
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "variables": {},
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {
+            "media_ref": "test.png"
+          }
+        },
+        {
+          "id": "instance-continuous-6",
+          "object_id": "object-bottompipe",
+          "source_uid": 6,
+          "position": [
+            450,
+            630
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {
+            "Scored": false
+          },
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {}
+        },
+        {
+          "id": "instance-continuous-7",
+          "object_id": "object-toppipe",
+          "source_uid": 7,
+          "position": [
+            447,
+            -117
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {},
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {}
+        },
+        {
+          "id": "instance-continuous-9",
+          "object_id": "object-scoretext",
+          "source_uid": 9,
+          "position": [
+            1,
+            1
+          ],
+          "size": [
+            398,
+            70
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "0",
+            "initially_visible": true
+          }
+        },
+        {
+          "id": "instance-continuous-13",
+          "object_id": "object-play-continuous",
+          "source_uid": 13,
+          "position": [
+            120,
+            211
+          ],
+          "size": [
+            181,
+            81
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "Try again!",
+            "initially_visible": false
+          }
+        },
+        {
+          "id": "instance-continuous-10",
+          "object_id": "object-highscore",
+          "source_uid": 10,
+          "position": [
+            156,
+            179
+          ],
+          "size": [
+            200,
+            30
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "Highscore:",
+            "initially_visible": false
+          }
+        }
+      ],
+      "properties": {
+        "logical_resolution": {
+          "width": 400,
+          "height": 500
+        },
+        "source_runtime_notes": "The source Common in-game event destroys the design-time TopPipe and BottomPipe instances before the first timed spawn."
+      }
+    },
+    {
+      "id": "layout-chaves",
+      "name": "Chaves",
+      "event_sheet_id": "sheet-chaves",
+      "includes": [
+        "sheet-common-game",
+        "sheet-common-levels"
+      ],
+      "instances": [
+        {
+          "id": "instance-chaves-18",
+          "object_id": "object-background",
+          "source_uid": 18,
+          "position": [
+            200,
+            250
+          ],
+          "size": [
+            400,
+            500
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "media_ref": "Vila_do_Chaves_-_divulgacao.jpg"
+          }
+        },
+        {
+          "id": "instance-chaves-19",
+          "object_id": "object-madruga",
+          "source_uid": 19,
+          "position": [
+            69.332038879,
+            240.193328857
+          ],
+          "size": [
+            73.076919556,
+            56.447761536
+          ],
+          "hotspot": [
+            0.513157904,
+            0.524590135
+          ],
+          "variables": {
+            "Queda": false
+          },
+          "behaviors": {
+            "Platform": {
+              "max-speed": 0,
+              "acceleration": 300,
+              "deceleration": 1500,
+              "jump-strength": 0,
+              "gravity": 1500,
+              "max-fall-speed": 1000,
+              "double-jump": "Disabled",
+              "jump-sustain": 0,
+              "default-controls": true,
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {}
+        },
+        {
+          "id": "instance-chaves-20",
+          "object_id": "object-tiledbackground",
+          "source_uid": 20,
+          "position": [
+            -69,
+            472
+          ],
+          "size": [
+            1118,
+            28
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "variables": {},
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {
+            "media_ref": "test.png"
+          }
+        },
+        {
+          "id": "instance-chaves-21",
+          "object_id": "object-tiledbackground2",
+          "source_uid": 21,
+          "position": [
+            0,
+            453
+          ],
+          "size": [
+            1107,
+            19
+          ],
+          "hotspot": [
+            0,
+            0
+          ],
+          "variables": {},
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {
+            "media_ref": "test.png"
+          }
+        },
+        {
+          "id": "instance-chaves-22",
+          "object_id": "object-bottompipe",
+          "source_uid": 22,
+          "position": [
+            450,
+            630
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {
+            "Scored": false
+          },
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {}
+        },
+        {
+          "id": "instance-chaves-23",
+          "object_id": "object-toppipe",
+          "source_uid": 23,
+          "position": [
+            447,
+            -117
+          ],
+          "size": [
+            70,
+            604
+          ],
+          "hotspot": [
+            0.5,
+            0.5
+          ],
+          "variables": {},
+          "behaviors": {
+            "Solid": {
+              "initial-state": "Enabled"
+            }
+          },
+          "properties": {}
+        },
+        {
+          "id": "instance-chaves-24",
+          "object_id": "object-scoretext",
+          "source_uid": 24,
+          "position": [
+            1,
+            1
+          ],
+          "size": [
+            398,
+            70
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "0",
+            "initially_visible": true
+          }
+        },
+        {
+          "id": "instance-chaves-25",
+          "object_id": "object-play-continuous",
+          "source_uid": 25,
+          "position": [
+            120,
+            211
+          ],
+          "size": [
+            181,
+            81
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "Try again!",
+            "initially_visible": false
+          }
+        },
+        {
+          "id": "instance-chaves-26",
+          "object_id": "object-highscore",
+          "source_uid": 26,
+          "position": [
+            156,
+            179
+          ],
+          "size": [
+            200,
+            30
+          ],
+          "variables": {},
+          "behaviors": {},
+          "properties": {
+            "text": "Highscore:",
+            "initially_visible": false
+          }
+        }
+      ],
+      "properties": {
+        "logical_resolution": {
+          "width": 400,
+          "height": 500
+        },
+        "source_runtime_notes": "The Chaves event sets Required_Score=10 and switches both pipe objects to the Chaves animation. Common in-game then resets gameplay state and destroys design-time pipe instances."
+      }
+    }
+  ]
 }

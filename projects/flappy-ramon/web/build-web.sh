@@ -38,7 +38,7 @@ fi
 
 log "Compiling Flappy Madruga for $TARGET"
 cd -- "$PROJECT_DIR"
-cargo build --release --target "$TARGET"
+cargo build --release --features graphics --target "$TARGET"
 
 WASM_FILE="$(find "$BUILD_DIR" -maxdepth 1 -type f -name '*.wasm' -print -quit)"
 [[ -s "$WASM_FILE" ]] || die "No WebAssembly binary found in $BUILD_DIR"

@@ -527,7 +527,6 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
         "source_revision": expected_revision,
         "source_project_version": source_version,
         "logical_resolution": [width, height],
-        "layouts": source_layout_names,
         "event_sheets": resolved_sheets,
         "source_events": source_event_count,
         "handler_bindings": len(HANDLER_BY_SID),

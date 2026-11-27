@@ -103,6 +103,14 @@ The intended path is:
 5. Code generation emits normal Rust calls or statically dispatched operation identifiers. The game must not perform string-based ACE discovery or parse the registry on every frame.
 6. The runtime executes the operation and reports typed results, triggers or diagnostics to the scheduler.
 
+### 🌈 Current Event Sheet schema gap
+
+The proposed `event-sheet-v1.schema.json` does not yet reference catalogue ACE IDs. It currently models only two trigger kinds (`on_layout_start` and `every_tick`), two condition forms (`compare` and `not`), a small expression grammar (`const`, `ref`, `sub`, `mul`) and three generic action kinds (`set`, `set_x`, `set_animation`).
+
+That means the sample Event Sheet is a small source-derived DSL, not yet a representation of the 640 registry ACEs. The current fixture can demonstrate a compiler subset, but it cannot prove general ACE resolution.
+
+The next format revision should represent registry operations by stable ACE ID plus typed arguments and explicit target/selection references. Existing v1 documents must remain readable through a deliberate v1-to-IR lowering adapter; do not silently change the meaning of v1 or pretend its generic action names cover the catalogue. Preserve source IDs and provide a diagnostic for every operation that cannot be mapped exactly.
+
 The runtime binding should be explicit. An ACE that has no implementation must fail compilation with a useful diagnostic such as:
 
 - unresolved ACE ID;

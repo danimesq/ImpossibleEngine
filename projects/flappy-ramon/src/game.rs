@@ -9,6 +9,10 @@ use crate::geometry::{
     polygons_intersect, rectangle_polygon, transform_polygon, BOTTOM_PIPE_CHAVES,
     MADRUGA_DEFAULT, MADRUGA_FLYING, PIPE_DEFAULT, TOP_PIPE_CHAVES,
 };
+use impossible_runtime::{
+    validate_source_program, DeterministicRng, SourceEventHandler, SourceFrameClock,
+    SourceGroup, WaitQueue,
+};
 
 pub const VIEW_WIDTH: f32 = 400.0;
 pub const VIEW_HEIGHT: f32 = 500.0;
@@ -107,6 +111,13 @@ pub struct InputFrame {
     pub return_pressed: bool,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum WaitEvent {
+    BirdAnimationDefault,
+    TopPipeGameOver,
+    RetryVisible,
+}
+
 #[derive(Clone, Debug)]
 pub struct Bird {
     /// the source editor world position is the sprite hotspot, not its visual center.
@@ -115,9 +126,6 @@ pub struct Bird {
     pub angle_degrees: f32,
     pub queda: bool,
     pub animation: BirdAnimation,
-    /// the source editor Wait actions are independent continuations. A repeated flap
-    /// can therefore enqueue another 0.5-second animation reset.
-    animation_reset_waits: Vec<f32>,
 }
 
 impl Bird {
@@ -128,7 +136,6 @@ impl Bird {
             angle_degrees: 320.0,
             queda: false,
             animation: BirdAnimation::Default,
-            animation_reset_waits: Vec::new(),
         }
     }
 
@@ -241,11 +248,10 @@ pub struct Game {
     effects: Vec<Effect>,
     spawn_elapsed: f32,
     restart_wait: Option<f32>,
-    top_pipe_game_over_wait: Option<f32>,
-    retry_show_wait: Option<f32>,
+    waits: WaitQueue<WaitEvent>,
     progression_fired: bool,
     next_entity_id: u64,
-    rng_state: u64,
+    rng: DeterministicRng,
     android_build: bool,
 }
 
@@ -274,13 +280,15 @@ impl Game {
             effects: Vec::new(),
             spawn_elapsed: 0.0,
             restart_wait: None,
-            top_pipe_game_over_wait: None,
-            retry_show_wait: None,
+            waits: WaitQueue::default(),
             progression_fired: false,
             next_entity_id: 100,
-            rng_state: if seed == 0 { 0x9e37_79b9_7f4a_7c15 } else { seed },
+            rng: DeterministicRng::seeded(seed),
             android_build: cfg!(target_os = "android"),
         };
+
+        validate_source_program(crate::source::SOURCE_EVENTS)
+            .expect("generated Flappy source-event bindings must be valid");
 
         match layout {
             Layout::Start => game.effects.push(Effect::StopAllAudio),
@@ -360,8 +368,7 @@ impl Game {
         self.score_text_on_top = true;
         self.music_requested = true;
         self.restart_wait = None;
-        self.top_pipe_game_over_wait = None;
-        self.retry_show_wait = None;
+        self.waits.clear();
         self.progression_fired = false;
 
         // Source action order sets the initial jump before movement begins.
@@ -373,17 +380,9 @@ impl Game {
     }
 
     pub fn update(&mut self, input: InputFrame, source_dt: f32) {
-        let elapsed_dt = if source_dt.is_finite() && source_dt > 0.0 {
-            source_dt
-        } else {
-            0.0
-        };
-
-        // legacy visual-editor defaults to a maximum dt of 1/30 second. When a frame
-        // takes longer, per-tick movement goes into slow motion instead of
-        // jumping through collision surfaces. System timers and Wait
-        // continuations still consume elapsed time independently.
-        let simulation_dt = elapsed_dt.min(1.0 / 30.0);
+        let frame_delta = SourceFrameClock::default().sample(source_dt);
+        let elapsed_dt = frame_delta.elapsed_seconds;
+        let simulation_dt = frame_delta.simulation_seconds;
 
         if self.layout == Layout::Start {
             self.update_start(input);
@@ -394,15 +393,57 @@ impl Game {
         // A Wait created by this frame's input starts counting next frame.
         self.update_wait_continuations(elapsed_dt);
 
-        // Movement group: Touch-start OR Space, with a Queda=false subevent.
+        // The compiled source-event table defines which event groups exist and
+        // their execution order. Each group delegates to its typed Rust handler.
+        for group in crate::source::SOURCE_UPDATE_ORDER.iter().copied() {
+            if !self.has_source_group(group) {
+                continue;
+            }
+            match group {
+                SourceGroup::Start | SourceGroup::CommonInLevels => {}
+                SourceGroup::Movement => {
+                    self.update_movement(input, simulation_dt, elapsed_dt);
+                }
+                SourceGroup::Collisions => self.check_collisions(),
+                SourceGroup::Scoring => self.score_pipes(),
+                SourceGroup::Background => self.update_background_and_pipes(simulation_dt),
+                SourceGroup::Obstacle => self.update_obstacle_timer(elapsed_dt),
+                SourceGroup::Restart => self.update_restart(input, elapsed_dt),
+            }
+        }
+
+        // Common-in-levels is a shared include used only by the Chaves layout.
+        if self.layout == Layout::Chaves
+            && crate::source::SOURCE_CHAVES_ORDER.contains(&SourceGroup::CommonInLevels)
+            && self.has_source_group(SourceGroup::CommonInLevels)
+        {
+            self.update_level_progression();
+        }
+    }
+
+    fn has_source_group(&self, group: SourceGroup) -> bool {
+        crate::source::SOURCE_EVENTS
+            .iter()
+            .any(|event| event.group == Some(group))
+    }
+
+    fn update_movement(
+        &mut self,
+        input: InputFrame,
+        simulation_dt: f32,
+        elapsed_dt: f32,
+    ) {
+        // Touch-start OR Space, then NOT Madruga.Queda.
         if input.flap_pressed && !self.bird.queda {
             self.bird.velocity_y = -BIRD_JUMP_STRENGTH;
             self.bird.angle_degrees = 320.0;
             self.bird.animation = BirdAnimation::Flying;
-            self.bird.animation_reset_waits.push(0.5);
+            self.waits
+                .schedule(0.5, WaitEvent::BirdAnimationDefault)
+                .expect("the source Wait duration is valid");
         }
 
-        // Movement group: Every tick AND NOT Madruga.Queda.
+        // Every tick AND NOT Madruga.Queda.
         if !self.bird.queda {
             self.bird.angle_degrees =
                 (self.bird.angle_degrees + 60.0 * simulation_dt) % 360.0;
@@ -411,25 +452,6 @@ impl Game {
         // Platform behavior: gravity=1500, max-fall-speed=1000.
         self.update_platform_behavior(simulation_dt);
         self.update_pipe_animations(elapsed_dt);
-
-        // Event Sheet group order: collision checks before scoring/background.
-        self.check_collisions();
-
-        // Scoring group: BottomPipe.X <= Madruga.X AND NOT BottomPipe.Scored.
-        self.score_pipes();
-
-        // Background group: wrap checks, Every tick movement, then destroy.
-        self.update_background_and_pipes(simulation_dt);
-
-        // Every-X-seconds and Wait are time-based System events, not dt-based
-        // movement expressions, so they receive uncapped elapsed time.
-        self.update_obstacle_timer(elapsed_dt);
-
-        // Restart event is at the end of Common in-game.xml.
-        self.update_restart(input, elapsed_dt);
-
-        // Common in-levels is included only by the Chaves event sheet.
-        self.update_level_progression();
     }
 
     fn update_start(&mut self, input: InputFrame) {
@@ -446,48 +468,23 @@ impl Game {
         }
     }
 
-    fn update_wait_continuations(&mut self, dt: f32) {
-        let mut reset_animation = false;
-
-        for wait in &mut self.bird.animation_reset_waits {
-            *wait -= dt;
-            if *wait <= 0.0 {
-                reset_animation = true;
+    fn update_wait_continuations(&mut self, elapsed_dt: f32) {
+        // The scheduler advances only waits that existed before this dispatch.
+        // Multiple waits remain independent and complete in their original order.
+        for continuation in self.waits.advance(elapsed_dt) {
+            match continuation {
+                WaitEvent::BirdAnimationDefault => {
+                    self.bird.animation = BirdAnimation::Default;
+                }
+                WaitEvent::TopPipeGameOver => {
+                    self.effects.push(Effect::PlayQueda);
+                    self.finish_game_over();
+                }
+                WaitEvent::RetryVisible => {
+                    self.retry_visible = true;
+                    self.retry_enabled = true;
+                }
             }
-        }
-
-        self.bird.animation_reset_waits.retain(|wait| *wait > 0.0);
-
-        if reset_animation {
-            self.bird.animation = BirdAnimation::Default;
-        }
-
-        let top_pipe_wait_finished = match self.top_pipe_game_over_wait.as_mut() {
-            Some(wait) => {
-                *wait -= dt;
-                *wait <= 0.0
-            }
-            None => false,
-        };
-
-        if top_pipe_wait_finished {
-            self.top_pipe_game_over_wait = None;
-            self.effects.push(Effect::PlayQueda);
-            self.finish_game_over();
-        }
-
-        let retry_wait_finished = match self.retry_show_wait.as_mut() {
-            Some(wait) => {
-                *wait -= dt;
-                *wait <= 0.0
-            }
-            None => false,
-        };
-
-        if retry_wait_finished {
-            self.retry_show_wait = None;
-            self.retry_visible = true;
-            self.retry_enabled = true;
         }
     }
 
@@ -603,8 +600,12 @@ impl Game {
         match kind {
             CollisionKind::TopPipe => {
                 // TopPipe collision waits 0.5s before Queda audio and retry UI.
-                self.top_pipe_game_over_wait = Some(0.5);
-                self.retry_show_wait = Some(0.5);
+                self.waits
+                    .schedule(0.5, WaitEvent::TopPipeGameOver)
+                    .expect("the source Wait duration is valid");
+                self.waits
+                    .schedule(0.5, WaitEvent::RetryVisible)
+                    .expect("the source Wait duration is valid");
             }
             CollisionKind::Ground | CollisionKind::BottomPipe => {
                 self.retry_visible = true;
@@ -744,16 +745,7 @@ impl Game {
     }
 
     fn random_range(&mut self, min: f32, max: f32) -> f32 {
-        // Small deterministic xorshift generator. This keeps the game portable
-        // and gives the tests reproducible obstacle sequences.
-        let mut x = self.rng_state;
-        x ^= x << 13;
-        x ^= x >> 7;
-        x ^= x << 17;
-        self.rng_state = x;
-
-        let unit = (x >> 40) as f32 / ((1u32 << 24) as f32);
-        min + (max - min) * unit
+        self.rng.range_f32(min, max)
     }
 }
 
@@ -943,7 +935,8 @@ mod tests {
 
         assert!(!game.retry_visible);
         assert!(!game.retry_enabled);
-        assert!(game.top_pipe_game_over_wait.is_some());
+        assert!(game.waits.contains(&WaitEvent::TopPipeGameOver));
+        assert!(game.waits.contains(&WaitEvent::RetryVisible));
 
         game.update_wait_continuations(0.51);
 

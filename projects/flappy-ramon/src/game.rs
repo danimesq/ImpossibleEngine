@@ -291,11 +291,19 @@ impl Game {
             .expect("generated Flappy source-event bindings must be valid");
 
         match layout {
-            Layout::Start => game.effects.push(Effect::StopAllAudio),
+            Layout::Start => {
+                if game.has_source_handler(SourceEventHandler::StopAllAudioOnStart) {
+                    game.effects.push(Effect::StopAllAudio);
+                }
+            }
             Layout::Continuous | Layout::Chaves => game.enter_layout(layout),
         }
 
         game
+    }
+
+    fn has_source_handler(&self, handler: SourceEventHandler) -> bool {
+        crate::source::SOURCE_EVENTS.iter().any(|event| event.handler == handler)
     }
 
     pub fn drain_effects(&mut self) -> Vec<Effect> {
@@ -304,14 +312,18 @@ impl Game {
 
     /// A platform adapter may call this after a Google Play sign-in callback.
     pub fn on_google_play_signed_in(&mut self) {
-        if self.layout == Layout::Start {
+        if self.layout == Layout::Start
+            && self.has_source_handler(SourceEventHandler::GooglePlaySignedIn)
+        {
             self.enter_layout(Layout::Continuous);
         }
     }
 
     /// Explicit offline fallback when Google Play is not available for a target.
     pub fn on_google_play_unavailable(&mut self) {
-        if self.layout == Layout::Start {
+        if self.layout == Layout::Start
+            && self.has_source_handler(SourceEventHandler::GooglePlaySignInRequest)
+        {
             self.migration_warnings.push(
                 "Google Play sign-in is not configured for this target; continuing offline."
                     .to_string(),
@@ -325,7 +337,9 @@ impl Game {
         self.layout_name = layout.source_name().to_string();
 
         if layout == Layout::Start {
-            self.effects.push(Effect::StopAllAudio);
+            if self.has_source_handler(SourceEventHandler::StopAllAudioOnStart) {
+                self.effects.push(Effect::StopAllAudio);
+            }
             return;
         }
 
@@ -335,14 +349,18 @@ impl Game {
         // editor-time instances for destruction. the source editor applies Destroy
         // after event processing, so the animation action is accounted for,
         // but the later timer-created instances start with Default animation.
-        if layout == Layout::Chaves {
+        if layout == Layout::Chaves
+            && self.has_source_handler(SourceEventHandler::ChavesLayoutStart)
+        {
             self.required_score = 10;
         } else {
             self.required_score = 0;
         }
         self.pipe_skin = PipeSkin::Default;
 
-        self.common_game_layout_start();
+        if self.has_source_handler(SourceEventHandler::CommonLayoutStart) {
+            self.common_game_layout_start();
+        }
     }
 
     /// Direct translation of source event SID 2246972820014324:
@@ -376,7 +394,9 @@ impl Game {
         self.bird.angle_degrees = 320.0;
 
         // Nested Trigger once while true Music event follows layout start.
-        self.effects.push(Effect::PlayMusic);
+        if self.has_source_handler(SourceEventHandler::StartMusicOnce) {
+            self.effects.push(Effect::PlayMusic);
+        }
     }
 
     pub fn update(&mut self, input: InputFrame, source_dt: f32) {
@@ -434,7 +454,11 @@ impl Game {
         elapsed_dt: f32,
     ) {
         // Touch-start OR Space, then NOT Madruga.Queda.
-        if input.flap_pressed && !self.bird.queda {
+        if input.flap_pressed
+            && !self.bird.queda
+            && self.has_source_handler(SourceEventHandler::FlapInputOr)
+            && self.has_source_handler(SourceEventHandler::FlapWhenAlive)
+        {
             self.bird.velocity_y = -BIRD_JUMP_STRENGTH;
             self.bird.angle_degrees = 320.0;
             self.bird.animation = BirdAnimation::Flying;
@@ -444,7 +468,7 @@ impl Game {
         }
 
         // Every tick AND NOT Madruga.Queda.
-        if !self.bird.queda {
+        if !self.bird.queda && self.has_source_handler(SourceEventHandler::RotateBird) {
             self.bird.angle_degrees =
                 (self.bird.angle_degrees + 60.0 * simulation_dt) % 360.0;
         }
@@ -455,15 +479,19 @@ impl Game {
     }
 
     fn update_start(&mut self, input: InputFrame) {
-        if !(input.start_button_pressed || input.return_pressed) {
+        if !(input.start_button_pressed || input.return_pressed)
+            || !self.has_source_handler(SourceEventHandler::StartButtonOrReturn)
+        {
             return;
         }
 
         // Start events.xml: Android requests Google Play sign-in and waits for
-        // On signed in. Other targets navigate directly to Continuous.
+        // On signed in. Other targets follow the source Else child to Continuous.
         if self.android_build {
-            self.effects.push(Effect::RequestGooglePlaySignIn);
-        } else {
+            if self.has_source_handler(SourceEventHandler::GooglePlaySignInRequest) {
+                self.effects.push(Effect::RequestGooglePlaySignIn);
+            }
+        } else if self.has_source_handler(SourceEventHandler::StartNonAndroidElse) {
             self.enter_layout(Layout::Continuous);
         }
     }
@@ -478,7 +506,7 @@ impl Game {
                 }
                 WaitEvent::TopPipeGameOver => {
                     self.effects.push(Effect::PlayQueda);
-                    self.finish_game_over();
+                    self.finish_game_over(CollisionKind::TopPipe);
                 }
                 WaitEvent::RetryVisible => {
                     self.retry_visible = true;
@@ -542,6 +570,9 @@ impl Game {
     }
 
     fn check_collisions(&mut self) {
+        if !self.has_source_handler(SourceEventHandler::CollisionGuard) {
+            return;
+        }
         let bird_polygon = self.bird.collision_polygon();
         let ground = rectangle_polygon(
             GROUND_COLLISION.0,
@@ -552,12 +583,15 @@ impl Game {
 
         // Collision child order in the original event sheet:
         // TiledBackground2, TopPipe, BottomPipe.
-        if polygons_intersect(&bird_polygon, &ground) {
+        if self.has_source_handler(SourceEventHandler::GroundCollision)
+            && polygons_intersect(&bird_polygon, &ground)
+        {
             self.handle_collision(CollisionKind::Ground);
             return;
         }
 
-        if self.pipes.iter().any(|pair| {
+        if self.has_source_handler(SourceEventHandler::TopPipeCollision)
+            && self.pipes.iter().any(|pair| {
             pair.top_alive
                 && polygons_intersect(
                     &bird_polygon,
@@ -568,7 +602,8 @@ impl Game {
             return;
         }
 
-        if self.pipes.iter().any(|pair| {
+        if self.has_source_handler(SourceEventHandler::BottomPipeCollision)
+            && self.pipes.iter().any(|pair| {
             pair.bottom_alive
                 && polygons_intersect(
                     &bird_polygon,
@@ -584,7 +619,16 @@ impl Game {
 
     fn handle_collision(&mut self, kind: CollisionKind) {
         // Parent event SID 7365620846625415 runs only while Queda is false.
-        if self.bird.queda {
+        if self.bird.queda || !self.has_source_handler(SourceEventHandler::CollisionGuard) {
+            return;
+        }
+
+        let collision_handler = match kind {
+            CollisionKind::Ground => SourceEventHandler::GroundCollision,
+            CollisionKind::TopPipe => SourceEventHandler::TopPipeCollision,
+            CollisionKind::BottomPipe => SourceEventHandler::BottomPipeCollision,
+        };
+        if !self.has_source_handler(collision_handler) {
             return;
         }
 
@@ -610,25 +654,41 @@ impl Game {
             CollisionKind::Ground | CollisionKind::BottomPipe => {
                 self.retry_visible = true;
                 self.retry_enabled = true;
-                self.finish_game_over();
+                self.finish_game_over(CollisionKind::Ground);
             }
         }
     }
 
-    fn finish_game_over(&mut self) {
+    fn finish_game_over(&mut self, kind: CollisionKind) {
         // Nested collision subevents update high score only on Continuous.
         if self.layout_name == "Continuous" {
-            if self.score > self.high_score {
+            let save_handler = match kind {
+                CollisionKind::Ground => SourceEventHandler::SaveHighScoreAfterGround,
+                CollisionKind::TopPipe => SourceEventHandler::SaveHighScoreAfterTopPipe,
+                CollisionKind::BottomPipe => SourceEventHandler::SaveHighScoreAfterBottomPipe,
+            };
+            let display_handler = match kind {
+                CollisionKind::Ground => SourceEventHandler::ShowHighScoreAfterGround,
+                CollisionKind::TopPipe => SourceEventHandler::ShowHighScoreAfterTopPipe,
+                CollisionKind::BottomPipe => SourceEventHandler::ShowHighScoreAfterBottomPipe,
+            };
+
+            if self.has_source_handler(save_handler) && self.score > self.high_score {
                 self.high_score = self.score;
                 self.effects.push(Effect::SaveHighScore(self.high_score));
             }
 
-            self.high_score_text = format!("Highscore: {}", self.high_score);
-            self.high_score_visible = true;
+            if self.has_source_handler(display_handler) {
+                self.high_score_text = format!("Highscore: {}", self.high_score);
+                self.high_score_visible = true;
+            }
         }
     }
 
     fn score_pipes(&mut self) {
+        if !self.has_source_handler(SourceEventHandler::ScorePipeOnce) {
+            return;
+        }
         for pair in &mut self.pipes {
             if pair.bottom_alive
                 && pair.bottom.x <= self.bird.position[0]
@@ -642,15 +702,19 @@ impl Game {
 
     fn update_background_and_pipes(&mut self, dt: f32) {
         // Background wrap checks precede the Every tick movement event.
-        if self.tiled_background_x <= BACKGROUND_WRAP_X {
+        if self.has_source_handler(SourceEventHandler::WrapBackground)
+            && self.tiled_background_x <= BACKGROUND_WRAP_X
+        {
             self.tiled_background_x = 0.0;
         }
 
-        if self.tiled_background2_x <= GROUND_WRAP_X {
+        if self.has_source_handler(SourceEventHandler::WrapGround)
+            && self.tiled_background2_x <= GROUND_WRAP_X
+        {
             self.tiled_background2_x = 0.0;
         }
 
-        if dt > 0.0 {
+        if dt > 0.0 && self.has_source_handler(SourceEventHandler::MoveBackgroundAndPipes) {
             let movement = self.scroll_speed * dt;
             for pair in &mut self.pipes {
                 if pair.bottom_alive {
@@ -667,10 +731,14 @@ impl Game {
 
         // the source editor destroys TopPipe and BottomPipe independently.
         for pair in &mut self.pipes {
-            if pair.top_alive && pair.top.x < PIPE_DESTROY_X {
+            if self.has_source_handler(SourceEventHandler::DestroyTopPipe)
+                && pair.top_alive && pair.top.x < PIPE_DESTROY_X
+            {
                 pair.top_alive = false;
             }
-            if pair.bottom_alive && pair.bottom.x < PIPE_DESTROY_X {
+            if self.has_source_handler(SourceEventHandler::DestroyBottomPipe)
+                && pair.bottom_alive && pair.bottom.x < PIPE_DESTROY_X
+            {
                 pair.bottom_alive = false;
             }
         }
@@ -678,7 +746,8 @@ impl Game {
     }
 
     fn update_obstacle_timer(&mut self, dt: f32) {
-        if self.seconds_per_obstacle <= 0.0 || dt <= 0.0 {
+        if !self.has_source_handler(SourceEventHandler::SpawnObstacleTimer)
+            || self.seconds_per_obstacle <= 0.0 || dt <= 0.0 {
             return;
         }
 
@@ -718,7 +787,12 @@ impl Game {
         }
 
         // A newly scheduled the source editor Wait begins after this event action.
-        if input.restart_pressed && self.bird.queda && self.restart_wait.is_none() {
+        if input.restart_pressed
+            && self.bird.queda
+            && self.restart_wait.is_none()
+            && self.has_source_handler(SourceEventHandler::RetryButtonOrReturn)
+            && self.has_source_handler(SourceEventHandler::RestartAfterWait)
+        {
             self.restart_wait = Some(0.1);
         }
     }
@@ -726,7 +800,8 @@ impl Game {
     fn update_level_progression(&mut self) {
         // Common in-levels is included only by Chaves.xml. Its comparison is
         // Score == Required_Score, and the action requests the next layout.
-        if self.layout != Layout::Chaves
+        if !self.has_source_handler(SourceEventHandler::ChavesLevelProgression)
+            || self.layout != Layout::Chaves
             || self.progression_fired
             || self.score != self.required_score
         {

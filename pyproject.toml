@@ -11,6 +11,7 @@ dependencies = []
 
 [project.scripts]
 impossible = "impossible.app:main"
+impossible-compile = "impossible.compiler:main"
 
 [tool.setuptools.package-data]
 impossible = ["ui/*.ui", "ui/*.css"]

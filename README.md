@@ -39,7 +39,7 @@ Compile its headless Rust gameplay motor:
 
     python -m impossible.compiler compile --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
 
-The compiler checks the original source revision, all 32 source event IDs, source order, includes, groups, layouts and object inventory. It generates Rust source-event bindings, runs workspace tests and builds the optimized gameplay library. Renderer and presentation integration with RustMultiConsoleFoundation are deferred; the old Macroquad preview is an optional feature, not the engine's graphics backend.
+The compiler checks the original source revision, all 32 source event IDs, source order, includes, groups, three layouts and twenty placed instances. The GTK editor exposes those layouts in its Layouts page. It generates Rust source-event bindings, runs workspace tests and builds the optimized gameplay library. Renderer and presentation integration with RustMultiConsoleFoundation are deferred; the old Macroquad preview is an optional feature, not the engine's graphics backend.
 
 ## GUI stack
 - GTK 3

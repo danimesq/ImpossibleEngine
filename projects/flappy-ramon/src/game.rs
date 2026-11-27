@@ -739,16 +739,16 @@ impl Game {
             self.tiled_background_x -= movement;
         }
 
-        // the source editor destroys TopPipe and BottomPipe independently.
+        // Resolve compiled capabilities before mutably borrowing the pipe list.
+        let destroy_top = self.has_source_handler(SourceEventHandler::DestroyTopPipe);
+        let destroy_bottom = self.has_source_handler(SourceEventHandler::DestroyBottomPipe);
+
+        // The source editor destroys TopPipe and BottomPipe independently.
         for pair in &mut self.pipes {
-            if self.has_source_handler(SourceEventHandler::DestroyTopPipe)
-                && pair.top_alive && pair.top.x < PIPE_DESTROY_X
-            {
+            if destroy_top && pair.top_alive && pair.top.x < PIPE_DESTROY_X {
                 pair.top_alive = false;
             }
-            if self.has_source_handler(SourceEventHandler::DestroyBottomPipe)
-                && pair.bottom_alive && pair.bottom.x < PIPE_DESTROY_X
-            {
+            if destroy_bottom && pair.bottom_alive && pair.bottom.x < PIPE_DESTROY_X {
                 pair.bottom_alive = false;
             }
         }

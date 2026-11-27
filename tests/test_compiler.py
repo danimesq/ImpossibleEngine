@@ -42,6 +42,22 @@ class FlappyMadrugaImportTests(unittest.TestCase):
         self.assertEqual(sheets["Chaves"]["includes"],
                          ["Common in-game", "Common in-levels"])
 
+    def test_layouts_and_placed_instances_are_native_project_data(self):
+        self.assertEqual(self.report["layouts"], ["Start", "Continuous", "Chaves"])
+        self.assertEqual(self.report["placed_instances"], 20)
+
+        project = load_project(PROJECT_FILE)
+        self.assertEqual([layout.name for layout in project.layouts],
+                         ["Start", "Continuous", "Chaves"])
+        self.assertEqual([len(layout.instances) for layout in project.layouts], [2, 9, 9])
+        continuous = project.layouts[1]
+        self.assertEqual(continuous.includes, ["sheet-common-game"])
+        bird = next(instance for instance in continuous.instances
+                    if instance.source_uid == 0)
+        self.assertEqual(bird.position, [69.332038879, 240.193328857])
+        self.assertEqual(bird.variables, {"Queda": False})
+        self.assertIn("Platform", bird.behaviors)
+
     def test_every_source_event_has_one_typed_rust_binding(self):
         self.assertEqual(self.report["source_events"], 32)
         self.assertEqual(self.report["handler_bindings"], 32)

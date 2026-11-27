@@ -221,7 +221,8 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
         if properties.get("source_object_type") != source_name:
             raise ProjectCompileError(f"Native object {source_name!r} lost its source type identity.")
 
-    source_layout_names = [item["name"] for item in source_model.get("layouts_in_project_order", [])]
+    source_layouts = source_model.get("layouts_in_project_order", [])
+    source_layout_names = [item["name"] for item in source_layouts]
     manifest_layout_names = migration.get("source_structure", {}).get("layouts", [])
     if source_layout_names != manifest_layout_names:
         raise ProjectCompileError("Source-model layout order differs from the migration manifest.")
@@ -235,6 +236,65 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
             raise ProjectCompileError(
                 f"Layout {item.get('name')!r} references an unknown native Event Sheet {expected_sheet!r}."
             )
+
+    # Layouts and placed instances are first-class native project data, not an
+    # implicit reconstruction from the migration manifest at build time.
+    native_layouts = project.get("layouts", [])
+    if [item.get("name") for item in native_layouts] != source_layout_names:
+        raise ProjectCompileError("Native .ieproj layout list/order differs from the source model.")
+
+    object_ids = {item["name"]: item["id"] for item in project.get("objects", [])}
+    event_sheet_ids = {item["name"]: item["id"] for item in project.get("event_sheets", [])}
+    instance_total = 0
+    for source_layout, native_layout in zip(source_layouts, native_layouts):
+        name = source_layout["name"]
+        layout_id = f"layout-{name.lower().replace(' ', '-')}"
+        if native_layout.get("id") != layout_id:
+            raise ProjectCompileError(f"Native layout {name!r} has an unstable ID.")
+        if native_layout.get("event_sheet_id") != event_sheet_ids.get(source_layout["event_sheet"]):
+            raise ProjectCompileError(f"Native layout {name!r} is linked to the wrong Event Sheet.")
+        expected_includes = [event_sheet_ids[item] for item in source_layout.get("includes", [])]
+        if native_layout.get("includes", []) != expected_includes:
+            raise ProjectCompileError(f"Native layout {name!r} has a different include graph.")
+
+        source_instances = source_layout.get("instances", [])
+        native_instances = native_layout.get("instances", [])
+        if len(source_instances) != len(native_instances):
+            raise ProjectCompileError(
+                f"Layout {name!r} instance count differs: source={len(source_instances)}, "
+                f"native={len(native_instances)}"
+            )
+        for source_instance, native_instance in zip(source_instances, native_instances):
+            source_type = source_instance["type"]
+            source_uid = int(source_instance["uid"])
+            expected_id = f"instance-{layout_id.removeprefix('layout-')}-{source_uid}"
+            if native_instance.get("id") != expected_id:
+                raise ProjectCompileError(f"Layout {name!r} contains an unstable instance ID.")
+            if native_instance.get("source_uid") != source_uid:
+                raise ProjectCompileError(f"Layout {name!r} lost source UID {source_uid}.")
+            if native_instance.get("object_id") != object_ids.get(source_type):
+                raise ProjectCompileError(
+                    f"Layout {name!r} instance {source_uid} references the wrong object type."
+                )
+            for field_name in ("position", "size", "hotspot"):
+                if native_instance.get(field_name) != source_instance.get(field_name):
+                    raise ProjectCompileError(
+                        f"Layout {name!r} instance {source_uid} changed {field_name}."
+                    )
+            for field_name in ("variables", "behaviors"):
+                if native_instance.get(field_name, {}) != source_instance.get(field_name, {}):
+                    raise ProjectCompileError(
+                        f"Layout {name!r} instance {source_uid} changed {field_name}."
+                    )
+            preserved = {
+                key: value for key, value in source_instance.items()
+                if key not in {"type", "uid", "position", "size", "hotspot", "variables", "behaviors"}
+            }
+            if native_instance.get("properties", {}) != preserved:
+                raise ProjectCompileError(
+                    f"Layout {name!r} instance {source_uid} lost source-specific properties."
+                )
+            instance_total += 1
 
     layout_root = project_root / "source" / "legacy-construct2" / "Layouts"
     for layout_name in source_layout_names:
@@ -354,6 +414,8 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
         "handler_bindings": len(HANDLER_BY_SID),
         "status_counts": status_counts,
         "objects": len(project.get("objects", [])),
+        "layouts": len(native_layouts),
+        "placed_instances": instance_total,
         "assets": len(project.get("assets", [])),
         "pending_asset_groups": len(pending_assets),
         "target": "logic",

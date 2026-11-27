@@ -81,7 +81,7 @@ class ImpossibleWindow:
         header.pack_end(save_button)
 
     def _connect_navigation(self) -> None:
-        mapping = {"nav_events": "events", "nav_objects": "objects", "nav_assets": "assets", "nav_platforms": "platforms"}
+        mapping = {"nav_events": "events", "nav_layouts": "layouts", "nav_objects": "objects", "nav_assets": "assets", "nav_platforms": "platforms"}
         self.nav_buttons = {}
         for widget_id, page_name in mapping.items():
             item = self.builder.get_object(widget_id)
@@ -90,10 +90,12 @@ class ImpossibleWindow:
 
     def _build_pages(self) -> None:
         self.events_page = self._build_events_page()
+        self.layouts_page = self._build_layouts_page()
         self.objects_page = self._build_objects_page()
         self.assets_page = self._build_assets_page()
         self.platforms_page = self._build_platforms_page()
         self.stack.add_titled(self.events_page, "events", "Event Sheets")
+        self.stack.add_titled(self.layouts_page, "layouts", "Layouts")
         self.stack.add_titled(self.objects_page, "objects", "Objects")
         self.stack.add_titled(self.assets_page, "assets", "Assets")
         self.stack.add_titled(self.platforms_page, "platforms", "Platform Variants")
@@ -242,6 +244,83 @@ class ImpossibleWindow:
             if value:
                 event.actions.append(value)
                 self._render_events()
+
+    def _build_layouts_page(self) -> Gtk.Widget:
+        """Show source-preserved scenes and their placed object instances."""
+        page, content = self._page_shell(
+            "Layouts",
+            "Source-ordered scenes, Event Sheet links, includes and placed instances.",
+        )
+        self.layouts_list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+        scroll.add(self.layouts_list)
+        content.pack_start(scroll, True, True, 0)
+        self._render_layouts()
+        return page
+
+    def _render_layouts(self) -> None:
+        for child in self.layouts_list.get_children():
+            self.layouts_list.remove(child)
+
+        sheets_by_id = {sheet.id: sheet for sheet in self.project.event_sheets}
+        objects_by_id = {obj.id: obj for obj in self.project.objects}
+
+        for index, layout in enumerate(self.project.layouts, start=1):
+            panel = card()
+            heading = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            heading.pack_start(label(f"{index:02d}", "event-index"), False, False, 0)
+            heading.pack_start(label(layout.name, "card-title"), True, True, 0)
+            heading.pack_end(label(f"{len(layout.instances)} INSTANCES", "pill"), False, False, 0)
+            panel.pack_start(heading, False, False, 0)
+
+            sheet = sheets_by_id.get(layout.event_sheet_id)
+            sheet_name = sheet.name if sheet else f"Missing Event Sheet: {layout.event_sheet_id}"
+            panel.pack_start(label(f"EVENT SHEET  {sheet_name}", "muted"), False, False, 0)
+
+            include_names = [
+                sheets_by_id[item].name if item in sheets_by_id else item
+                for item in layout.includes
+            ]
+            panel.pack_start(
+                label("INCLUDES  " + (", ".join(include_names) if include_names else "None"), "muted"),
+                False, False, 0,
+            )
+
+            for instance in layout.instances:
+                obj = objects_by_id.get(instance.object_id)
+                object_name = obj.name if obj else instance.object_id
+                x, y = instance.position
+                width, height = instance.size
+                details = (
+                    f"UID {instance.source_uid}  ·  "
+                    f"({x:g}, {y:g})  ·  {width:g} × {height:g}"
+                )
+                row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+                row.pack_start(label(object_name, "condition-row"), True, True, 0)
+                row.pack_end(label(details, "muted"), False, False, 0)
+                panel.pack_start(row, False, False, 0)
+
+                if instance.variables:
+                    panel.pack_start(
+                        label("Variables  " + json.dumps(instance.variables, ensure_ascii=False), "muted"),
+                        False, False, 0,
+                    )
+                if instance.behaviors:
+                    panel.pack_start(
+                        label("Behaviors  " + ", ".join(instance.behaviors.keys()), "muted"),
+                        False, False, 0,
+                    )
+
+            self.layouts_list.pack_start(panel, False, False, 0)
+
+        if not self.project.layouts:
+            self.layouts_list.pack_start(
+                label("This project has no imported layouts yet.", "muted"),
+                False, False, 0,
+            )
+        self.layouts_list.show_all()
 
     def _build_objects_page(self) -> Gtk.Widget:
         page, content = self._page_shell("Objects", "Stable logical objects with platform-specific properties.")
@@ -498,6 +577,7 @@ class ImpossibleWindow:
         self.selected_target = self.project.active_platform
         self.project_name_label.set_text(self.project.name)
         self._render_events()
+        self._render_layouts()
         self._render_objects()
         self._render_assets()
         self.stack.remove(self.platforms_page)

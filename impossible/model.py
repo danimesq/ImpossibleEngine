@@ -86,6 +86,33 @@ class EventSheet:
 
 
 @dataclass
+class ObjectInstance:
+    """Placed instance of a logical object type inside a project layout."""
+
+    id: str
+    object_id: str
+    source_uid: int
+    position: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    size: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    hotspot: list[float] | None = None
+    variables: dict[str, Any] = field(default_factory=dict)
+    behaviors: dict[str, Any] = field(default_factory=dict)
+    properties: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class Layout:
+    """Source-ordered scene with an explicit Event Sheet/include relationship."""
+
+    id: str
+    name: str
+    event_sheet_id: str
+    includes: list[str] = field(default_factory=list)
+    instances: list[ObjectInstance] = field(default_factory=list)
+    properties: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class Project:
     name: str
     schema_version: int = 1
@@ -93,6 +120,7 @@ class Project:
     event_sheets: list[EventSheet] = field(default_factory=list)
     assets: list[Asset] = field(default_factory=list)
     objects: list[GameObject] = field(default_factory=list)
+    layouts: list[Layout] = field(default_factory=list)
     # Import/build provenance is project data, not GUI widget state.
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -124,6 +152,17 @@ class Project:
             event_sheets=sheets,
             assets=[Asset(**item) for item in raw.get("assets", [])],
             objects=[GameObject(**item) for item in raw.get("objects", [])],
+            layouts=[
+                Layout(
+                    id=str(item["id"]),
+                    name=str(item["name"]),
+                    event_sheet_id=str(item["event_sheet_id"]),
+                    includes=list(item.get("includes", [])),
+                    instances=[ObjectInstance(**instance) for instance in item.get("instances", [])],
+                    properties=dict(item.get("properties", {})),
+                )
+                for item in raw.get("layouts", [])
+            ],
             metadata=dict(raw.get("metadata", {})),
         )
         if project.active_platform not in PROFILE_BY_ID:

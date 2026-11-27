@@ -121,17 +121,7 @@ class AddonRegistry:
         if not isinstance(item["id"], str) or not item["id"].startswith(owner + ".") or item["id"] in seen:
             raise AddonRegistryError(f"Invalid or duplicate ACE ID: {item['id']!r}")
         seen.add(item["id"])
-        if not isinstance(item["parameters"], list):
-            raise AddonRegistryError(f"Parameters must be an array: {item['id']}")
-        names: set[str] = set()
-        for q in item["parameters"]:
-            if not isinstance(q, dict) or not {"name", "label", "description", "type", "required"} <= q.keys():
-                raise AddonRegistryError(f"Incomplete parameter on {item['id']}")
-            if not isinstance(q["type"], str) or q["type"] not in PARAMETER_TYPES or q["name"] in names:
-                raise AddonRegistryError(f"Unknown type or duplicate parameter on {item['id']}")
-            names.add(q["name"])
-            if q["type"] == "enum" and not q.get("options"):
-                raise AddonRegistryError(f"Enum without options on {item['id']}")
+        AddonRegistry._validate_parameters(item["parameters"], item["id"])
         ui = item["ui"]
         ui_required = {"list_name", "display_string", "description", "category_id", "category_label", "language_key", "markers", "flags"}
         if not isinstance(ui, dict) or not ui_required <= ui.keys():

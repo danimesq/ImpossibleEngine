@@ -75,7 +75,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -1118,7 +1118,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -1939,7 +1939,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -2505,7 +2505,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -2759,7 +2759,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -3189,7 +3189,7 @@
         "picker": {
           "visible": true,
           "category": "input",
-          "category_label": "input",
+          "category_label": "Input",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -3468,7 +3468,7 @@
         "picker": {
           "visible": true,
           "category": "input",
-          "category_label": "input",
+          "category_label": "Input",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -3899,7 +3899,7 @@
         "picker": {
           "visible": true,
           "category": "input",
-          "category_label": "input",
+          "category_label": "Input",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -4314,7 +4314,7 @@
         "picker": {
           "visible": true,
           "category": "input",
-          "category_label": "input",
+          "category_label": "Input",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -4817,7 +4817,7 @@
         "picker": {
           "visible": true,
           "category": "input",
-          "category_label": "input",
+          "category_label": "Input",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -5249,7 +5249,7 @@
         "picker": {
           "visible": true,
           "category": "media",
-          "category_label": "media",
+          "category_label": "Media",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -5857,7 +5857,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -6299,7 +6299,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -6795,7 +6795,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -7031,7 +7031,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -7500,7 +7500,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -7799,7 +7799,7 @@
         "picker": {
           "visible": true,
           "category": "data-and-storage",
-          "category_label": "data-and-storage",
+          "category_label": "Data and Storage",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -8359,7 +8359,7 @@
         "picker": {
           "visible": true,
           "category": "data-and-storage",
-          "category_label": "data-and-storage",
+          "category_label": "Data and Storage",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -8751,7 +8751,7 @@
         "picker": {
           "visible": true,
           "category": "data-and-storage",
-          "category_label": "data-and-storage",
+          "category_label": "Data and Storage",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -8998,7 +8998,7 @@
         "picker": {
           "visible": true,
           "category": "data-and-storage",
-          "category_label": "data-and-storage",
+          "category_label": "Data and Storage",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -9408,7 +9408,7 @@
         "picker": {
           "visible": true,
           "category": "data-and-storage",
-          "category_label": "data-and-storage",
+          "category_label": "Data and Storage",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -9829,7 +9829,7 @@
         "picker": {
           "visible": true,
           "category": "web",
-          "category_label": "web",
+          "category_label": "Web",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -10209,7 +10209,7 @@
         "picker": {
           "visible": true,
           "category": "web",
-          "category_label": "web",
+          "category_label": "Web",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -10647,7 +10647,7 @@
         "picker": {
           "visible": true,
           "category": "web",
-          "category_label": "web",
+          "category_label": "Web",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -11319,7 +11319,7 @@
         "picker": {
           "visible": true,
           "category": "media",
-          "category_label": "media",
+          "category_label": "Media",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -11613,7 +11613,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -12108,7 +12108,7 @@
         "picker": {
           "visible": true,
           "category": "form-controls",
-          "category_label": "form-controls",
+          "category_label": "Form Controls",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -12545,7 +12545,7 @@
         "picker": {
           "visible": true,
           "category": "media",
-          "category_label": "media",
+          "category_label": "Media",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -12963,7 +12963,7 @@
         "picker": {
           "visible": true,
           "category": "media",
-          "category_label": "media",
+          "category_label": "Media",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -13314,7 +13314,7 @@
         "picker": {
           "visible": true,
           "category": "platform-specific",
-          "category_label": "platform-specific",
+          "category_label": "Platform Specific",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -13527,7 +13527,7 @@
         "picker": {
           "visible": true,
           "category": "platform-specific",
-          "category_label": "platform-specific",
+          "category_label": "Platform Specific",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -13855,7 +13855,7 @@
         "picker": {
           "visible": true,
           "category": "platform-specific",
-          "category_label": "platform-specific",
+          "category_label": "Platform Specific",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -14381,7 +14381,7 @@
         "picker": {
           "visible": true,
           "category": "platform-specific",
-          "category_label": "platform-specific",
+          "category_label": "Platform Specific",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -14659,7 +14659,7 @@
         "picker": {
           "visible": true,
           "category": "monetisation",
-          "category_label": "monetisation",
+          "category_label": "Monetisation",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -14972,7 +14972,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -15445,7 +15445,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -15802,7 +15802,7 @@
         "picker": {
           "visible": true,
           "category": "3d",
-          "category_label": "3d",
+          "category_label": "3D",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -16309,7 +16309,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -16647,7 +16647,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -17038,7 +17038,7 @@
         "picker": {
           "visible": true,
           "category": "general",
-          "category_label": "general",
+          "category_label": "General",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -17433,7 +17433,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [
             "gravity",
             "platformer",
@@ -17989,7 +17989,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -18385,7 +18385,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -18771,7 +18771,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -19214,7 +19214,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -19642,7 +19642,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -19991,7 +19991,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -20215,7 +20215,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -20366,7 +20366,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -20535,7 +20535,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -20756,7 +20756,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -21284,7 +21284,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -21601,7 +21601,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -21866,7 +21866,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -22307,7 +22307,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -22554,7 +22554,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -22858,7 +22858,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -23176,7 +23176,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -23493,7 +23493,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -23769,7 +23769,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -24010,7 +24010,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -24217,7 +24217,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -24495,7 +24495,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -24805,7 +24805,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -25157,7 +25157,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -25495,7 +25495,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -25810,7 +25810,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -26110,7 +26110,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -26304,7 +26304,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -26522,7 +26522,7 @@
         "picker": {
           "visible": true,
           "category": "movements",
-          "category_label": "movements",
+          "category_label": "Movements",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -26833,7 +26833,7 @@
         "picker": {
           "visible": true,
           "category": "attributes",
-          "category_label": "attributes",
+          "category_label": "Attributes",
           "search_terms": [],
           "description_visible": true,
           "icon_visible": true
@@ -27063,7 +27063,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27123,7 +27123,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.blend-mode",
@@ -27142,7 +27148,7 @@
         "picker": {
           "visible": true,
           "category": "blend",
-          "category_label": "blend",
+          "category_label": "Blend",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27229,7 +27235,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.color-matrix",
@@ -27248,7 +27260,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27316,7 +27328,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.grayscale",
@@ -27335,7 +27353,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27395,7 +27413,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.sepia",
@@ -27414,7 +27438,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27474,7 +27498,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.tint",
@@ -27493,7 +27523,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27561,7 +27591,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.hue-rotate",
@@ -27580,7 +27616,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27640,7 +27676,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.saturation",
@@ -27659,7 +27701,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27719,7 +27761,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.brightness-contrast",
@@ -27738,7 +27786,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27806,7 +27854,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.invert",
@@ -27825,7 +27879,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27885,7 +27939,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.threshold",
@@ -27904,7 +27964,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -27984,7 +28044,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.blur",
@@ -28003,7 +28069,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28071,7 +28137,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.gaussian-blur",
@@ -28090,7 +28162,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28171,7 +28243,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.directional-blur",
@@ -28190,7 +28268,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28266,7 +28344,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.radial-blur",
@@ -28285,7 +28369,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28364,7 +28448,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.zoom-blur",
@@ -28383,7 +28473,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28462,7 +28552,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.bloom",
@@ -28481,7 +28577,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28565,7 +28661,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.glow",
@@ -28584,7 +28686,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28660,7 +28762,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.outline",
@@ -28679,7 +28787,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28755,7 +28863,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.drop-shadow",
@@ -28774,7 +28888,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28861,7 +28975,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.vignette",
@@ -28880,7 +29000,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -28964,7 +29084,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.pixelate",
@@ -28983,7 +29109,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29063,7 +29189,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.mosaic",
@@ -29082,7 +29214,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29162,7 +29294,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.dissolve",
@@ -29181,7 +29319,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29265,7 +29403,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.displacement",
@@ -29284,7 +29428,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29368,7 +29512,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.ripple",
@@ -29387,7 +29537,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29482,7 +29632,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.wave",
@@ -29501,7 +29657,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29590,7 +29746,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.chromatic-aberration",
@@ -29609,7 +29771,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29677,7 +29839,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.scanlines",
@@ -29696,7 +29864,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29772,7 +29940,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.film-grain",
@@ -29791,7 +29965,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29867,7 +30041,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.crt",
@@ -29886,7 +30066,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -29970,7 +30150,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.lens-distortion",
@@ -29989,7 +30175,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30060,7 +30246,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.mask",
@@ -30079,7 +30271,7 @@
         "picker": {
           "visible": true,
           "category": "mask",
-          "category_label": "mask",
+          "category_label": "Mask",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30162,7 +30354,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.motion-trail",
@@ -30181,7 +30379,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30262,7 +30460,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.distance-field-outline",
@@ -30281,7 +30485,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30357,7 +30561,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.fog",
@@ -30376,7 +30586,7 @@
         "picker": {
           "visible": true,
           "category": "3d",
-          "category_label": "3d",
+          "category_label": "3D",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30460,7 +30670,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.normal-map-lighting",
@@ -30479,7 +30695,7 @@
         "picker": {
           "visible": true,
           "category": "normal-mapping",
-          "category_label": "normal-mapping",
+          "category_label": "Normal Mapping",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30566,7 +30782,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.tiling",
@@ -30585,7 +30807,7 @@
         "picker": {
           "visible": true,
           "category": "tiling",
-          "category_label": "tiling",
+          "category_label": "Tiling",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30659,7 +30881,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.glass",
@@ -30678,7 +30906,7 @@
         "picker": {
           "visible": true,
           "category": "distortion",
-          "category_label": "distortion",
+          "category_label": "Distortion",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30754,7 +30982,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.inner-shadow",
@@ -30773,7 +31007,7 @@
         "picker": {
           "visible": true,
           "category": "blend",
-          "category_label": "blend",
+          "category_label": "Blend",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30852,7 +31086,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.edge-detect",
@@ -30871,7 +31111,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -30947,7 +31187,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.posterize",
@@ -30966,7 +31212,7 @@
         "picker": {
           "visible": true,
           "category": "color",
-          "category_label": "color",
+          "category_label": "Color",
           "description_visible": true,
           "icon_visible": true
         },
@@ -31026,7 +31272,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     },
     {
       "id": "effect.halftone",
@@ -31045,7 +31297,7 @@
         "picker": {
           "visible": true,
           "category": "other",
-          "category_label": "other",
+          "category_label": "Other",
           "description_visible": true,
           "icon_visible": true
         },
@@ -31121,7 +31373,13 @@
         ],
         "notes": "Descriptor only. Shader source and render backend are not implemented."
       },
-      "isDeprecated": false
+      "isDeprecated": false,
+      "object": {
+        "kind": "render_effect",
+        "placement": "effects_stack",
+        "rotatable": false,
+        "single_instance": false
+      }
     }
   ]
 }

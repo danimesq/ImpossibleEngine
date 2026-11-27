@@ -256,7 +256,28 @@
           "minLength": 1
         },
         "object": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "placement",
+            "rotatable",
+            "single_instance"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "placement": {
+              "type": "string"
+            },
+            "rotatable": {
+              "type": "boolean"
+            },
+            "single_instance": {
+              "type": "boolean"
+            }
+          }
         },
         "isDeprecated": {
           "type": "boolean"

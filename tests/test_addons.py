@@ -52,6 +52,15 @@ class BuiltinAddonRegistryTests(unittest.TestCase):
         self.assertFalse(duration["required"])
         self.assertEqual(duration["default"], 0)
 
+    def test_picker_categories_have_human_labels(self):
+        self.assertEqual(self.registry.get("plugin.array").raw["editor"]["picker"]["category_label"], "Data and Storage")
+        self.assertEqual(self.registry.get("behavior.platform").raw["editor"]["picker"]["category_label"], "Movements")
+        self.assertEqual(self.registry.get("effect.normal-map-lighting").raw["editor"]["picker"]["category_label"], "Normal Mapping")
+
+    def test_behavior_and_effect_placement_are_distinct(self):
+        self.assertEqual(self.registry.get("behavior.platform").raw["object"]["placement"], "object_properties")
+        self.assertEqual(self.registry.get("effect.crt").raw["object"]["placement"], "effects_stack")
+
     def test_all_builtins_are_specification_only(self):
         self.assertTrue(all(not q.engine_runtime for q in self.registry.of_kind("plugin")))
         self.assertTrue(all(not q.engine_runtime for q in self.registry.of_kind("behavior")))

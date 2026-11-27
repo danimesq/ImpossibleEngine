@@ -865,7 +865,7 @@
     "migration_manifest": "migration-manifest.json",
     "asset_manifest": "asset-placeholders.json",
     "build": {
-      "cargo_workspace": "../../..",
+      "cargo_workspace": "../..",
       "cargo_manifest": "Cargo.toml",
       "cargo_package": "flappy-madruga",
       "logic_target": "headless-rust-library",

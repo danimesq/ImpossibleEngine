@@ -69,14 +69,14 @@ class ImpossibleWindow:
 
     def _install_header_actions(self) -> None:
         header = self.builder.get_object("header_bar")
-        self.status_label = label("Prototype · JSON project", "muted")
+        self.status_label = label("Impossible project", "muted")
         header.pack_end(self.status_label)
         open_button = Gtk.Button.new_from_icon_name("document-open-symbolic", Gtk.IconSize.BUTTON)
-        open_button.set_tooltip_text("Open project JSON")
+        open_button.set_tooltip_text("Open an Impossible project (.ieproj or .json)")
         open_button.connect("clicked", self.on_open_project)
         header.pack_end(open_button)
         save_button = Gtk.Button.new_from_icon_name("document-save-symbolic", Gtk.IconSize.BUTTON)
-        save_button.set_tooltip_text("Save project JSON")
+        save_button.set_tooltip_text("Save Impossible project")
         save_button.connect("clicked", self.on_save_project)
         header.pack_end(save_button)
 

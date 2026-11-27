@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Common in-levels</name>
+    <events>
+        <variable constant="0" name="Required_Score" sid="2767063754133105" static="0" type="number">0</variable>
+        <event-block sid="2515117097232158">
+            <conditions>
+                <condition id="-8" name="Compare two values" sid="8457065661874416" type="System">
+                    <param id="0" name="First value">Score</param>
+                    <param id="1" name="Comparison">0</param>
+                    <param id="2" name="Second value">Required_Score</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-43" name="Go to next/previous layout" sid="5833305981016977" type="System">
+                    <param id="0" name="Which">0</param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>

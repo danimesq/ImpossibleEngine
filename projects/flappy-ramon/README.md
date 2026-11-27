@@ -10,7 +10,7 @@ From the repository root:
 
     python -m impossible
 
-Open `projects/flappy-ramon/Flappy-Madruga.ieproj` in the editor. The native project contains all five source Event Sheets, ten object types, source provenance, and the pinned Construct 2 snapshots.
+Open `projects/flappy-ramon/Flappy-Madruga.ieproj` in the editor. The native project contains all five source Event Sheets, ten object types, three layouts and twenty placed instances, source provenance, and the pinned Construct 2 snapshots. The GTK workspace exposes the imported scenes in its Layouts page.
 
 Validate the original source and project mapping:
 
@@ -26,7 +26,13 @@ The editor can also open the project directly:
 
     impossible
 
-## Controls
+## Optional legacy preview controls
+
+The GTK editor and the headless compiler do not open a game window. For the existing Macroquad preview only (not the Foundation graphics host), run:
+
+    cargo run -p flappy-madruga --features graphics -- --layout=continuous
+    cargo run -p flappy-madruga --features graphics
+
 
 - Start: click Continuous Play or press Enter.
 - Flap: touch anywhere in the game viewport, click, or press Space.
@@ -53,7 +59,7 @@ The source-event map is in event-sheets/source-coverage.json. The immutable orig
 
 ## Graphics and assets
 
-The default Impossible compile target is headless and does not depend on Macroquad or open a window. Rendering and presentation through RustMultiConsoleFoundation are deferred. The existing Macroquad display/audio host remains available only as an optional legacy preview via `cargo run --features graphics`; it is not the Foundation graphics integration.
+The default Impossible compile target is headless and does not depend on Macroquad or open a window. Rendering and presentation through RustMultiConsoleFoundation are deferred. The existing Macroquad display/audio host remains available only as an optional legacy preview via `cargo run -p flappy-madruga --features graphics`; it is not the Foundation graphics integration. The planned Foundation boundary is `foundation-runtime::RuntimeHost` with `Sdl3Host` for native SDL3 and `Canvas2dHost` for the current browser Canvas 2D host. The game will emit Foundation-neutral `DrawCommand`/`FrameOutput` and semantic `AudioRequest` values; no Foundation dependency is linked in this headless logic build.
 
 Original media bytes are still pending. The logic build does not claim visual or audio asset completeness.
 
@@ -76,15 +82,8 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 The headless Impossible compiler has a dedicated GitHub Actions workflow that validates the pinned source, generates bindings, runs runtime/gameplay tests and builds the optimized logic library. The optional legacy preview has a separate graphics-enabled CI path.
 
-The source differential test against a running original Construct 2 build, original media population, and Foundation renderer integration remain acceptance items.
+The source differential test against a running original Construct 2 build, original media population (12 media groups), Google Play SDK setup, and Foundation renderer/audio-host integration remain acceptance items.
 
-**Historical native and WebAssembly checks** passed on GitHub Actions run #45 (Ubuntu 24.04):
+**Headless validation passed in CI:** 27 Python tests and 23 Rust tests passed; the source-pinned importer validated all 32 event SIDs and all 20 placed instances across the three layouts, and the optimized logic library compiled. The separate optional preview CI also built the Macroquad native desktop and WebAssembly targets. These checks prove source mapping consistency and compilation, not differential equivalence with a live Construct 2 build or visual/browser parity.
 
-- 17 gameplay/geometry tests passed.
-- Optimized native desktop executable built successfully.
-- The `wasm32-unknown-unknown` game binary compiled successfully.
-- The Bash web packaging script passed `bash -n`.
-
-This validates compilation for both targets, not yet source-level behavior equivalence or real-browser execution.
-
-The browser package still needs the matching Macroquad/miniquad and quad-storage JavaScript vendor files. Browser instantiation, storage behavior and touch/audio testing remain separate acceptance steps.
+The Macroquad browser package still needs its matching JavaScript vendor files. Foundation browser presentation is a separate future integration.

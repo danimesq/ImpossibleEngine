@@ -123,6 +123,21 @@ def _rust_string(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
+def _xml_scalar(value: str, expected: Any) -> Any:
+    """Normalize a scalar XML property using the type in its source-model value."""
+    raw = value.strip()
+    if isinstance(expected, bool):
+        return raw.lower() in {"true", "yes", "1"}
+    if isinstance(expected, int) and not isinstance(expected, bool):
+        try:
+            return int(raw)
+        except ValueError:
+            return float(raw)
+    if isinstance(expected, float):
+        return float(raw)
+    return raw
+
+
 def _sheet_group(event: dict[str, Any], source_path: str) -> str | None:
     explicit = event.get("group")
     if explicit:
@@ -297,11 +312,115 @@ def validate_project(project_file: str | Path) -> dict[str, Any]:
             instance_total += 1
 
     layout_root = project_root / "source" / "legacy-construct2" / "Layouts"
-    for layout_name in source_layout_names:
+    for source_layout in source_layouts:
+        layout_name = source_layout["name"]
         layout_path = _required_file(layout_root, f"{layout_name}.xml", f"{layout_name} layout")
         layout_xml = _parse_xml(layout_path, f"{layout_name} layout")
         if _text(layout_xml.find("name")) != layout_name:
             raise ProjectCompileError(f"Layout identity mismatch in {layout_path}.")
+
+        source_instances = source_layout.get("instances", [])
+        xml_instances = layout_xml.findall(".//instance")
+        if len(xml_instances) != len(source_instances):
+            raise ProjectCompileError(
+                f"Original XML instance count differs for {layout_name}: "
+                f"xml={len(xml_instances)}, source model={len(source_instances)}"
+            )
+        for source_instance, xml_instance in zip(source_instances, xml_instances):
+            source_type = source_instance["type"]
+            source_uid = int(source_instance["uid"])
+            if xml_instance.attrib.get("type") != source_type:
+                raise ProjectCompileError(
+                    f"Layout {layout_name} instance {source_uid} changed object type in source XML."
+                )
+            if int(xml_instance.attrib.get("uid", "-1")) != source_uid:
+                raise ProjectCompileError(
+                    f"Layout {layout_name} instance order/UID differs from source XML."
+                )
+
+            world = xml_instance.find("world")
+            if world is None:
+                raise ProjectCompileError(
+                    f"Layout {layout_name} instance {source_uid} has no world geometry."
+                )
+            for field_name, xml_names in {
+                "position": ("x", "y"),
+                "size": ("width", "height"),
+            }.items():
+                expected_pair = source_instance.get(field_name, [])
+                actual_pair = []
+                for tag in xml_names:
+                    value = _text(world.find(tag))
+                    if not value:
+                        raise ProjectCompileError(
+                            f"Layout {layout_name} instance {source_uid} is missing {tag}."
+                        )
+                    actual_pair.append(float(value))
+                if len(expected_pair) != 2 or any(
+                    abs(float(expected_pair[index]) - actual_pair[index]) > 1e-6
+                    for index in range(2)
+                ):
+                    raise ProjectCompileError(
+                        f"Layout {layout_name} instance {source_uid} changed {field_name}."
+                    )
+
+            expected_hotspot = source_instance.get("hotspot")
+            if expected_hotspot is not None:
+                actual_hotspot = [
+                    float(_text(world.find("hotspotX"), "nan")),
+                    float(_text(world.find("hotspotY"), "nan")),
+                ]
+                if any(
+                    abs(float(expected_hotspot[index]) - actual_hotspot[index]) > 1e-6
+                    for index in range(2)
+                ):
+                    raise ProjectCompileError(
+                        f"Layout {layout_name} instance {source_uid} changed hotspot."
+                    )
+
+            expected_variables = source_instance.get("variables", {})
+            variable_node = xml_instance.find("instance-variables")
+            actual_variables = {}
+            if variable_node is not None:
+                for child in list(variable_node):
+                    raw_value = _text(child)
+                    expected_value = expected_variables.get(child.tag, raw_value)
+                    actual_variables[child.tag] = _xml_scalar(raw_value, expected_value)
+            if actual_variables != expected_variables:
+                raise ProjectCompileError(
+                    f"Layout {layout_name} instance {source_uid} changed instance variables."
+                )
+
+            expected_behaviors = source_instance.get("behaviors", {})
+            behavior_node = xml_instance.find("behavior-instances")
+            actual_behaviors = {}
+            if behavior_node is not None:
+                for behavior in behavior_node.findall("behavior-instance"):
+                    behavior_name = behavior.attrib.get("type", "")
+                    properties_node = behavior.find("properties")
+                    properties = {}
+                    if properties_node is not None:
+                        for child in list(properties_node):
+                            expected_value = expected_behaviors.get(behavior_name, {}).get(
+                                child.tag, _text(child)
+                            )
+                            properties[child.tag] = _xml_scalar(_text(child), expected_value)
+                    actual_behaviors[behavior_name] = properties
+            if actual_behaviors != expected_behaviors:
+                raise ProjectCompileError(
+                    f"Layout {layout_name} instance {source_uid} changed behavior properties."
+                )
+
+            expected_text = source_instance.get("text")
+            if expected_text is not None:
+                properties_node = xml_instance.find("properties")
+                actual_text = _text(
+                    properties_node.find("text") if properties_node is not None else None
+                )
+                if actual_text != expected_text:
+                    raise ProjectCompileError(
+                        f"Layout {layout_name} instance {source_uid} changed text content."
+                    )
 
     native_sheets = {sheet["name"]: sheet for sheet in project.get("event_sheets", [])}
     source_event_count = 0

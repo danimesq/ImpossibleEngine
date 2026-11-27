@@ -92,7 +92,7 @@
     "intended_graphics_host": "RustMultiConsoleFoundation foundation-runtime (deferred)",
     "foundation_api_boundary": {
       "native": "foundation_runtime::native_sdl::Sdl3Host",
-      "browser": "foundation_runtime::web::CanvasHost",
+      "browser": "foundation_runtime::web::Canvas2dHost (Canvas 2D; not WebGL)",
       "contracts": [
         "RuntimeConfig",
         "RuntimeHost",

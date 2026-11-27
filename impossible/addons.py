@@ -207,7 +207,7 @@ class AddonRegistry:
             if kind not in KINDS:
                 raise ValueError(f"Unknown add-on kind: {kind}")
             values = (a for a in values if a.kind == kind)
-        return tuple(a for a in values if not needle or needle in (a.id + " " + a.name + " " + a.description + " " + a.category).casefold())
+        return tuple(a for a in values if not needle or needle in (a.id + " " + a.name + " " + str(a.raw.get("description", "")) + " " + a.category).casefold())
 
     def counts(self) -> dict[str, int]:
         values = tuple(self._addons.values())

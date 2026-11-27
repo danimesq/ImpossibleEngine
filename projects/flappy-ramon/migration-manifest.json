@@ -6,7 +6,7 @@
   "aliases": [
     "Flappy Ramon"
   ],
-  "status": "native_port_in_progress",
+  "status": "headless_logic_compilable_graphics_deferred",
   "source": {
     "repository": "https://github.com/danimesq/Flappy-Ramon",
     "default_branch": "master",
@@ -62,38 +62,64 @@
     "asset_manifest": "asset-placeholders.json",
     "event_sheet_fixture": "examples/flappy-madruga/event-sheet.json",
     "generated_rust_fixture": "examples/flappy-madruga/generated.rs",
-    "media_policy": "placeholders_until_original_media_is_supplied"
+    "media_policy": "placeholders_until_original_media_is_supplied",
+    "native_project": "Flappy-Madruga.ieproj",
+    "immutable_source_snapshot": "source/legacy-construct2/"
   },
   "completion_requirements": [
-    "all_layouts_imported",
-    "all_event_sheets_and_includes_imported",
-    "all_object_types_instances_variables_behaviors_and_animation_data_imported",
-    "all_source_conditions_and_actions_accounted_for",
-    "all_plugins_have_target_policy_or_explicit_blocking_status",
-    "all_collision_geometry_and_timing_semantics_verified",
-    "all_media_references_mapped_to_relative_asset_ids",
-    "native_rust_build_passes",
-    "differential_gameplay_tests_pass"
+    "all_layouts_and_placed_instances_imported_and_validated_against_source_xml",
+    "all_event_sheets_includes_groups_and_source_sids_preserved",
+    "all_source_events_have_typed_rust_handler_bindings",
+    "headless_gameplay_runtime_tests_pass",
+    "optimized_headless_rust_library_build_passes",
+    "source_differential_tests_pass",
+    "all_original_media_supplied_and_verified",
+    "Foundation_graphics_and_audio_host_integrated_and_validated",
+    "Google_Play_adapter_configured_for_android_if_that_target_is_required"
   ],
   "implementation": {
     "language": "Rust",
-    "host": "Macroquad",
-    "native_crate": "projects/flappy-ramon",
+    "engine_runtime_crate": "crates/impossible-runtime",
+    "project_package": "projects/flappy-ramon",
+    "project_container": "Flappy-Madruga.ieproj",
+    "project_compiler": "impossible/compiler.py",
+    "project_specific_importer": "Construct 2 Flappy Madruga adapter pinned to source.revision",
+    "source_event_bindings": "src/generated/source_events.rs",
     "gameplay_core": "src/game.rs",
     "geometry": "src/geometry.rs",
-    "renderer": "src/renderer.rs",
-    "services": "src/services.rs",
-    "source_coverage": "event-sheets/source-coverage.json",
+    "current_logic_host": "headless",
+    "legacy_preview_host": "optional Macroquad feature; not the engine graphics backend",
+    "intended_graphics_host": "RustMultiConsoleFoundation foundation-runtime (deferred)",
+    "foundation_api_boundary": {
+      "native": "foundation_runtime::native_sdl::Sdl3Host",
+      "browser": "foundation_runtime::web::CanvasHost",
+      "contracts": [
+        "RuntimeConfig",
+        "RuntimeHost",
+        "FrameContext",
+        "InputSnapshot",
+        "FrameOutput",
+        "DrawCommand",
+        "TextureId",
+        "AudioRequest"
+      ],
+      "graphics_policy": "Deferred. Impossible owns the 400x500 logical scene and source-faithful layout; Foundation owns window, canvas, texture/device and frame presentation."
+    },
     "validation": {
-      "native_cargo_test": "passed",
-      "native_release_build": "passed",
-      "wasm32_unknown_unknown_compile": "passed",
-      "web_packaging_script_syntax": "passed",
-      "browser_package_assembly": "pending_external_vendor_js",
-      "real_browser_runtime_test": "pending",
-      "source_differential_tests": "pending",
-      "original_media_population": "pending",
-      "google_play_android_sdk_integration": "pending_credentials_and_sdk"
+      "source_revision_and_event_xml": "passed",
+      "source_event_sids": "32_of_32",
+      "source_order_includes_and_groups": "passed",
+      "native_layouts_and_placed_instances": "3_layouts_20_instances_passed",
+      "python_tests": "27_passed",
+      "rust_tests": "23_passed",
+      "headless_release_library": "passed",
+      "native_optional_macroquad_preview": "passed",
+      "wasm_optional_macroquad_preview": "passed",
+      "source_differential_tests": "pending_original_construct2_runtime_reference",
+      "original_media_population": "pending_12_media_groups",
+      "foundation_graphics_integration": "deferred",
+      "browser_runtime_visual_and_audio_test": "pending_foundation_browser_host_and_media",
+      "google_play_android_sdk_integration": "pending_sdk_and_credentials"
     }
   }
 }

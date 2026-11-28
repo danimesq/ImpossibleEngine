@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 from typing import Optional
 
@@ -135,25 +134,10 @@ class ImpossibleWindow:
         elif action in ("undo", "redo"):
             self.status_label.set_text("Undo/redo history is not wired yet")
         elif action in ("validate_project", "compile_logic"):
-            if self.project_path is None:
-                self.status_label.set_text("Save the project before compiling")
-                return
-            import subprocess
-            command = [sys.executable, "-m", "impossible.compiler",
-                       "validate" if action == "validate_project" else "compile",
-                       "--project", str(self.project_path), "--target", "logic"]
-            try:
-                result = subprocess.run(command, capture_output=True, text=True, check=False)
-            except OSError as error:
-                self._show_error("Could not start compiler", str(error))
-                return
-            output = (result.stdout + result.stderr).strip()
-            self.status_label.set_text(
-                ("Validation passed" if action == "validate_project" else "Compilation finished")
-                if result.returncode == 0 else "Compiler reported an error"
-            )
-            if result.returncode != 0:
-                self._show_error("Impossible compiler", output or "Unknown compiler error")
+            if action == "validate_project":
+                self.status_label.set_text("Use impossible project validate for headless project diagnostics")
+            else:
+                self.status_label.set_text("Generic compilation is not wired to a runtime backend yet")
         elif action == "run_project":
             self.status_label.set_text("Preview host integration is not connected yet")
         elif action == "about":

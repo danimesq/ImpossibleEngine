@@ -156,7 +156,16 @@ class Project:
             raw.get("format") == "impossible-engine-project"
             or "projectFormatVersion" in raw
         )
-        version = raw.get("schema_version", 1)
+        if native_index:
+            if raw.get("format") != "impossible-engine-project":
+                raise ValueError("Unsupported native project index format.")
+            if raw.get("projectFormatVersion") != 1:
+                raise ValueError(
+                    f"Unsupported native project format version: {raw.get('projectFormatVersion')!r}"
+                )
+            version = 1
+        else:
+            version = raw.get("schema_version", 1)
         if version != 1:
             raise ValueError(f"Unsupported project schema: {version}")
         def model_list(name: str) -> list[Any]:
@@ -164,7 +173,7 @@ class Project:
             return value if isinstance(value, list) else []
 
         sheets = []
-        for item in model_list("event_sheets"):
+        for item in ([] if native_index else model_list("event_sheets")):
             events = [Event(**event) for event in item.get("events", [])]
             sheets.append(EventSheet(
                 id=str(item["id"]),
@@ -184,8 +193,10 @@ class Project:
             if "metadata" not in raw or isinstance(raw["metadata"], dict):
                 known_fields.add("metadata")
         used_addons_raw = raw.get("usedAddons", raw.get("used_addons", []))
-        if not isinstance(used_addons_raw, list):
-            raise ValueError("usedAddons must be a JSON array.")
+        if not isinstance(used_addons_raw, list) or any(
+            not isinstance(item, dict) for item in used_addons_raw
+        ):
+            raise ValueError("usedAddons must be an array of JSON objects.")
         project = cls(
             name=str(raw.get("name", "Untitled Project")),
             schema_version=1,

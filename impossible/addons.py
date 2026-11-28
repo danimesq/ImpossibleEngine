@@ -8,7 +8,7 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_REGISTRY = ROOT / "addons" / "builtin-v1.json"
-DEFAULT_THIRD_PARTY_DIR = ROOT / "add-ons"
+DEFAULT_THIRD_PARTY_DIR = Path("add-ons")
 KINDS = {"plugin", "behavior", "effect"}
 SECTIONS = {"conditions": {"trigger", "predicate"}, "actions": {"command"}, "expressions": {"pure"}}
 PARAMETER_TYPES = {"number", "integer", "string", "boolean", "enum", "object", "array",
@@ -87,7 +87,8 @@ class AddonRegistry:
             raise AddonRegistryError(f"Invalid registry JSON: {exc}") from exc
         registry = cls(raw, source)
         registry._load_third_party(
-            Path(third_party_dir) if third_party_dir is not None else DEFAULT_THIRD_PARTY_DIR
+            Path(third_party_dir) if third_party_dir is not None
+            else Path.cwd() / DEFAULT_THIRD_PARTY_DIR
         )
         return registry
 

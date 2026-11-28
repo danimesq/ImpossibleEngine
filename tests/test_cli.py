@@ -192,5 +192,48 @@ class HeadlessCliTests(unittest.TestCase):
         self.assertIn(("event-sheet", "Common", "Shared"), names)
         self.assertIn(("script", "main.js", ""), names)
 
+    def test_native_project_inspect_reports_indexed_resource_counts(self):
+        project_index = {
+            "format": "impossible-engine-project",
+            "projectFormatVersion": 1,
+            "name": "Native Project",
+            "usedAddons": [],
+            "layouts": {"items": ["Main", "Settings"], "subfolders": []},
+            "eventSheets": {
+                "items": ["Gameplay"],
+                "subfolders": [{"name": "Shared", "items": ["Common"], "subfolders": []}],
+            },
+        }
+        Path(self.project_path).write_text(json.dumps(project_index), encoding="utf-8")
+        code, output, errors = self.run_cli(
+            "project", "inspect", "--project", self.project_path, "--format", "json",
+        )
+        self.assertEqual(code, 0, errors)
+        summary = json.loads(output)
+        self.assertTrue(summary["native_index"])
+        self.assertEqual(summary["indexed_layouts"], 2)
+        self.assertEqual(summary["indexed_event_sheets"], 2)
+        self.assertEqual(summary["indexed_resource_count"], 4)
+
+    def test_native_layouts_command_lists_index_names(self):
+        project_index = {
+            "format": "impossible-engine-project",
+            "projectFormatVersion": 1,
+            "name": "Native Project",
+            "usedAddons": [],
+            "layouts": {
+                "items": ["Main"],
+                "subfolders": [{"name": "Levels", "items": ["Level01"], "subfolders": []}],
+            },
+        }
+        Path(self.project_path).write_text(json.dumps(project_index), encoding="utf-8")
+        code, output, errors = self.run_cli(
+            "layouts", "list", "--project", self.project_path, "--format", "json",
+        )
+        self.assertEqual(code, 0, errors)
+        rows = json.loads(output)
+        self.assertEqual([(item["name"], item["folder"]) for item in rows],
+                         [("Main", ""), ("Level01", "Levels")])
+
 if __name__ == "__main__":
     unittest.main()

@@ -47,6 +47,7 @@ impossible addons list
 impossible addons list --kind behavior
 impossible addons list --kind effect --search blur --format json
 impossible addons show plugin.sprite
+impossible addons list --project ./MyProject.ieproj --format json
 impossible addons list --third-party-dir ./add-ons
 ```
 
@@ -71,6 +72,23 @@ the package directory. It reads metadata only and never executes package code.
 or install its runtime. The current built-in catalogue entries are marked
 `specification_only`, so selection does not make their Conditions, Actions or
 Expressions executable.
+
+## 🌈 Project resources
+
+The native `project.ieproj` index stores ordered resource names and nested
+subfolders, while resource documents live in their own files. Inspect the index
+without opening the GUI:
+
+```sh
+impossible resources list --project ./MyProject.ieproj
+impossible resources list --project ./MyProject.ieproj --kind event-sheet --format json
+impossible resources list --project ./MyProject.ieproj --kind script
+```
+
+This lists indexed resource names and folder paths. It does not claim to parse
+or edit the separate layout/Event Sheet documents beyond the editable model
+currently supported by the GTK prototype. Unknown top-level index fields are
+preserved when the CLI saves project metadata.
 
 ## 🌈 Event Sheets
 

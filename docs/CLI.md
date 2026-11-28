@@ -35,8 +35,8 @@ Creation adds a default `Gameplay` Event Sheet. Pass `--no-default-sheet`
 to create an empty project. Creation refuses to overwrite an existing path.
 
 The CLI validator checks the editable project model, duplicate resource IDs
-and basic layout/object/asset references. It does not claim to compile arbitrary
-ACE descriptors or execute add-on code.
+and basic layout/object/asset references. Native project inspection reads index
+metadata and resource inventories; it does not parse separate resource documents.
 
 ## 🌈 Add-ons
 
@@ -103,8 +103,13 @@ impossible events remove --project ./MyProject.ieproj --event-id event-1
 ```
 
 Use `--sheet SHEET_ID` when the project contains multiple Event Sheets and an
-event ID is not globally unique. If a project has no Event Sheet yet,
-`events add` creates the same default `Gameplay` sheet used by the GUI.
+event ID is not globally unique. If an inline-model project has no Event Sheet
+yet, `events add` creates the same default `Gameplay` sheet used by the GUI.
+
+These editing commands target the GTK prototype's inline project model. Native
+`.ieproj` Event Sheets are separate resource files: the CLI can list their
+names through `resources list`, but refuses to modify or pretend to parse their
+contents until that resource format is implemented.
 
 Conditions and Actions are stored as authored expression strings. This command
 surface does not claim to compile arbitrary ACE expressions.

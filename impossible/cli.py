@@ -138,7 +138,6 @@ def _addon_summary(addon: Any) -> dict[str, Any]:
     return {
         "id": addon.id,
         "kind": addon.kind,
-        "origin": None,
         "name": addon.name,
         "category": addon.category,
         "version": addon.version,
@@ -244,7 +243,8 @@ def _handle_addons(args: argparse.Namespace) -> int:
         }
         _emit(result if args.format == "json" else rows, args.format,
               [("id", "ID"), ("kind", "TYPE"), ("name", "NAME"),
-               ("category", "CATEGORY"), ("implementation_status", "STATUS")])
+               ("category", "CATEGORY"), ("origin", "ORIGIN"),
+               ("implementation_status", "STATUS")])
         return 0
 
     if args.addon_action == "show":
@@ -450,7 +450,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     addons = commands.add_parser("addons", help="Browse and select add-ons.")
     addon_commands = addons.add_subparsers(dest="addon_action", required=True)
-    addon_list = addon_commands.add_parser("list", help="List built-in add-on descriptors.")
+    addon_list = addon_commands.add_parser("list", help="List built-in and third-party add-on descriptors.")
     addon_list.add_argument("--kind", choices=("plugin", "behavior", "effect"))
     addon_list.add_argument("--category")
     addon_list.add_argument("--search")

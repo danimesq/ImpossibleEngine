@@ -1,6 +1,7 @@
 import contextlib
 import io
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -80,6 +81,11 @@ class HeadlessCliTests(unittest.TestCase):
         self.assertEqual(code, 0, errors)
         self.assertEqual(json.loads(output)["added"], [addon.id])
         self.assertEqual(load_project(self.project_path).used_addons[0]["id"], addon.id)
+        code, selected, errors = self.run_cli(
+            "addons", "list", "--project", self.project_path, "--format", "json",
+        )
+        self.assertEqual(code, 0, errors)
+        self.assertEqual(json.loads(selected)["addons"][0]["id"], addon.id)
 
         code, output, errors = self.run_cli(
             "addons", "remove", addon.id, "--project", self.project_path,
@@ -127,6 +133,59 @@ class HeadlessCliTests(unittest.TestCase):
             self.assertEqual(json.loads(output)["added"], [addon["id"]])
             saved = load_project(self.project_path)
             self.assertFalse(saved.used_addons[0]["bundled"])
+
+            code, selected, errors = self.run_cli(
+                "addons", "list", "--project", self.project_path,
+                "--third-party-dir", temp, "--format", "json",
+            )
+            self.assertEqual(code, 0, errors)
+            self.assertTrue(json.loads(selected)["addons"][0]["available"])
+
+            # A project can drop an unavailable package reference without needing
+            # the third-party package files to remain installed.
+            shutil.rmtree(package_dir.parent)
+            code, selected, errors = self.run_cli(
+                "addons", "list", "--project", self.project_path,
+                "--third-party-dir", temp, "--format", "json",
+            )
+            self.assertEqual(code, 0, errors)
+            self.assertFalse(json.loads(selected)["addons"][0]["available"])
+
+            code, output, errors = self.run_cli(
+                "addons", "remove", addon["id"], "--project", self.project_path,
+                "--third-party-dir", temp,
+            )
+            self.assertEqual(code, 0, errors)
+            self.assertTrue(json.loads(output)["removed"])
+            self.assertEqual(load_project(self.project_path).used_addons, [])
+
+    def test_resource_listing_reads_native_project_index_tree(self):
+        project_index = {
+            "format": "impossible-engine-project",
+            "projectFormatVersion": 1,
+            "name": "Index Project",
+            "usedAddons": [],
+            "eventSheets": {
+                "items": ["Gameplay"],
+                "subfolders": [{"name": "Shared", "items": ["Common"], "subfolders": []}],
+            },
+            "rootFileFolders": {
+                "script": {
+                    "items": [{"name": "main.js", "type": "application/javascript", "sid": 123}],
+                    "subfolders": [],
+                }
+            },
+        }
+        Path(self.project_path).write_text(json.dumps(project_index), encoding="utf-8")
+        code, output, errors = self.run_cli(
+            "resources", "list", "--project", self.project_path, "--format", "json",
+        )
+        self.assertEqual(code, 0, errors)
+        resources = json.loads(output)["resources"]
+        names = {(item["kind"], item["name"], item["folder"]) for item in resources}
+        self.assertIn(("event-sheet", "Gameplay", ""), names)
+        self.assertIn(("event-sheet", "Common", "Shared"), names)
+        self.assertIn(("script", "main.js", ""), names)
 
 if __name__ == "__main__":
     unittest.main()

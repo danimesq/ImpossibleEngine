@@ -88,7 +88,7 @@ def _canonical_project_addon_id(entry: dict[str, Any]) -> str:
 
 
 def _project_summary(project: Project, path: str) -> dict[str, Any]:
-    return {
+    summary = {
         "path": str(Path(path).expanduser()),
         "name": project.name,
         "schema_version": project.schema_version,
@@ -99,7 +99,21 @@ def _project_summary(project: Project, path: str) -> dict[str, Any]:
         "objects": len(project.objects),
         "assets": len(project.assets),
         "used_addons": len(project.used_addons),
+        "native_index": project.native_index,
     }
+    if project.native_index:
+        index_counts: dict[str, int] = {}
+        for kind, key in RESOURCE_INDEX_KINDS.items():
+            index_counts[kind] = len(_walk_index_items(project.extra_fields.get(key), kind))
+        root_folders = project.extra_fields.get("rootFileFolders", {})
+        if isinstance(root_folders, dict):
+            for kind in ("script", "sound", "music", "video", "font", "icon", "file"):
+                index_counts[kind] = len(_walk_index_items(root_folders.get(kind), kind))
+        summary["indexed_resources"] = index_counts
+        summary["indexed_resource_count"] = sum(index_counts.values())
+        summary["indexed_layouts"] = index_counts.get("layout", 0)
+        summary["indexed_event_sheets"] = index_counts.get("event-sheet", 0)
+    return summary
 
 
 def _project_diagnostics(project: Project) -> tuple[list[str], list[str]]:
@@ -221,6 +235,11 @@ def _handle_project(args: argparse.Namespace) -> int:
         return 0 if not errors else 1
 
     if args.project_action == "set-platform":
+        if project.native_index:
+            raise ValueError(
+                "Target editing for native resource-index projects is not yet supported; "
+                "this command currently edits the GTK prototype's inline project model."
+            )
         set_active_platform(project, args.platform)
         _save_project(project, args.project)
         _emit({
@@ -338,6 +357,11 @@ def _handle_events(args: argparse.Namespace) -> int:
         return 0
 
     project = _load_project(args.project)
+    if project.native_index:
+        raise ValueError(
+            "Event Sheet documents are separate resources in native .ieproj files. "
+            "The current CLI edits Event Sheets only in the GTK prototype's inline project model."
+        )
     if args.events_action == "add":
         event = add_event(project, args.name, args.sheet)
         _save_project(project, args.project)
@@ -389,6 +413,11 @@ def _handle_layouts(args: argparse.Namespace) -> int:
 
 def _handle_objects(args: argparse.Namespace) -> int:
     project = _load_project(args.project)
+    if project.native_index:
+        raise ValueError(
+            "Native object-type resources are separate files. Use the resources list command "
+            "to inspect them; editing is not yet implemented for the native resource format."
+        )
     if args.objects_action == "list":
         rows = [{
             "id": obj.id, "name": obj.name, "asset_id": obj.asset_id,
@@ -415,6 +444,11 @@ def _handle_objects(args: argparse.Namespace) -> int:
 
 def _handle_assets(args: argparse.Namespace) -> int:
     project = _load_project(args.project)
+    if project.native_index:
+        raise ValueError(
+            "Native assets are indexed separately from the GTK prototype model. "
+            "Use the resources list command to inspect indexed resource files."
+        )
     if args.assets_action == "list":
         rows = [{
             "id": asset.id, "name": asset.name, "kind": asset.kind,

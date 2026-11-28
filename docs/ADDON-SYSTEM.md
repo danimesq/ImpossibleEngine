@@ -3,6 +3,10 @@
 The built-in catalogue is machine-readable at `addons/builtin-v1.json`. It is
 independent from GTK, the future add-on selector and any specific runtime.
 
+For the complete generic legacy compatibility map, source-observed ACE inventory,
+behavior coverage and verification boundary, see
+[Construct 2 compatibility profile](CONSTRUCT-2-COMPATIBILITY.md).
+
 ## Construct 2 and Construct 3 inspiration
 
 Construct 2's `GetPluginSettings()` declares stable plugin identity,
@@ -108,7 +112,7 @@ they reach behavior-specific controls.
 
 ## Runtime status
 
-See [the runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md) for the verified implementation gap and ordered work to connect all 640 ACEs to typed Rust execution, implement the 31 behavior systems, build concrete host adapters, and eventually add GLSL/WGSL-backed effects to the renderer.
+See [the runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md) for the verified implementation gap and ordered work to connect all 850 ACEs to typed Rust execution, implement the 32 behavior systems, build concrete host adapters, and eventually add GLSL/WGSL-backed effects to the renderer.
 
 All initial entries are explicitly marked `specification_only` and
 `engine_runtime = false`. Metadata does not implement a feature. Runtime

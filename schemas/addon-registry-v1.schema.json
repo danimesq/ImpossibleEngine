@@ -36,6 +36,12 @@
         },
         "parameterTypes": {
           "type": "array"
+        },
+        "conditionFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -129,7 +135,58 @@
           "type": "array"
         },
         "ui": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "markers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "flags": {
+              "type": "object",
+              "required": [
+                "trigger",
+                "fake_trigger",
+                "static",
+                "looping",
+                "invertible",
+                "incompatible_with_triggers",
+                "deprecated",
+                "highlight"
+              ],
+              "properties": {
+                "trigger": {
+                  "type": "boolean"
+                },
+                "fake_trigger": {
+                  "type": "boolean"
+                },
+                "static": {
+                  "type": "boolean"
+                },
+                "looping": {
+                  "type": "boolean"
+                },
+                "invertible": {
+                  "type": "boolean"
+                },
+                "incompatible_with_triggers": {
+                  "type": "boolean"
+                },
+                "deprecated": {
+                  "type": "boolean"
+                },
+                "highlight": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "sourceCompatibility": {
+          "type": "object",
+          "description": "Optional verified source ACE and positional parameter identifiers."
         }
       }
     },
@@ -281,6 +338,14 @@
         },
         "isDeprecated": {
           "type": "boolean"
+        },
+        "audioProcessing": {
+          "type": "object",
+          "description": "Optional per-tag audio signal-processing metadata, separate from visual render effects."
+        },
+        "legacyCompatibility": {
+          "type": "object",
+          "description": "Optional verified source-version aliases. Do not infer compatibility from display names."
         }
       },
       "additionalProperties": false

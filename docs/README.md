@@ -5,6 +5,8 @@
 
 ## Engine architecture
 - [Add-on system and built-in feature catalogue](ADDON-SYSTEM.md)
+- [Construct 2/3 add-on and ACE audit](CONSTRUCT-2-3-ADDON-ACE-AUDIT.md)
+- [Construct 2 compatibility profile](CONSTRUCT-2-COMPATIBILITY.md)
 - [Generic 2D interaction and platform capability profile](LEGACY-2D-CAPABILITY-PROFILE.md)
 - [Arcade Car Movement behavior](behaviors/car-movement.md)
 - [Provider-neutral Game Services add-on](addons/game-services.md)

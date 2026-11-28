@@ -192,3 +192,60 @@ The audited project snapshot contains third-party extension identifiers, but it 
 - [Pin](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/pin)
 - [Scroll To](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/scroll-to)
 - [Fade](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/fade)
+
+## 🌈 8. Official Construct 2 built-in inventory and correction results
+
+The compatibility mapping above is based on one imported project snapshot (25 plugin identifiers, 7 behaviors and 1 effect). It is not the complete built-in C2 catalogue. The official C2 manual lists 44 plugins and 26 behaviors, and its visual-effects reference advertises 70+ effects.
+
+### 🌈 8A. Construct 2 plugin inventory (44)
+
+9-Patch, AdMob, AJAX, Array, Audio, Browser, Button, Dictionary, Facebook, File chooser, Function, Game Center, Gamepad, Geolocation, Google Play, iAd, IAP, Intel AGI, Keyboard, List, Local Storage, Mouse, Multiplayer, NW.js, Particles, Progress bar, pubCenter, Scirra Arcade, Shadow light, Slider bar, Sprite, Sprite font, Text, Textbox, Tiled Background, Tilemap, Touch, Twitter, User Media, Video, WebSocket, WebStorage, Windows Store and XML.
+
+The native catalogue is broader but still has explicit gaps in one-to-one legacy coverage: 9-Patch, File chooser, Geolocation, List and Sprite font do not yet have dedicated matching native descriptors. IAP and platform/provider-specific services (AdMob, iAd, pubCenter, Intel AGI, Scirra Arcade, Windows Store, Game Center and Google Play) need explicit provider/availability aliases rather than silent claims of parity. Existing UI Controls, Social, Advertising and Game Services abstractions are useful building blocks, but are not automatically identical to each source plugin.
+
+### 🌈 8B. Construct 2 behavior inventory (26)
+
+8 Direction, Anchor, Bound to layout, Bullet, Car, Custom Movement, Destroy outside layout, Drag & Drop, Fade, Flash, Jump-thru, Line-of-sight, No Save, Pathfinding, Persist, Physics, Pin, Platform, Rotate, Scroll to, Shadow caster, Sine, Solid, Timer, Turret and Wrap.
+
+The audit added native object-scoped contracts for Timer, Pathfinding, Jump-thru, No Save and Shadow Caster. The following remain open parity gaps or require a more exact equivalence review: Custom Movement and Rotate; `behavior.oscillator` is not assumed to be a drop-in Sine replacement without phase, period, movement-axis and initial-state conformance tests. C3 additionally documents Billboard, Follow, Move To, Tile Movement and Tween behaviors; these are version-specific additions rather than C2 built-ins.
+
+### 🌈 8C. Corrections to previous classifications
+
+- `plugin.timer` remains the ImpossibleEngine project-global timer service. It is not the C2 Timer behavior. `behavior.timer` is the per-object-instance, tag-based, time-scale-aware compatibility contract. C2 Timer's built-in ACE surface is On timer, Start timer, Stop timer, CurrentTime, Duration and TotalTime; do not add pause/resume to the legacy alias.
+- `plugin.pathfinding` remains the ImpossibleEngine project-level asynchronous path service. It is not the C2 Pathfinding behavior. `behavior.pathfinding` models object-scoped navigation, obstacle-map properties, path movement and speed/acceleration/rotation controls.
+- Blend Mode is not a C2 visual effect. It is a common compositor setting which also works without WebGL. The old `effect.blend-mode` ID remains as a hidden/deprecated migration alias; new projects use common object/layer blend-mode state.
+- The System object is always present in a C2 project. Its ACEs are core Event Sheet operations, not a user-inserted object. The common Object surface is likewise inherited by object types rather than inserted as its own placed instance.
+- C2 behaviors attach to object types; they affect each instance of that type and can be attached to Families. Per-instance enabling/disabling does not change the attachment scope.
+- C2 Audio signal-processing effects are a separate per-tag audio DSP chain, not visual shader effects. The built-in catalogue now declares that separate chain as metadata, but its DSP runtime/host adapter is not implemented.
+- C2 User Media includes camera/microphone, speech recognition and speech synthesis. ImpossibleEngine may keep capture/recognition in User Media and synthesis in Text to Speech, but a C2 import must map the source plugin's ACEs across both native add-ons.
+- C2's visual-effects reference advertises 70+ effects. ImpossibleEngine's 44 effect descriptors are a native subset/catalogue, not complete C2 effect parity. Per-effect parameters, background blending, target surface, render ordering and fallback support need individual coverage.
+
+### 🌈 8D. ACE metadata and runtime semantics
+
+The C2 SDK distinguishes true triggers, fake triggers, static conditions, non-invertible conditions, trigger-incompatible conditions, deprecated conditions and looping conditions. The registry now carries explicit `fake_trigger` and `static` flags alongside its existing metadata.
+
+- A true trigger is dispatched by the runtime and has trigger ordering/placement constraints.
+- A fake trigger is visually presented as a trigger in the editor but remains a passively evaluated condition.
+- A static condition runs once for the event rather than once per picked instance; its implementation owns any picking.
+- The looping marker is editor metadata. The condition implementation must actually perform the loop.
+- Deprecated ACEs should disappear from new-event menus where appropriate, but remain resolvable for old projects. IDs must never be recycled.
+- C2 ACE and parameter IDs are numeric/positional source identifiers. The current registry's namespaced IDs are stable native IDs, but the importer still needs an explicit source-ID/parameter-order mapping populated from verified C2 SDK metadata. Do not infer those numbers from display names or array order.
+
+### 🌈 8E. Effects and renderer boundaries
+
+C2 visual effects form an ordered chain; effects are applied to an object, layer or (where compatible) layout. Background-sampling effects have additional target constraints. C2 requires WebGL for shader effects, so disabling WebGL changes what can be rendered. ImpossibleEngine currently describes renderer intent for WebGL 2/WebGPU, but an empty `supported_renderers` array means no concrete shader backend is declared as supported. Keep unsupported effects visible in project diagnostics; never silently substitute a different pass.
+
+### 🌈 8F. Official C2/C3 documentation references
+
+- C2 [Plugin reference](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference) and [Behavior reference](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference).
+- C2 [Effects](https://www.construct.net/en/construct-2/manuals/construct-2/project-primitives/objects/effects), [Effect dialog](https://www.construct.net/en/construct-2/manuals/construct-2/interface/effects-dialog) and [Third-party add-ons](https://www.construct.net/en/construct-2/manuals/construct-2/installing/third-party-addons).
+- C2 SDK [Plugin settings](https://www.construct.net/en/make-games/manuals/construct-2/plugin-sdk), [Conditions](https://www.construct.net/en/make-games/manuals/construct-2/plugin-sdk/conditions), [Actions](https://www.construct.net/en/make-games/manuals/construct-2/plugin-sdk/actions) and [Expressions](https://www.construct.net/en/make-games/manuals/construct-2/plugin-sdk/expressions).
+- C2 [Timer](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/timer), [Pathfinding](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/pathfinding), [Custom Movement](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/custom-movement), [Jump-thru](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/jump-thru), [No Save](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/no-save) and [Shadow caster](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/shadow-caster).
+- C2 [Audio](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/audio) and [User Media](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/user-media).
+- C3 [Add-on SDK overview](https://www.construct.net/en/make-games/manuals/addon-sdk), [Add-on format](https://www.construct.net/en/make-games/manuals/addon-sdk/addon-format), [C2 add-on porting](https://www.construct.net/en/make-games/manuals/addon-sdk/porting-from-construct-2) and [C2-to-C3 project changes](https://www.construct.net/en/construct-3/project-primitives/construct-2-compatibility).
+
+## 🌈 9. Third-party extension loading boundary
+
+Construct 2 installs third-party add-ons through `.c2addon` packages and its legacy JavaScript SDK. Construct 3 uses a separate `.c3addon` package and SDK. ImpossibleEngine does not execute either format directly.
+
+ImpossibleEngine's own third-party package discovery uses the root `add-ons/` directory and `impossible.addon-package` v1 manifest. The current implementation registers validated metadata only; entrypoint references are not executed. See [Third-party add-ons](../add-ons/README.md).

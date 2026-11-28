@@ -13,8 +13,7 @@ Construct 2's `GetPluginSettings()` declares stable plugin identity,
 version, description, author, help URL, category, world/object type,
 rotatability and flags. Each ACE separately declares a stable ID, list name,
 category, Event Sheet display string, description and runtime function name.
-Condition flags cover triggers, looping, inversion and deprecation. C2's
-looping-condition flag displays a looping marker; it is not merely semantic.
+Condition flags cover triggers, looping, inversion and deprecation. C2's `cf_looping` displays a looping marker in the editor; the marker does not itself implement iteration. The condition's runtime implementation must perform the loop. C2 also distinguishes fake triggers (`cf_fake_trigger`) from true runtime triggers (`cf_trigger`), and has a static-condition flag for conditions which perform their own picking.
 
 Construct 3 separates `addon.json`, `aces.json`, localization files,
 icons and editor/runtime scripts. Plugins, behaviors and effects have
@@ -57,6 +56,14 @@ pure reads and may not perform hidden I/O or mutation. IDs are never recycled.
 Once a feature has shipped, future changes should deprecate rather than delete
 the ACE identity to preserve old projects.
 
+## Catalogue scope and parity
+
+The current ImpossibleEngine catalogue is a mixed native capability catalogue, not a one-to-one copy of Construct 2 or Construct 3. The corrected built-in snapshot contains 52 plugins, 38 behaviors and 44 visual effects. It intentionally includes ImpossibleEngine-native abstractions. Do not use these counts as a Construct parity claim.
+
+Construct 2's official manual lists 44 built-in plugins and 26 built-in behaviors. Its visual-effects reference advertises 70+ effects. A larger or smaller native count does not establish compatibility; source identifiers, properties, ACE semantics and target support must be audited individually.
+
+The System object is always present in every C2 project and is not inserted by users. ImpossibleEngine exposes its System ACEs as an always-available core surface, not as a picker item. The common Object ACE/property surface is also not a separately insertable object.
+
 ## Built-in plugins
 
 System, Object, Sprite, Tiled Background, Text, Button Control, Text Input,
@@ -76,7 +83,7 @@ Oscillation, Scroll To / Camera Follow, Persist, Anchor to Viewport,
 Destroy Outside Layout, Solid / Static Collider, Physics Body, Fade, Flash,
 Tween, Rotate To Target, Turret, Line of Sight, Seek, Pursuit & Evade, Arrive,
 Wander, Flocking, Path Follower, Drag & Drop, Pin / Follow Object, Orbit,
-Spring, Wrap Around Layout, Bounce, Grid Movement and Platform Solid.
+Spring, Wrap Around Layout, Bounce, Grid Movement, Platform Solid, object-scoped Timer, object-scoped Pathfinding, Jump-thru, No Save and Shadow Caster.
 
 Behaviors are grouped by runtime subsystem, not one crate per behavior:
 movement/steering, physics/collision, camera/world bounds, animation/timeline,
@@ -85,7 +92,7 @@ shared engine services.
 
 ## Built-in effects
 
-Alpha, Blend Mode, Color Matrix, Grayscale, Sepia, Tint, Hue Rotate,
+Alpha, Color Matrix, Grayscale, Sepia, Tint, Hue Rotate,
 Saturation, Brightness & Contrast, Invert, Threshold/Posterize, Blur,
 Gaussian Blur, Directional Blur, Radial Blur, Zoom Blur, Bloom, Glow, Outline,
 Drop Shadow, Vignette, Pixelate, Mosaic, Dissolve, Displacement Map, Ripple,
@@ -93,6 +100,8 @@ Wave Distortion, Chromatic Aberration, Scanlines, Film Grain/Noise, CRT,
 Lens Distortion, Mask, Motion Trail, Distance Field Outline, Fog,
 Normal Map Lighting, Texture Tiling, Glass/Refraction, Inner Shadow,
 Edge Detection, Posterize, Halftone and Swirl Distortion.
+
+Visual effects form an ordered stack: each pass receives the output of the previous pass. C2 supports effects on objects and layers, and on layouts where the specific effect supports that target. Effects may require WebGL; unsupported renderers need an explicit fallback or diagnostic. Blend Mode is a common compositor property, not a shader effect, and is therefore exposed through the common object/layer blend-mode contract; the old `effect.blend-mode` ID is kept hidden and deprecated for migration only.
 
 Effects specify render-graph stage and compositor constraints. A renderer may
 reject an unsupported effect only with an explicit diagnostic; no effect may
@@ -107,6 +116,12 @@ rendering and I/O execution.
 RustMultiConsoleFoundation owns cross-platform build/package services and
 concrete host/transport adapters that belong below the engine.
 
+C2 behaviors attach to object types, affect all instances of that type, and can be inherited through Families. Per-instance enable/disable state is distinct from attachment. The editor must preserve object-type attachment and Family inheritance rather than treating behaviors as independent project-wide objects.
+
+The C2 Timer and Pathfinding add-ons are per-object behaviors. `plugin.timer` and `plugin.pathfinding` remain valid ImpossibleEngine-native project-level services, but are not aliases for those C2 behaviors; `behavior.timer` and `behavior.pathfinding` preserve the legacy object-scoped model.
+
+The C2 Audio plugin also owns an ordered per-tag DSP chain (analyser, compressor, convolution, delay, distortion, filter, flanger, gain, phaser, tremolo and ring modulator). This signal-processing chain is distinct from the visual object/layer effect stack.
+
 Gamepad exposes both normalized mapped controls and raw axes/buttons for unusual devices. Text-to-Speech owns synthesis and voice selection, while User Media owns camera/microphone capture, source enumeration, snapshots, canvas recording, recognition and ambient-light readings. Advertising exposes provider-neutral banner placements as well as interstitial and rewarded lifecycles. Game Services owns sign-in, profile, achievements and leaderboards through host adapters. WebSocket is a transport, not multiplayer gameplay. Multiplayer separately
 models sessions, rooms, peers, authority, input replication, state replication
 and interpolation. Input devices are normalized into semantic actions before
@@ -114,11 +129,17 @@ they reach behavior-specific controls.
 
 ## Runtime status
 
-See [the runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md) for the verified implementation gap and ordered work to connect all 850 ACEs to typed Rust execution, implement the 32 behavior systems, build concrete host adapters, and eventually add GLSL/WGSL-backed effects to the renderer.
+See [the runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md) for the verified implementation gap and ordered work to connect all 1060 ACEs to typed Rust execution, implement the 38 behavior systems, build concrete host adapters, and eventually add GLSL/WGSL-backed effects to the renderer.
 
 All current catalogue entries are explicitly marked `specification_only` and
 `engine_runtime = false`. Metadata does not implement a feature. Runtime
 support requires implementation, adapter wiring and conformance tests.
+
+## Third-party drop-in packages
+
+Built-ins live in `addons/builtin-v1.json`. User/vendor packages are discovered separately from the repository-root `add-ons/` directory. A package contains an `addon.json` manifest with `format: impossible.addon-package`, `manifestVersion: 1`, and one complete `addon` descriptor. See [the package folder instructions](../add-ons/README.md) and `schemas/addon-package-v1.schema.json`.
+
+The loader validates and registers package metadata, checks relative entrypoint/icon paths and dependency IDs/capabilities, refuses built-in ID shadowing, and records invalid packages as diagnostics without disabling built-ins. It does not execute package code. JavaScript, Python, native and WASM entrypoints are references only until a versioned, capability-scoped runtime ABI and sandbox exist. C2 `.c2addon` and C3 `.c3addon` packages are not directly executable ImpossibleEngine add-ons.
 
 ## Python API
 

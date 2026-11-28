@@ -210,7 +210,7 @@ def add_project_addon(project: Project, addon_id: str, registry: Any) -> list[st
             "id": addon.id,
             "name": addon.name,
             "author": addon.raw.get("author", "Unknown"),
-            "bundled": True,
+            "bundled": registry.origin(addon.id) == "builtin",
         })
     return [addon.id for addon in ordered]
 

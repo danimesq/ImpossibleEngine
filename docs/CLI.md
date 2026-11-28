@@ -34,9 +34,15 @@ impossible project set-platform --project ./MyProject.ieproj --platform web-wasm
 Creation adds a default `Gameplay` Event Sheet. Pass `--no-default-sheet`
 to create an empty project. Creation refuses to overwrite an existing path.
 
+This currently creates the GTK prototype's inline project model. It is not yet
+a generator for the full native resource-index layout documented in
+`PROJECT-FORMAT.md`. Native index projects can be inspected and have their
+`usedAddons` metadata updated without adding prototype-only fields.
+
 The CLI validator checks the editable project model, duplicate resource IDs
-and basic layout/object/asset references. Native project inspection reads index
-metadata and resource inventories; it does not parse separate resource documents.
+and basic layout/object/asset references. For a native resource-index project,
+it validates the index format/version and add-on metadata, then reports that
+separate resource documents are not deeply validated yet.
 
 ## 🌈 Add-ons
 

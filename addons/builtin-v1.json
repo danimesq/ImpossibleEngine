@@ -14898,9 +14898,7 @@
       "provides": [
         "effect.swirl"
       ],
-      "requires": [
-        "render.postprocess"
-      ],
+      "requires": [],
       "properties": [
         {
           "name": "center",

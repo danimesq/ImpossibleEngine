@@ -211,8 +211,8 @@ The audit added native object-scoped contracts for Timer, Pathfinding, Jump-thru
 
 ### 🌈 8C. Corrections to previous classifications
 
-- `plugin.timer` remains the ImpossibleEngine project-global timer service. It is not the C2 Timer behavior. `behavior.timer` is the per-object-instance, tag-based, time-scale-aware compatibility contract. C2 Timer's built-in ACE surface is On timer, Start timer, Stop timer, CurrentTime, Duration and TotalTime; do not add pause/resume to the legacy alias.
-- `plugin.pathfinding` remains the ImpossibleEngine project-level asynchronous path service. It is not the C2 Pathfinding behavior. `behavior.pathfinding` models object-scoped navigation, obstacle-map properties, path movement and speed/acceleration/rotation controls.
+- `behavior.timer` is the sole user-facing Timer add-on and attaches to object types, matching C2's per-object behavior. C2 Timer's ACE surface is On timer, Start timer, Stop timer, CurrentTime, Duration and TotalTime; no project-global Timer plugin is exposed.
+- `behavior.pathfinding` is the sole user-facing Pathfinding add-on and attaches to object types, matching C2. It models object-scoped navigation, obstacle-map properties, path movement and speed/acceleration/rotation controls. The project-global Pathfinding plugin is removed.
 - Blend Mode is not a C2 visual effect. It is a common compositor setting which also works without WebGL. The old `effect.blend-mode` ID remains as a hidden/deprecated migration alias; new projects use common object/layer blend-mode state.
 - The System object is always present in a C2 project. Its ACEs are core Event Sheet operations, not a user-inserted object. The common Object surface is likewise inherited by object types rather than inserted as its own placed instance.
 - C2 behaviors attach to object types; they affect each instance of that type and can be attached to Families. Per-instance enabling/disabling does not change the attachment scope.

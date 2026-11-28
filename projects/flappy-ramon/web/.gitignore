@@ -1,5 +1,0 @@
-dist/
-*.wasm
-mq_js_bundle.js
-sapp_jsutils.js
-quad-storage.js

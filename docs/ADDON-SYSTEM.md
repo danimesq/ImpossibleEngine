@@ -118,7 +118,7 @@ concrete host/transport adapters that belong below the engine.
 
 C2 behaviors attach to object types, affect all instances of that type, and can be inherited through Families. Per-instance enable/disable state is distinct from attachment. The editor must preserve object-type attachment and Family inheritance rather than treating behaviors as independent project-wide objects.
 
-The C2 Timer and Pathfinding add-ons are per-object behaviors. `plugin.timer` and `plugin.pathfinding` remain valid ImpossibleEngine-native project-level services, but are not aliases for those C2 behaviors; `behavior.timer` and `behavior.pathfinding` preserve the legacy object-scoped model.
+Timer and Pathfinding are object-attached behaviors, matching Construct 2. ImpossibleEngine does not expose separate project-global `plugin.timer` or `plugin.pathfinding` services. Attach `behavior.timer` or `behavior.pathfinding` to the object type, and use their ACEs/properties. Shared implementation internals may be engine services, but they must not become separate Event Sheet picker objects or user-facing project-global add-ons.
 
 The C2 Audio plugin also owns an ordered per-tag DSP chain (analyser, compressor, convolution, delay, distortion, filter, flanger, gain, phaser, tremolo and ring modulator). This signal-processing chain is distinct from the visual object/layer effect stack.
 

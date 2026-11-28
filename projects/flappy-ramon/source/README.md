@@ -1,1 +1,0 @@
-Immutable source-package metadata and provenance records belong here. Do not silently rewrite or overwrite the original the source editor source. The canonical upstream source remains danimesq/Flappy-Ramon at the pinned revision in migration-manifest.json.

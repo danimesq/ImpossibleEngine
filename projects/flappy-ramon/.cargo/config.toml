@@ -1,9 +1,0 @@
-# Macroquad/miniquad and quad-storage provide selected WASM functions
-# through the browser host's JavaScript import table (mq_js_bundle.js and
-# the quad-storage/sapp-jsutils plugins). Rust 1.96+ no longer passes
-# --allow-undefined by default, so declare these host imports explicitly.
-#
-# Keep this scoped to this game crate. The browser loader must provide every
-# imported symbol; a missing JS plugin will fail when the WASM module loads.
-[target.wasm32-unknown-unknown]
-rustflags = ["-C", "link-arg=--allow-undefined"]

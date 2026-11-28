@@ -10,7 +10,7 @@ The first built-in catalogue (52 plugins, 33 behaviors, 44 effects and 1,008 ACE
 This audit corrected the most consequential structural differences:
 
 - Added object-scoped C2 compatibility behaviors for Timer, Pathfinding, Jump-thru, No Save and Shadow Caster.
-- Kept ImpossibleEngine project-global Timer and asynchronous Pathfinding services, but renamed their picker labels to distinguish them from C2 behaviors.
+- Removed separate project-global Timer and Pathfinding plugins; C2-style object-attached behaviors are the only user-facing add-ons.
 - Moved Blend Mode to the common object/compositor surface and hid/deprecated the old visual-effect alias.
 - Made System and common Object surfaces non-insertable picker entries.
 - Added C2 `fake_trigger` and `static` ACE condition flags.

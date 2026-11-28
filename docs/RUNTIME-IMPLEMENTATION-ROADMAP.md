@@ -11,16 +11,16 @@ The current `main` catalogue contains:
 
 | Catalogue item | Count |
 |---|---:|
-| Plugins | 52 |
+| Plugins | 50 |
 | Behaviors | 38 |
 | Effects | 44 |
 | Conditions | 318 |
 | Actions | 447 |
 | Expressions | 295 |
-| **Total ACEs** | **1060** |
-| **Total add-ons** | **134** |
+| **Total ACEs** | **1041** |
+| **Total add-ons** | **132** |
 
-All 134 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
+All 132 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
 
 The Python `impossible.addons` module validates the built-in catalogue and discovers metadata-only third-party packages from the root `add-ons/` folder. It validates IDs, parameters, categories, dependencies and package-relative entrypoint paths, but does not compile an Event Sheet, execute an ACE or execute third-party package code.
 

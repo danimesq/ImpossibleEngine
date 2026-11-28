@@ -136,11 +136,11 @@ class BuiltinAddonRegistryTests(unittest.TestCase):
                 ace["ui"]["language_key"] = f"ace.{addon_id}.{suffix}"
         return addon
 
-    def test_c2_behavior_families_are_distinct_from_global_services(self):
-        self.assertEqual(self.registry.get("plugin.timer").kind, "plugin")
+    def test_c2_timer_and_pathfinding_are_object_behaviors_only(self):
         self.assertEqual(self.registry.get("behavior.timer").kind, "behavior")
-        self.assertEqual(self.registry.get("plugin.pathfinding").kind, "plugin")
         self.assertEqual(self.registry.get("behavior.pathfinding").kind, "behavior")
+        self.assertNotIn("plugin.timer", self.registry.ids())
+        self.assertNotIn("plugin.pathfinding", self.registry.ids())
 
     def test_c2_missing_behaviors_are_catalogued(self):
         for addon_id in (

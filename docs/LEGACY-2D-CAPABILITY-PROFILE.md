@@ -8,21 +8,26 @@ This profile records reusable engine capabilities needed by a broad class of 2D 
 |---|---|---|
 | Object identity | Stable object and instance identity | Object types, persistent instance handles, instance variables and selection context |
 | Scene lifecycle | Initialization, scene entry/exit and transitions | System lifecycle triggers and queued scene operations |
+| Display viewport | Logical resolution, orientation, fullscreen policy, scaling/letterboxing, pixel rounding and optional loader scene | Versioned project display settings resolved by the selected platform profile |
+| Layer stack | Nested layers, background/transparent state, parallax, zoom rate, opacity, blend mode and render-cell policy | Recursive layout layer tree with stable order and per-layer render properties |
 | Event execution | Groups, includes, nested events and OR conditions | Ordered Event Sheet tree, explicit group state and source-mapped scheduler |
 | Timing | Frame/tick, waits, delayed continuations and time scaling | Simulation clock, deterministic scheduler and non-blocking Wait |
 | Input | Keyboard, pointer, touch and gamepad | Per-device plugins plus semantic Input Actions |
+| Controller fidelity | Mapped buttons/axes, multiple controllers, analog dead zones and raw host values | Gamepad lifecycle, mapped input, pressure-aware values and raw axis/button access |
 | Analog input | Axis values and dead zones | Typed axes, dead-zone settings and stable device identity |
 | 2D movement | Arcade car-style forward movement and steering | `behavior.car-movement` |
 | Camera | Follow target, look-ahead, smoothing and shake | Camera plugin and `behavior.scroll-to` |
 | Viewport layout | Anchor objects to viewport edges and margins | `behavior.anchor` |
 | World bounds | Keep origin or full object geometry inside layout bounds | `behavior.bound-to-layout` |
 | Collision | Solid obstacles, collision polygons and picked-object semantics | Collision system, `behavior.solid` and typed picking |
-| Animation | Named animations, frame timing, playback speed and frame triggers | Sprite animation data and runtime animation state |
+| Animation | Named animations, frame timing, playback speed, looping, ping-pong and repeat ranges | Sprite animation data preserves frame durations, hotspots, collision polygons and playback state |
+| Instance transform | Position, size, depth, angle, opacity, hotspot and per-instance variables | Stable instance UID, common Object ACEs and serialized transform metadata |
 | Tiled surfaces | Repeat textures, offset/scale sampling and URL-backed images | Tiled Background plugin with asynchronous asset lifecycle |
 | Text | Dynamic text, font selection, alignment, wrapping and measurement | Text plugin and font asset pipeline |
 | Audio | Playback, looping, tags, positional sound and completion events | Audio plugin and host audio adapter |
 | Speech | Voice enumeration and per-utterance language/voice/volume/rate/pitch | Text-to-Speech plugin |
-| Recognition and capture | Camera/microphone permission, speech recognition and transcript events | User Media plugin and host media adapter |
+| Recognition and capture | Camera/microphone permission, source enumeration, snapshots, canvas recording, speech recognition and transcript events | User Media plugin and host media adapter |
+| Speech synthesis | Voice enumeration, locale, voice URI, volume, rate and pitch | Dedicated Text-to-Speech add-on with asynchronous speech lifecycle |
 | Storage | Persistent and session-scoped values | Storage plugin and host storage adapter |
 | Network | HTTP request, progress, response and errors | HTTP plugin with async scheduler callbacks |
 | Structured data | XML loading, node/attribute lookup and iteration | XML plugin |
@@ -31,6 +36,12 @@ This profile records reusable engine capabilities needed by a broad class of 2D 
 | Platform services | Focus, online/offline, fullscreen, orientation, clipboard, share and vibration | Browser & Platform and Haptics adapters |
 | Visual compositing | Opacity and blend modes | Object properties and renderer effect stack |
 | Localization | Runtime language selection and locale-aware speech | Localization catalog and Text-to-Speech host adapter |
+
+## Display, layers and animation data
+
+Project-level display settings are portable source data, not hard-coded host-window state. Preserve the logical design resolution separately from the physical window size. Preserve requested orientation, fullscreen/resizing policy, scale strategy, pixel rounding, first layout and optional loader layout. A platform may reject or adapt a setting, but the authored request must remain available for diagnostics and round-tripping.
+
+Layer trees are recursive and ordered. Each layer must preserve its background color and transparency, parallax vector, zoom rate, opacity, blend mode, own-texture/render-cell flags, global/lifecycle state, nested layers and placed instances. Instance transform data must preserve X/Y/Z, width/height/depth, angle, opacity and hotspot independently from object type defaults. Animation frames preserve duration, hotspot, collision polygon and frame index; animation metadata preserves looping, ping-pong, repeat count, repeat-to frame and playback speed.
 
 ## Architecture rules
 

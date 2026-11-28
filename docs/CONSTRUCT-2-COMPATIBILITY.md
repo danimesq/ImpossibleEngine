@@ -93,6 +93,7 @@ The native catalogue covers a broad, source-independent set of capabilities that
 | Banner advertising | `plugin.advertising` exposes banner-specific show/hide/position operations alongside generic interstitial and rewarded placements |
 | Game services | `plugin.game-services` provides asynchronous player identity, authentication, achievement and leaderboard contracts without binding projects to one provider |
 | Input | Keyboard, pointer, touch and gamepad inputs can be normalized into semantic actions while retaining raw device-specific state and analog values |
+| Display and layers | Logical viewport/orientation/scale policy, loader layout, layer parallax/zoom/transparency/opacity/blend modes and stable instance transforms |
 | Event execution | OR condition blocks, groups, includes, global/instance variables, trigger-once state and non-blocking Wait continuations |
 | Presentation | Sprite animations, per-frame durations, hotspots, collision polygons, text/font properties, blend modes, layers, z-order and per-instance transforms |
 
@@ -118,7 +119,8 @@ The following are the source-observed ACE operations that the importer/compiler 
 |---|---|
 | HTTP/AJAX | Request URL and completion trigger, with response data and request tag available to expressions |
 | Audio | Play, play by name, play at object, set listener object, stop, stop all, and playing-state query |
-| User Media / speech | Camera and microphone permission lifecycle, capture stop/frame, speech recognition lifecycle and transcript values; synthesis is provided by the separate Text-to-Speech contract |
+| Gamepad | Connection lifecycle, mapped and raw buttons/axes, analog dead zones, multiple devices and pressure-aware button values |
+| User Media / speech | Permission lifecycle, source enumeration, capture/snapshot/canvas recording, ambient light and speech recognition; synthesis and voice enumeration use the separate Text-to-Speech contract |
 | Game services | Sign-in lifecycle, player profile, achievement metadata/progression, leaderboard requests/submission and indexed results |
 | Advertising | Banner lifecycle and visibility/position operations alongside interstitial and rewarded placements |
 | Tiled Background | Repeating texture transform, source dimensions and asynchronous image-URL loading |
@@ -174,6 +176,7 @@ The audited project snapshot contains third-party extension identifiers, but it 
 - [Function](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/function)
 - [Touch](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/touch)
 - [User Media](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/user-media)
+- [Gamepad](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/gamepad)
 - [Google Play](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/google-play)
 - [Tiled Background](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/tiled-background)
 - [Car behavior](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/car)

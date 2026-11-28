@@ -22754,6 +22754,26 @@
             "id": "gamepad",
             "label": "Gamepad",
             "language_key": "category.plugin.gamepad.gamepad"
+          },
+          {
+            "id": "capabilities",
+            "label": "Capabilities",
+            "language_key": "category.plugin.gamepad.capabilities"
+          },
+          {
+            "id": "buttons",
+            "label": "Buttons",
+            "language_key": "category.plugin.gamepad.buttons"
+          },
+          {
+            "id": "axes",
+            "label": "Axes",
+            "language_key": "category.plugin.gamepad.axes"
+          },
+          {
+            "id": "raw",
+            "label": "Raw Input",
+            "language_key": "category.plugin.gamepad.raw"
           }
         ],
         "localization": {
@@ -22765,7 +22785,18 @@
         "plugin.gamepad"
       ],
       "requires": [],
-      "properties": [],
+      "properties": [
+        {
+          "name": "analog_deadzone",
+          "label": "Analog deadzone",
+          "description": "Analog deadzone parameter.",
+          "type": "number",
+          "required": false,
+          "default": 25,
+          "minimum": 0,
+          "maximum": 100
+        }
+      ],
       "conditions": [
         {
           "id": "plugin.gamepad.on_connected",
@@ -23011,6 +23042,255 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.gamepad.supports_gamepads",
+          "name": "Gamepads are supported",
+          "description": "Whether the current host can provide gamepad input.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Gamepads are supported",
+            "display_string": "Gamepads are supported",
+            "description": "Whether the current host can provide gamepad input.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.gamepad.supports_gamepads",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.gamepad.has_gamepads",
+          "name": "Has gamepads",
+          "description": "Whether an activated gamepad is currently available.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Has gamepads",
+            "display_string": "Has gamepads",
+            "description": "Whether an activated gamepad is currently available.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.gamepad.has_gamepads",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.gamepad.is_button_index_down",
+          "name": "Is button index down",
+          "description": "Whether a mapped numeric button index is held.",
+          "execution": "predicate",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "button_index",
+              "label": "Button index",
+              "description": "Button index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is button index down",
+            "display_string": "Is button index down",
+            "description": "Whether a mapped numeric button index is held.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.is_button_index_down",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.gamepad.on_any_button_pressed",
+          "name": "On any button pressed",
+          "description": "A mapped button was pressed; exposes the last button index.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On any button pressed",
+            "display_string": "On any button pressed",
+            "description": "A mapped button was pressed; exposes the last button index.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.on_any_button_pressed",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.gamepad.on_any_button_released",
+          "name": "On any button released",
+          "description": "A mapped button was released; exposes the last button index.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On any button released",
+            "display_string": "On any button released",
+            "description": "A mapped button was released; exposes the last button index.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.on_any_button_released",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.gamepad.on_button_index_pressed",
+          "name": "On button index pressed",
+          "description": "A mapped numeric button index changed state.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "button_index",
+              "label": "Button index",
+              "description": "Button index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On button index pressed",
+            "display_string": "On button index pressed",
+            "description": "A mapped numeric button index changed state.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.on_button_index_pressed",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.gamepad.on_button_index_released",
+          "name": "On button index released",
+          "description": "A mapped numeric button index changed state.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "button_index",
+              "label": "Button index",
+              "description": "Button index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On button index released",
+            "display_string": "On button index released",
+            "description": "A mapped numeric button index changed state.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.on_button_index_released",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -23212,6 +23492,298 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.gamepad.button_value",
+          "name": "Button value",
+          "description": "Pressure-aware mapped button value in the normalized 0 to 100 range.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "button_index",
+              "label": "Button index",
+              "description": "Button index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Button value",
+            "display_string": "Button value",
+            "description": "Pressure-aware mapped button value in the normalized 0 to 100 range.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.button_value",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "number"
+        },
+        {
+          "id": "plugin.gamepad.last_button",
+          "name": "Last button",
+          "description": "Numeric index of the last pressed or released button.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Last button",
+            "display_string": "Last button",
+            "description": "Numeric index of the last pressed or released button.",
+            "category_id": "buttons",
+            "category_label": "Buttons",
+            "language_key": "ace.plugin.gamepad.last_button",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.gamepad.gamepad_id",
+          "name": "Gamepad ID",
+          "description": "Host-reported controller manufacturer/model identifier.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Gamepad ID",
+            "display_string": "Gamepad ID",
+            "description": "Host-reported controller manufacturer/model identifier.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.gamepad.gamepad_id",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
+        },
+        {
+          "id": "plugin.gamepad.gamepad_index",
+          "name": "Gamepad index",
+          "description": "Controller index associated with the latest lifecycle or any-button trigger.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Gamepad index",
+            "display_string": "Gamepad index",
+            "description": "Controller index associated with the latest lifecycle or any-button trigger.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.gamepad.gamepad_index",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.gamepad.raw_axis",
+          "name": "Raw axis",
+          "description": "Unmapped raw axis value in the host-native range.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "axis_index",
+              "label": "Axis index",
+              "description": "Axis index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Raw axis",
+            "display_string": "Raw axis",
+            "description": "Unmapped raw axis value in the host-native range.",
+            "category_id": "raw",
+            "category_label": "Raw Input",
+            "language_key": "ace.plugin.gamepad.raw_axis",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "number"
+        },
+        {
+          "id": "plugin.gamepad.raw_axis_count",
+          "name": "Raw axis count",
+          "description": "Number of axes exposed by the raw controller.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Raw axis count",
+            "display_string": "Raw axis count",
+            "description": "Number of axes exposed by the raw controller.",
+            "category_id": "raw",
+            "category_label": "Raw Input",
+            "language_key": "ace.plugin.gamepad.raw_axis_count",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.gamepad.raw_button",
+          "name": "Raw button",
+          "description": "Unmapped raw button value in the host-native range.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "button_index",
+              "label": "Button index",
+              "description": "Button index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Raw button",
+            "display_string": "Raw button",
+            "description": "Unmapped raw button value in the host-native range.",
+            "category_id": "raw",
+            "category_label": "Raw Input",
+            "language_key": "ace.plugin.gamepad.raw_button",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "number"
+        },
+        {
+          "id": "plugin.gamepad.raw_button_count",
+          "name": "Raw button count",
+          "description": "Number of buttons exposed by the raw controller.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "gamepad",
+              "label": "Gamepad",
+              "description": "Gamepad parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Raw button count",
+            "display_string": "Raw button count",
+            "description": "Number of buttons exposed by the raw controller.",
+            "category_id": "raw",
+            "category_label": "Raw Input",
+            "language_key": "ace.plugin.gamepad.raw_button_count",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
         }
       ],
       "implementation": {
@@ -34937,6 +35509,31 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.text-to-speech.is_speaking",
+          "name": "Is speaking",
+          "description": "Whether the synthesis host is currently speaking.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is speaking",
+            "display_string": "Is speaking",
+            "description": "Whether the synthesis host is currently speaking.",
+            "category_id": "speech",
+            "category_label": "Speech",
+            "language_key": "ace.plugin.text-to-speech.is_speaking",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -35181,6 +35778,74 @@
             }
           },
           "returns": "string"
+        },
+        {
+          "id": "plugin.text-to-speech.voice_language_at",
+          "name": "Voice language at",
+          "description": "Language tag of the available voice at an index.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "index",
+              "label": "Index",
+              "description": "Index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Voice language at",
+            "display_string": "Voice language at",
+            "description": "Language tag of the available voice at an index.",
+            "category_id": "speech",
+            "category_label": "Speech",
+            "language_key": "ace.plugin.text-to-speech.voice_language_at",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
+        },
+        {
+          "id": "plugin.text-to-speech.voice_name_at",
+          "name": "Voice name at",
+          "description": "Display name of the available voice at an index.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "index",
+              "label": "Index",
+              "description": "Index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Voice name at",
+            "display_string": "Voice name at",
+            "description": "Display name of the available voice at an index.",
+            "category_id": "speech",
+            "category_label": "Speech",
+            "language_key": "ace.plugin.text-to-speech.voice_name_at",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
         }
       ],
       "implementation": {
@@ -35242,7 +35907,46 @@
         "plugin.tiled-background"
       ],
       "requires": [],
-      "properties": [],
+      "properties": [
+        {
+          "name": "texture",
+          "label": "Texture",
+          "description": "Texture parameter.",
+          "type": "asset",
+          "required": false,
+          "default": null
+        },
+        {
+          "name": "tile_scale",
+          "label": "Tile scale",
+          "description": "Tile scale parameter.",
+          "type": "vector2",
+          "required": false,
+          "default": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        {
+          "name": "tile_offset",
+          "label": "Tile offset",
+          "description": "Tile offset parameter.",
+          "type": "vector2",
+          "required": false,
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "name": "tile_angle",
+          "label": "Tile angle",
+          "description": "Tile angle parameter.",
+          "type": "number",
+          "required": false,
+          "default": 0
+        }
+      ],
       "conditions": [
         {
           "id": "plugin.tiled-background.is_tiling",
@@ -35495,6 +36199,39 @@
             "assets",
             "render_resources"
           ]
+        },
+        {
+          "id": "plugin.tiled-background.set_tile_angle",
+          "name": "Set tile angle",
+          "description": "Rotate the repeated texture sampling coordinates.",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "angle",
+              "label": "Angle",
+              "description": "Angle parameter.",
+              "type": "number",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Set tile angle",
+            "display_string": "Set tile angle",
+            "description": "Rotate the repeated texture sampling coordinates.",
+            "category_id": "transform",
+            "category_label": "Transform",
+            "language_key": "ace.plugin.tiled-background.set_tile_angle",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "expressions": [
@@ -38400,6 +39137,21 @@
             "id": "sensing",
             "label": "Environment Sensing",
             "language_key": "category.plugin.user-media.sensing"
+          },
+          {
+            "id": "sources",
+            "label": "Media Sources",
+            "language_key": "category.plugin.user-media.sources"
+          },
+          {
+            "id": "recording",
+            "label": "Canvas Recording",
+            "language_key": "category.plugin.user-media.recording"
+          },
+          {
+            "id": "capabilities",
+            "label": "Capabilities",
+            "language_key": "category.plugin.user-media.capabilities"
           }
         ],
         "localization": {
@@ -38691,6 +39443,399 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.user-media.on_speech_recognition_start",
+          "name": "On speech recognition start",
+          "description": "Speech recognition began after permission and host checks.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On speech recognition start",
+            "display_string": "On speech recognition start",
+            "description": "Speech recognition began after permission and host checks.",
+            "category_id": "speech",
+            "category_label": "Speech Recognition",
+            "language_key": "ace.plugin.user-media.on_speech_recognition_start",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.is_recognising_speech",
+          "name": "Is recognising speech",
+          "description": "Whether speech recognition is actively receiving speech.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is recognising speech",
+            "display_string": "Is recognising speech",
+            "description": "Whether speech recognition is actively receiving speech.",
+            "category_id": "speech",
+            "category_label": "Speech Recognition",
+            "language_key": "ace.plugin.user-media.is_recognising_speech",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.is_speaking",
+          "name": "Is speaking",
+          "description": "Whether the host speech synthesis service is currently speaking.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is speaking",
+            "display_string": "Is speaking",
+            "description": "Whether the host speech synthesis service is currently speaking.",
+            "category_id": "speech",
+            "category_label": "Speech Recognition",
+            "language_key": "ace.plugin.user-media.is_speaking",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.on_media_request_approved",
+          "name": "On media request approved",
+          "description": "The user approved a camera or microphone permission request.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On media request approved",
+            "display_string": "On media request approved",
+            "description": "The user approved a camera or microphone permission request.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.on_media_request_approved",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.on_media_request_declined",
+          "name": "On media request declined",
+          "description": "The user declined a camera or microphone permission request.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On media request declined",
+            "display_string": "On media request declined",
+            "description": "The user declined a camera or microphone permission request.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.on_media_request_declined",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.on_retrieved_media_sources",
+          "name": "On retrieved media sources",
+          "description": "The requested audio/camera source list is ready.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On retrieved media sources",
+            "display_string": "On retrieved media sources",
+            "description": "The requested audio/camera source list is ready.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.on_retrieved_media_sources",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.on_snapshot_ready",
+          "name": "On snapshot ready",
+          "description": "A camera frame snapshot is ready for asset use.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On snapshot ready",
+            "display_string": "On snapshot ready",
+            "description": "A camera frame snapshot is ready for asset use.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.on_snapshot_ready",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.supports_user_media",
+          "name": "Supports user media",
+          "description": "Whether the host provides camera/microphone APIs.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Supports user media",
+            "display_string": "Supports user media",
+            "description": "Whether the host provides camera/microphone APIs.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.user-media.supports_user_media",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.supports_speech_recognition",
+          "name": "Supports speech recognition",
+          "description": "Whether the host can recognize speech.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Supports speech recognition",
+            "display_string": "Supports speech recognition",
+            "description": "Whether the host can recognize speech.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.user-media.supports_speech_recognition",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.supports_speech_synthesis",
+          "name": "Supports speech synthesis",
+          "description": "Whether the host can synthesize speech.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Supports speech synthesis",
+            "display_string": "Supports speech synthesis",
+            "description": "Whether the host can synthesize speech.",
+            "category_id": "capabilities",
+            "category_label": "Capabilities",
+            "language_key": "ace.plugin.user-media.supports_speech_synthesis",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.is_canvas_recording_supported",
+          "name": "Is canvas recording supported",
+          "description": "Whether the host can record the rendered game canvas.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is canvas recording supported",
+            "display_string": "Is canvas recording supported",
+            "description": "Whether the host can record the rendered game canvas.",
+            "category_id": "recording",
+            "category_label": "Canvas Recording",
+            "language_key": "ace.plugin.user-media.is_canvas_recording_supported",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.is_recording_format_supported",
+          "name": "Is recording format supported",
+          "description": "Whether a requested video MIME/codec format is supported.",
+          "execution": "predicate",
+          "parameters": [
+            {
+              "name": "format",
+              "label": "Format",
+              "description": "Format parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is recording format supported",
+            "display_string": "Is recording format supported",
+            "description": "Whether a requested video MIME/codec format is supported.",
+            "category_id": "recording",
+            "category_label": "Canvas Recording",
+            "language_key": "ace.plugin.user-media.is_recording_format_supported",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.user-media.on_canvas_recording_ready",
+          "name": "On canvas recording ready",
+          "description": "A stopped canvas recording is ready for export.",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On canvas recording ready",
+            "display_string": "On canvas recording ready",
+            "description": "A stopped canvas recording is ready for export.",
+            "category_id": "recording",
+            "category_label": "Canvas Recording",
+            "language_key": "ace.plugin.user-media.on_canvas_recording_ready",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -38925,6 +40070,185 @@
           "writes": [
             "host_media_session"
           ]
+        },
+        {
+          "id": "plugin.user-media.get_media_sources",
+          "name": "Get media sources",
+          "description": "Enumerate camera and microphone inputs asynchronously.",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Get media sources",
+            "display_string": "Get media sources",
+            "description": "Enumerate camera and microphone inputs asynchronously.",
+            "category_id": "sources",
+            "category_label": "Media Sources",
+            "language_key": "ace.plugin.user-media.get_media_sources",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "host_media_session"
+          ]
+        },
+        {
+          "id": "plugin.user-media.snapshot",
+          "name": "Snapshot",
+          "description": "Capture the current camera frame into a URI-backed image result.",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "format",
+              "label": "Format",
+              "description": "Format parameter.",
+              "type": "enum",
+              "required": false,
+              "default": "image/png",
+              "options": [
+                "image/png",
+                "image/jpeg",
+                "image/webp"
+              ]
+            },
+            {
+              "name": "quality",
+              "label": "Quality",
+              "description": "Quality parameter.",
+              "type": "number",
+              "required": false,
+              "default": 0.92,
+              "minimum": 0,
+              "maximum": 1
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Snapshot",
+            "display_string": "Snapshot",
+            "description": "Capture the current camera frame into a URI-backed image result.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.snapshot",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "assets",
+            "host_media_session"
+          ]
+        },
+        {
+          "id": "plugin.user-media.start_canvas_recording",
+          "name": "Start canvas recording",
+          "description": "Record the game canvas using a supported media format.",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "format",
+              "label": "Format",
+              "description": "Format parameter.",
+              "type": "string",
+              "required": false,
+              "default": "video/webm"
+            },
+            {
+              "name": "quality",
+              "label": "Quality",
+              "description": "Quality parameter.",
+              "type": "number",
+              "required": false,
+              "default": 1,
+              "minimum": 0,
+              "maximum": 1
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Start canvas recording",
+            "display_string": "Start canvas recording",
+            "description": "Record the game canvas using a supported media format.",
+            "category_id": "recording",
+            "category_label": "Canvas Recording",
+            "language_key": "ace.plugin.user-media.start_canvas_recording",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "host_media_session"
+          ]
+        },
+        {
+          "id": "plugin.user-media.stop_canvas_recording",
+          "name": "Stop canvas recording",
+          "description": "Stop canvas recording and publish its completion event.",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "request_id",
+              "label": "Request ID",
+              "description": "Request ID parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Stop canvas recording",
+            "display_string": "Stop canvas recording",
+            "description": "Stop canvas recording and publish its completion event.",
+            "category_id": "recording",
+            "category_label": "Canvas Recording",
+            "language_key": "ace.plugin.user-media.stop_canvas_recording",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "host_media_session"
+          ]
         }
       ],
       "expressions": [
@@ -39057,6 +40381,316 @@
             }
           },
           "returns": "number"
+        },
+        {
+          "id": "plugin.user-media.ambient_lux",
+          "name": "Ambient lux",
+          "description": "Read ambient lux from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Ambient lux",
+            "display_string": "Ambient lux",
+            "description": "Read ambient lux from the latest media operation.",
+            "category_id": "sensing",
+            "category_label": "Environment Sensing",
+            "language_key": "ace.plugin.user-media.ambient_lux",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "number"
+        },
+        {
+          "id": "plugin.user-media.canvas_recording_url",
+          "name": "Canvas recording URL",
+          "description": "Read canvas recording url from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Canvas recording URL",
+            "display_string": "Canvas recording URL",
+            "description": "Read canvas recording url from the latest media operation.",
+            "category_id": "recording",
+            "category_label": "Canvas Recording",
+            "language_key": "ace.plugin.user-media.canvas_recording_url",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "uri"
+        },
+        {
+          "id": "plugin.user-media.speech_error",
+          "name": "Speech error",
+          "description": "Read speech error from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Speech error",
+            "display_string": "Speech error",
+            "description": "Read speech error from the latest media operation.",
+            "category_id": "speech",
+            "category_label": "Speech Recognition",
+            "language_key": "ace.plugin.user-media.speech_error",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
+        },
+        {
+          "id": "plugin.user-media.audio_source_count",
+          "name": "Audio source count",
+          "description": "Read audio source count from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Audio source count",
+            "display_string": "Audio source count",
+            "description": "Read audio source count from the latest media operation.",
+            "category_id": "sources",
+            "category_label": "Media Sources",
+            "language_key": "ace.plugin.user-media.audio_source_count",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.user-media.camera_source_count",
+          "name": "Camera source count",
+          "description": "Read camera source count from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Camera source count",
+            "display_string": "Camera source count",
+            "description": "Read camera source count from the latest media operation.",
+            "category_id": "sources",
+            "category_label": "Media Sources",
+            "language_key": "ace.plugin.user-media.camera_source_count",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.user-media.snapshot_url",
+          "name": "Snapshot URL",
+          "description": "Read snapshot url from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Snapshot URL",
+            "display_string": "Snapshot URL",
+            "description": "Read snapshot url from the latest media operation.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.snapshot_url",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "uri"
+        },
+        {
+          "id": "plugin.user-media.video_width",
+          "name": "Video width",
+          "description": "Read video width from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Video width",
+            "display_string": "Video width",
+            "description": "Read video width from the latest media operation.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.video_width",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.user-media.video_height",
+          "name": "Video height",
+          "description": "Read video height from the latest media operation.",
+          "execution": "pure",
+          "parameters": [],
+          "selection": "none",
+          "ui": {
+            "list_name": "Video height",
+            "display_string": "Video height",
+            "description": "Read video height from the latest media operation.",
+            "category_id": "capture",
+            "category_label": "Capture",
+            "language_key": "ace.plugin.user-media.video_height",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "integer"
+        },
+        {
+          "id": "plugin.user-media.audio_source_label_at",
+          "name": "Audio source label at",
+          "description": "Host-provided display label for an audio input.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "index",
+              "label": "Index",
+              "description": "Index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Audio source label at",
+            "display_string": "Audio source label at",
+            "description": "Host-provided display label for an audio input.",
+            "category_id": "sources",
+            "category_label": "Media Sources",
+            "language_key": "ace.plugin.user-media.audio_source_label_at",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
+        },
+        {
+          "id": "plugin.user-media.camera_source_label_at",
+          "name": "Camera source label at",
+          "description": "Host-provided display label for a camera input.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "index",
+              "label": "Index",
+              "description": "Index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Camera source label at",
+            "display_string": "Camera source label at",
+            "description": "Host-provided display label for a camera input.",
+            "category_id": "sources",
+            "category_label": "Media Sources",
+            "language_key": "ace.plugin.user-media.camera_source_label_at",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
+        },
+        {
+          "id": "plugin.user-media.camera_source_facing_at",
+          "name": "Camera source facing at",
+          "description": "Facing direction for a camera input, when available.",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "index",
+              "label": "Index",
+              "description": "Index parameter.",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "Camera source facing at",
+            "display_string": "Camera source facing at",
+            "description": "Facing direction for a camera input, when available.",
+            "category_id": "sources",
+            "category_label": "Media Sources",
+            "language_key": "ace.plugin.user-media.camera_source_facing_at",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
         }
       ],
       "implementation": {

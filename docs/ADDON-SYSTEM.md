@@ -59,18 +59,20 @@ the ACE identity to preserve old projects.
 
 ## Built-in plugins
 
-System, Object, Sprite, Tiled Background, Text, Keyboard, Mouse, Touch,
+System, Object, Sprite, Tiled Background, Text, Button Control, Text Input,
+Advanced Text Input, Slider Bar, Progress Bar, Keyboard, Mouse, Touch,
 Gamepad, Input Actions, Audio, Camera, Collision & Picking, Function, Timer,
-Random, Array, Dictionary, JSON, XML, Storage, HTTP, WebSocket, Multiplayer
-Sessions, Particles, Tilemap, UI Controls, Video, User Media, Haptics, Text
-to Speech, Browser & Platform, Social Integration, Advertising, Physics
-World, Pathfinding, 3D Model, Debug & Diagnostics, Timeline and Flowchart
-& Dialogue.
+Date and Clock, Time Manager, Random, Array, Dictionary, JSON, XML, Storage,
+HTTP, WebSocket, Multiplayer Sessions, Particles, Tilemap, UI Controls, Video,
+SVG Canvas, Embedded Web Frame, CSS Stylesheet, Layout Transition, User Media,
+Haptics, Text to Speech, Browser & Platform, Social Integration, Advertising,
+Physics World, Pathfinding, 3D Model, Debug & Diagnostics, Timeline and
+Flowchart & Dialogue.
 
 ## Built-in behaviors
 
 Platform Movement, Eight Direction, Bullet Movement, Vehicle Dynamics,
-Oscillation, Scroll To / Camera Follow, Anchor to Viewport, Bound to Layout,
+Oscillation, Scroll To / Camera Follow, Persist, Anchor to Viewport,
 Destroy Outside Layout, Solid / Static Collider, Physics Body, Fade, Flash,
 Tween, Rotate To Target, Turret, Line of Sight, Seek, Pursuit & Evade, Arrive,
 Wander, Flocking, Path Follower, Drag & Drop, Pin / Follow Object, Orbit,
@@ -90,7 +92,7 @@ Drop Shadow, Vignette, Pixelate, Mosaic, Dissolve, Displacement Map, Ripple,
 Wave Distortion, Chromatic Aberration, Scanlines, Film Grain/Noise, CRT,
 Lens Distortion, Mask, Motion Trail, Distance Field Outline, Fog,
 Normal Map Lighting, Texture Tiling, Glass/Refraction, Inner Shadow,
-Edge Detection, Posterize and Halftone.
+Edge Detection, Posterize, Halftone and Swirl Distortion.
 
 Effects specify render-graph stage and compositor constraints. A renderer may
 reject an unsupported effect only with an explicit diagnostic; no effect may

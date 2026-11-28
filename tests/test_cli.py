@@ -89,5 +89,44 @@ class HeadlessCliTests(unittest.TestCase):
         self.assertEqual(load_project(self.project_path).used_addons, [])
 
 
+    def test_cli_discovers_third_party_package_and_records_its_origin(self):
+        registry = AddonRegistry.load()
+        addon = json.loads(json.dumps(registry.get("plugin.sprite").raw))
+        addon["id"] = "plugin.example-cli-fixture"
+        addon["name"] = "CLI Fixture"
+        addon["author"] = "Example Vendor"
+        addon["provides"] = [addon["id"]]
+        addon["requires"] = []
+        for section in ("conditions", "actions", "expressions"):
+            for ace in addon[section]:
+                suffix = ace["id"].split("plugin.sprite.", 1)[-1]
+                ace["id"] = f"{addon['id']}.{suffix}"
+                ace["ui"]["language_key"] = f"ace.{addon['id']}.{suffix}"
+
+        with tempfile.TemporaryDirectory() as temp:
+            package_dir = Path(temp) / "example-vendor" / "fixture"
+            package_dir.mkdir(parents=True)
+            (package_dir / "runtime.js").write_text("not executed", encoding="utf-8")
+            manifest = {
+                "format": "impossible.addon-package",
+                "manifestVersion": 1,
+                "addon": addon,
+                "package": {"entrypoints": {"runtime": "runtime.js"}},
+            }
+            (package_dir / "addon.json").write_text(json.dumps(manifest), encoding="utf-8")
+
+            self.run_cli(
+                "project", "create", "--path", self.project_path,
+                "--name", "Third-party CLI Test", "--format", "json",
+            )
+            code, output, errors = self.run_cli(
+                "addons", "add", addon["id"], "--project", self.project_path,
+                "--third-party-dir", temp,
+            )
+            self.assertEqual(code, 0, errors)
+            self.assertEqual(json.loads(output)["added"], [addon["id"]])
+            saved = load_project(self.project_path)
+            self.assertFalse(saved.used_addons[0]["bundled"])
+
 if __name__ == "__main__":
     unittest.main()

@@ -2320,6 +2320,88 @@
           "writes": [
             "addon_state"
           ]
+        },
+        {
+          "id": "behavior.eight-direction.simulate_control_legacy",
+          "name": "Simulate control",
+          "description": "Simulate control",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "control",
+              "label": "Control",
+              "description": "Control parameter.",
+              "type": "enum",
+              "required": true,
+              "options": [
+                "up",
+                "down",
+                "left",
+                "right",
+                "up_left",
+                "up_right",
+                "down_left",
+                "down_right"
+              ]
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Simulate control",
+            "display_string": "Simulate control",
+            "description": "Simulate control",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.behavior.eight-direction.simulate_control_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "behavior.eight-direction.set_enabled_legacy",
+          "name": "Set enabled",
+          "description": "Set enabled",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "enabled",
+              "label": "Enabled",
+              "description": "Enabled parameter.",
+              "type": "boolean",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Set enabled",
+            "display_string": "Set enabled",
+            "description": "Set enabled",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.behavior.eight-direction.set_enabled_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
         }
       ],
       "expressions": [
@@ -7183,6 +7265,83 @@
           },
           "writes": [
             "addon_state"
+          ]
+        },
+        {
+          "id": "behavior.platform.simulate_control_legacy",
+          "name": "Simulate control",
+          "description": "Simulate control",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "control",
+              "label": "Control",
+              "description": "Control parameter.",
+              "type": "enum",
+              "required": true,
+              "options": [
+                "left",
+                "right",
+                "jump"
+              ]
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Simulate control",
+            "display_string": "Simulate control",
+            "description": "Simulate control",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.behavior.platform.simulate_control_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "behavior.platform.set_enabled_legacy",
+          "name": "Set enabled",
+          "description": "Set enabled",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "enabled",
+              "label": "Enabled",
+              "description": "Enabled parameter.",
+              "type": "boolean",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Set enabled",
+            "display_string": "Set enabled",
+            "description": "Set enabled",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.behavior.platform.set_enabled_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
           ]
         }
       ],
@@ -16954,6 +17113,31 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.audio.is_playing_legacy",
+          "name": "Is playing",
+          "description": "Whether any audio voice is playing.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is playing",
+            "display_string": "Is playing",
+            "description": "Whether any audio voice is playing.",
+            "category_id": "audio",
+            "category_label": "Audio",
+            "language_key": "ace.plugin.audio.is_playing_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -18134,6 +18318,31 @@
             ],
             "flags": {
               "trigger": true,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.browser.is_online",
+          "name": "Is online",
+          "description": "Whether network connectivity is available.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is online",
+            "display_string": "Is online",
+            "description": "Whether network connectivity is available.",
+            "category_id": "browser",
+            "category_label": "Browser",
+            "language_key": "ace.plugin.browser.is_online",
+            "markers": [],
+            "flags": {
+              "trigger": false,
               "looping": false,
               "invertible": true,
               "incompatible_with_triggers": false,
@@ -19843,6 +20052,41 @@
             "markers": [],
             "flags": {
               "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.collision.on_collision_with",
+          "name": "On collision with another object",
+          "description": "On collision with another object",
+          "execution": "trigger",
+          "parameters": [
+            {
+              "name": "object",
+              "label": "Object",
+              "description": "Object parameter.",
+              "type": "object_type",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "On collision with another object",
+            "display_string": "On collision with another object",
+            "description": "On collision with another object",
+            "category_id": "collision",
+            "category_label": "Collision",
+            "language_key": "ace.plugin.collision.on_collision_with",
+            "markers": [
+              "trigger"
+            ],
+            "flags": {
+              "trigger": true,
               "looping": false,
               "invertible": true,
               "incompatible_with_triggers": false,
@@ -26455,6 +26699,56 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.object.is_visible_legacy",
+          "name": "Is visible",
+          "description": "Whether the selected instance is visible.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is visible",
+            "display_string": "Is visible",
+            "description": "Whether the selected instance is visible.",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.plugin.object.is_visible_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.object.is_enabled_legacy",
+          "name": "Is enabled",
+          "description": "Whether the selected instance is enabled.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Is enabled",
+            "display_string": "Is enabled",
+            "description": "Whether the selected instance is enabled.",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.plugin.object.is_enabled_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -26829,6 +27123,157 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.object.set_visible",
+          "name": "Set visible",
+          "description": "Set visible",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "visible",
+              "label": "Visible",
+              "description": "Visible parameter.",
+              "type": "boolean",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Set visible",
+            "display_string": "Set visible",
+            "description": "Set visible",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.plugin.object.set_visible",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "plugin.object.move_to_top",
+          "name": "Move to top",
+          "description": "Move to top",
+          "execution": "command",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Move to top",
+            "display_string": "Move to top",
+            "description": "Move to top",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.plugin.object.move_to_top",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "plugin.object.set_position_to_object",
+          "name": "Set position to another object",
+          "description": "Set position to another object",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "target",
+              "label": "Target",
+              "description": "Target parameter.",
+              "type": "object_type",
+              "required": true
+            },
+            {
+              "name": "image_point",
+              "label": "Image point",
+              "description": "Image point parameter.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Set position to another object",
+            "display_string": "Set position to another object",
+            "description": "Set position to another object",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.plugin.object.set_position_to_object",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "plugin.object.set_effect_enabled",
+          "name": "Set effect enabled",
+          "description": "Set effect enabled",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "effect",
+              "label": "Effect",
+              "description": "Effect parameter.",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "enabled",
+              "label": "Enabled",
+              "description": "Enabled parameter.",
+              "type": "boolean",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Set effect enabled",
+            "display_string": "Set effect enabled",
+            "description": "Set effect enabled",
+            "category_id": "general",
+            "category_label": "General",
+            "language_key": "ace.plugin.object.set_effect_enabled",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
         }
       ],
       "expressions": [
@@ -31233,6 +31678,74 @@
             }
           },
           "returns": "string"
+        },
+        {
+          "id": "plugin.storage.localvalue_legacy",
+          "name": "LocalValue",
+          "description": "LocalValue",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "key",
+              "label": "Key",
+              "description": "Key parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "LocalValue",
+            "display_string": "LocalValue",
+            "description": "LocalValue",
+            "category_id": "storage",
+            "category_label": "Storage",
+            "language_key": "ace.plugin.storage.localvalue_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
+        },
+        {
+          "id": "plugin.storage.sessionvalue_legacy",
+          "name": "SessionValue",
+          "description": "SessionValue",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "key",
+              "label": "Key",
+              "description": "Key parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "SessionValue",
+            "display_string": "SessionValue",
+            "description": "SessionValue",
+            "category_id": "storage",
+            "category_label": "Storage",
+            "language_key": "ace.plugin.storage.sessionvalue_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
         }
       ],
       "implementation": {
@@ -32122,6 +32635,128 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.system.compare_two_values",
+          "name": "Compare two values",
+          "description": "Compare two values",
+          "execution": "predicate",
+          "parameters": [
+            {
+              "name": "left",
+              "label": "Left",
+              "description": "Left parameter.",
+              "type": "expression",
+              "required": true
+            },
+            {
+              "name": "operator",
+              "label": "Operator",
+              "description": "Operator parameter.",
+              "type": "enum",
+              "required": false,
+              "default": "eq",
+              "options": [
+                "eq",
+                "ne",
+                "lt",
+                "lte",
+                "gt",
+                "gte"
+              ]
+            },
+            {
+              "name": "right",
+              "label": "Right",
+              "description": "Right parameter.",
+              "type": "expression",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Compare two values",
+            "display_string": "Compare two values",
+            "description": "Compare two values",
+            "category_id": "lifecycle",
+            "category_label": "Lifecycle",
+            "language_key": "ace.plugin.system.compare_two_values",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.system.trigger_once_while_true",
+          "name": "Trigger once while true",
+          "description": "Trigger once while true",
+          "execution": "predicate",
+          "parameters": [
+            {
+              "name": "condition",
+              "label": "Condition",
+              "description": "Condition parameter.",
+              "type": "expression",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Trigger once while true",
+            "display_string": "Trigger once while true",
+            "description": "Trigger once while true",
+            "category_id": "lifecycle",
+            "category_label": "Lifecycle",
+            "language_key": "ace.plugin.system.trigger_once_while_true",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
+        },
+        {
+          "id": "plugin.system.while",
+          "name": "While",
+          "description": "While",
+          "execution": "predicate",
+          "parameters": [
+            {
+              "name": "condition",
+              "label": "Condition",
+              "description": "Condition parameter.",
+              "type": "expression",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "While",
+            "display_string": "While",
+            "description": "While",
+            "category_id": "lifecycle",
+            "category_label": "Lifecycle",
+            "language_key": "ace.plugin.system.while",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -32502,6 +33137,132 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.system.add_to_variable",
+          "name": "Add to",
+          "description": "Add to",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "variable",
+              "label": "Variable",
+              "description": "Variable parameter.",
+              "type": "variable",
+              "required": true
+            },
+            {
+              "name": "amount",
+              "label": "Amount",
+              "description": "Amount parameter.",
+              "type": "expression",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Add to",
+            "display_string": "Add to",
+            "description": "Add to",
+            "category_id": "lifecycle",
+            "category_label": "Lifecycle",
+            "language_key": "ace.plugin.system.add_to_variable",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "plugin.system.subtract_from_variable",
+          "name": "Subtract from",
+          "description": "Subtract from",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "variable",
+              "label": "Variable",
+              "description": "Variable parameter.",
+              "type": "variable",
+              "required": true
+            },
+            {
+              "name": "amount",
+              "label": "Amount",
+              "description": "Amount parameter.",
+              "type": "expression",
+              "required": true
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Subtract from",
+            "display_string": "Subtract from",
+            "description": "Subtract from",
+            "category_id": "lifecycle",
+            "category_label": "Lifecycle",
+            "language_key": "ace.plugin.system.subtract_from_variable",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
+        },
+        {
+          "id": "plugin.system.go_to_next_previous_layout",
+          "name": "Go to next/previous layout",
+          "description": "Go to next/previous layout",
+          "execution": "command",
+          "parameters": [
+            {
+              "name": "direction",
+              "label": "Direction",
+              "description": "Direction parameter.",
+              "type": "enum",
+              "required": true,
+              "options": [
+                "next",
+                "previous"
+              ]
+            }
+          ],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Go to next/previous layout",
+            "display_string": "Go to next/previous layout",
+            "description": "Go to next/previous layout",
+            "category_id": "lifecycle",
+            "category_label": "Lifecycle",
+            "language_key": "ace.plugin.system.go_to_next_previous_layout",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "writes": [
+            "object_state"
+          ]
         }
       ],
       "expressions": [
@@ -38747,6 +39508,40 @@
             }
           },
           "returns": "number"
+        },
+        {
+          "id": "plugin.xml.string_value_legacy",
+          "name": "StringValue",
+          "description": "StringValue",
+          "execution": "pure",
+          "parameters": [
+            {
+              "name": "xpath",
+              "label": "XPath",
+              "description": "XPath parameter.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "selection": "none",
+          "ui": {
+            "list_name": "StringValue",
+            "display_string": "StringValue",
+            "description": "StringValue",
+            "category_id": "xml",
+            "category_label": "XML",
+            "language_key": "ace.plugin.xml.string_value_legacy",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          },
+          "returns": "string"
         }
       ],
       "implementation": {

@@ -35534,6 +35534,31 @@
               "highlight": false
             }
           }
+        },
+        {
+          "id": "plugin.text-to-speech.supports_speech_synthesis",
+          "name": "Supports speech synthesis",
+          "description": "Whether the host can synthesize speech.",
+          "execution": "predicate",
+          "parameters": [],
+          "selection": "picked_instances",
+          "ui": {
+            "list_name": "Supports speech synthesis",
+            "display_string": "Supports speech synthesis",
+            "description": "Whether the host can synthesize speech.",
+            "category_id": "speech",
+            "category_label": "Speech",
+            "language_key": "ace.plugin.text-to-speech.supports_speech_synthesis",
+            "markers": [],
+            "flags": {
+              "trigger": false,
+              "looping": false,
+              "invertible": true,
+              "incompatible_with_triggers": false,
+              "deprecated": false,
+              "highlight": false
+            }
+          }
         }
       ],
       "actions": [
@@ -39505,31 +39530,6 @@
           }
         },
         {
-          "id": "plugin.user-media.is_speaking",
-          "name": "Is speaking",
-          "description": "Whether the host speech synthesis service is currently speaking.",
-          "execution": "predicate",
-          "parameters": [],
-          "selection": "picked_instances",
-          "ui": {
-            "list_name": "Is speaking",
-            "display_string": "Is speaking",
-            "description": "Whether the host speech synthesis service is currently speaking.",
-            "category_id": "speech",
-            "category_label": "Speech Recognition",
-            "language_key": "ace.plugin.user-media.is_speaking",
-            "markers": [],
-            "flags": {
-              "trigger": false,
-              "looping": false,
-              "invertible": true,
-              "incompatible_with_triggers": false,
-              "deprecated": false,
-              "highlight": false
-            }
-          }
-        },
-        {
           "id": "plugin.user-media.on_media_request_approved",
           "name": "On media request approved",
           "description": "The user approved a camera or microphone permission request.",
@@ -39863,6 +39863,30 @@
                 "user",
                 "environment"
               ]
+            },
+            {
+              "name": "source_id",
+              "label": "Source ID",
+              "description": "Preferred camera source identifier.",
+              "type": "string",
+              "required": false,
+              "default": ""
+            },
+            {
+              "name": "preferred_width",
+              "label": "Preferred width",
+              "description": "Preferred camera resolution width in pixels.",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "name": "preferred_height",
+              "label": "Preferred height",
+              "description": "Preferred camera resolution height in pixels.",
+              "type": "integer",
+              "required": false,
+              "default": 0
             }
           ],
           "selection": "picked_instances",
@@ -39896,6 +39920,14 @@
               "description": "request id parameter.",
               "type": "string",
               "required": true
+            },
+            {
+              "name": "source_id",
+              "label": "Source ID",
+              "description": "Preferred microphone source identifier.",
+              "type": "string",
+              "required": false,
+              "default": ""
             }
           ],
           "selection": "picked_instances",
@@ -40370,32 +40402,6 @@
             "category_id": "sensing",
             "category_label": "Environment Sensing",
             "language_key": "ace.plugin.user-media.ambient_light_lux",
-            "markers": [],
-            "flags": {
-              "trigger": false,
-              "looping": false,
-              "invertible": true,
-              "incompatible_with_triggers": false,
-              "deprecated": false,
-              "highlight": false
-            }
-          },
-          "returns": "number"
-        },
-        {
-          "id": "plugin.user-media.ambient_lux",
-          "name": "Ambient lux",
-          "description": "Read ambient lux from the latest media operation.",
-          "execution": "pure",
-          "parameters": [],
-          "selection": "none",
-          "ui": {
-            "list_name": "Ambient lux",
-            "display_string": "Ambient lux",
-            "description": "Read ambient lux from the latest media operation.",
-            "category_id": "sensing",
-            "category_label": "Environment Sensing",
-            "language_key": "ace.plugin.user-media.ambient_lux",
             "markers": [],
             "flags": {
               "trigger": false,

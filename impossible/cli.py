@@ -346,6 +346,11 @@ def _handle_addons(args: argparse.Namespace) -> int:
 def _handle_events(args: argparse.Namespace) -> int:
     if args.events_action == "list":
         project = _load_project(args.project)
+        if project.native_index:
+            raise ValueError(
+                "Native Event Sheet documents are separate resources. Use the resources list command "
+                "to inspect them; event contents are not parsed by this CLI yet."
+            )
         rows = _event_rows(project, args.sheet)
         if args.format == "json":
             _emit(rows, "json")
@@ -397,6 +402,12 @@ def _handle_events(args: argparse.Namespace) -> int:
 
 def _handle_layouts(args: argparse.Namespace) -> int:
     project = _load_project(args.project)
+    if project.native_index:
+        rows = _walk_index_items(project.extra_fields.get("layouts"), "layout")
+        _emit(rows, args.format, [
+            ("name", "NAME"), ("folder", "FOLDER"),
+        ])
+        return 0
     rows = [{
         "id": layout.id,
         "name": layout.name,

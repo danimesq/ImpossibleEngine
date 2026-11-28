@@ -678,10 +678,12 @@ def build_parser() -> argparse.ArgumentParser:
         _format_option(sub, "json")
         sub.set_defaults(handler=_handle_events)
 
-    layouts = commands.add_parser("layouts", help="List project layouts and their instances.")
-    layouts.add_argument("--project", required=True)
-    _format_option(layouts)
-    layouts.set_defaults(handler=_handle_layouts)
+    layouts = commands.add_parser("layouts", help="Inspect project layouts.")
+    layout_commands = layouts.add_subparsers(dest="layouts_action", required=True)
+    layout_list = layout_commands.add_parser("list", help="List project layouts and their instances.")
+    layout_list.add_argument("--project", required=True)
+    _format_option(layout_list)
+    layout_list.set_defaults(handler=_handle_layouts)
 
     objects = commands.add_parser("objects", help="Inspect objects or edit platform overrides.")
     object_commands = objects.add_subparsers(dest="objects_action", required=True)

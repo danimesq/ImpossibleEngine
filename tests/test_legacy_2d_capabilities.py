@@ -105,6 +105,52 @@ class Generic2DCapabilityTests(unittest.TestCase):
             self.assertIsNotNone(self.registry.find_ace(ace_id), ace_id)
         self.assertIn("host.game_services", services.raw["implementation"]["host_adapter_required"])
 
+    def test_gamepad_exposes_mapped_and_raw_controller_state(self):
+        pad = self.registry.get("plugin.gamepad")
+        expected = {
+            "plugin.gamepad.supports_gamepads",
+            "plugin.gamepad.has_gamepads",
+            "plugin.gamepad.on_any_button_pressed",
+            "plugin.gamepad.on_button_index_released",
+            "plugin.gamepad.is_button_index_down",
+            "plugin.gamepad.raw_axis",
+            "plugin.gamepad.raw_button",
+            "plugin.gamepad.raw_axis_count",
+            "plugin.gamepad.raw_button_count",
+        }
+        for ace_id in expected:
+            self.assertIsNotNone(self.registry.find_ace(ace_id), ace_id)
+        self.assertIn("analog_deadzone", {p["name"] for p in pad.properties})
+
+    def test_user_media_covers_sources_snapshots_and_canvas_recording(self):
+        media = self.registry.get("plugin.user-media")
+        expected = {
+            "plugin.user-media.get_media_sources",
+            "plugin.user-media.on_retrieved_media_sources",
+            "plugin.user-media.snapshot",
+            "plugin.user-media.on_snapshot_ready",
+            "plugin.user-media.start_canvas_recording",
+            "plugin.user-media.stop_canvas_recording",
+            "plugin.user-media.on_canvas_recording_ready",
+            "plugin.user-media.camera_source_facing_at",
+            "plugin.user-media.video_width",
+            "plugin.user-media.supports_speech_recognition",
+        }
+        for ace_id in expected:
+            self.assertIsNotNone(self.registry.find_ace(ace_id), ace_id)
+
+    def test_text_to_speech_exposes_capability_and_voice_metadata(self):
+        tts = self.registry.get("plugin.text-to-speech")
+        expected = {
+            "plugin.text-to-speech.supports_speech_synthesis",
+            "plugin.text-to-speech.is_speaking",
+            "plugin.text-to-speech.voice_language_at",
+            "plugin.text-to-speech.voice_name_at",
+            "plugin.text-to-speech.voice_uri_at",
+        }
+        for ace_id in expected:
+            self.assertIsNotNone(self.registry.find_ace(ace_id), ace_id)
+
     def test_new_contracts_remain_specification_only(self):
         addon_ids = (
             "behavior.car-movement", "plugin.game-services", "plugin.text-to-speech",

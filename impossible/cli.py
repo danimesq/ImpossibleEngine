@@ -13,7 +13,6 @@ from typing import Any
 
 from . import __version__
 from .addons import AddonRegistry, AddonRegistryError
-from .compiler import ProjectCompileError, compile_project
 from .model import PROFILE_BY_ID, EventSheet, Project, PLATFORM_PROFILES
 from .operations import (
     add_event,
@@ -139,6 +138,7 @@ def _addon_summary(addon: Any) -> dict[str, Any]:
     return {
         "id": addon.id,
         "kind": addon.kind,
+        "origin": None,
         "name": addon.name,
         "category": addon.category,
         "version": addon.version,
@@ -226,7 +226,7 @@ def _handle_project(args: argparse.Namespace) -> int:
 
 
 def _handle_addons(args: argparse.Namespace) -> int:
-    registry = AddonRegistry.load(args.registry)
+    registry = AddonRegistry.load(args.registry, args.third_party_dir)
     if args.addon_action == "list":
         addons = registry.search(args.search or "", kind=args.kind)
         if args.category:
@@ -234,7 +234,14 @@ def _handle_addons(args: argparse.Namespace) -> int:
         if not args.include_deprecated:
             addons = tuple(a for a in addons if not a.raw.get("isDeprecated", False))
         rows = [_addon_summary(addon) for addon in addons]
-        result = {"count": len(rows), "registry": str(registry.source or ""), "addons": rows}
+        for row in rows:
+            row["origin"] = registry.origin(row["id"])
+        result = {
+            "count": len(rows),
+            "registry": str(registry.source or ""),
+            "addons": rows,
+            "diagnostics": list(registry.diagnostics),
+        }
         _emit(result if args.format == "json" else rows, args.format,
               [("id", "ID"), ("kind", "TYPE"), ("name", "NAME"),
                ("category", "CATEGORY"), ("implementation_status", "STATUS")])
@@ -242,7 +249,7 @@ def _handle_addons(args: argparse.Namespace) -> int:
 
     if args.addon_action == "show":
         addon = registry.get(args.addon_id)
-        _emit(addon.raw, args.format)
+        _emit({**addon.raw, "origin": registry.origin(addon.id)}, args.format)
         return 0
 
     if args.addon_action in ("add", "remove"):
@@ -398,12 +405,6 @@ def _handle_platforms(args: argparse.Namespace) -> int:
     return 0
 
 
-def _handle_compile(args: argparse.Namespace) -> int:
-    result = compile_project(args.project, args.target)
-    _emit(result, "json")
-    return 0
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="impossible",
@@ -454,12 +455,14 @@ def build_parser() -> argparse.ArgumentParser:
     addon_list.add_argument("--category")
     addon_list.add_argument("--search")
     addon_list.add_argument("--include-deprecated", action="store_true")
-    addon_list.add_argument("--registry", help="Path to an alternate registry JSON file.")
+    addon_list.add_argument("--registry", help="Path to an alternate built-in registry JSON file.")
+    addon_list.add_argument("--third-party-dir", help="Directory containing third-party addon.json packages (default: ./add-ons).")
     _format_option(addon_list)
     addon_list.set_defaults(handler=_handle_addons)
     addon_show = addon_commands.add_parser("show", help="Show an add-on descriptor and its ACEs.")
     addon_show.add_argument("addon_id")
     addon_show.add_argument("--registry")
+    addon_show.add_argument("--third-party-dir")
     _format_option(addon_show, "json")
     addon_show.set_defaults(handler=_handle_addons)
     for action, description in (
@@ -470,6 +473,7 @@ def build_parser() -> argparse.ArgumentParser:
         sub.add_argument("addon_id")
         sub.add_argument("--project", required=True)
         sub.add_argument("--registry")
+        sub.add_argument("--third-party-dir")
         _format_option(sub, "json")
         sub.set_defaults(handler=_handle_addons)
 
@@ -543,11 +547,6 @@ def build_parser() -> argparse.ArgumentParser:
     _format_option(platforms)
     platforms.set_defaults(handler=_handle_platforms)
 
-    compile_command = commands.add_parser("compile", help="Run the existing headless logic compiler.")
-    compile_command.add_argument("--project", required=True)
-    compile_command.add_argument("--target", default="logic", choices=("logic",))
-    compile_command.set_defaults(handler=_handle_compile)
-
     return parser
 
 
@@ -564,7 +563,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         return int(args.handler(args) or 0)
-    except (AddonRegistryError, ProjectCompileError, OSError, ValueError, KeyError) as exc:
+    except (AddonRegistryError, OSError, ValueError, KeyError) as exc:
         print(f"[impossible] ERROR: {exc}", file=sys.stderr)
         return 1
 

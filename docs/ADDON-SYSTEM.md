@@ -116,7 +116,7 @@ they reach behavior-specific controls.
 
 See [the runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md) for the verified implementation gap and ordered work to connect all 850 ACEs to typed Rust execution, implement the 32 behavior systems, build concrete host adapters, and eventually add GLSL/WGSL-backed effects to the renderer.
 
-All initial entries are explicitly marked `specification_only` and
+All current catalogue entries are explicitly marked `specification_only` and
 `engine_runtime = false`. Metadata does not implement a feature. Runtime
 support requires implementation, adapter wiring and conformance tests.
 

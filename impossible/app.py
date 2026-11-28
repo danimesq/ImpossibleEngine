@@ -12,6 +12,7 @@ from gi.repository import Gtk, Gdk
 
 from .model import PLATFORM_PROFILES, PROFILE_BY_ID, Event, EventSheet, Project, make_demo_project
 from .storage import load_project, save_project
+from .ui.ribbon import Ribbon
 
 ROOT = Path(__file__).resolve().parent
 UI_FILE = ROOT / "ui" / "main-window.ui"
@@ -55,6 +56,7 @@ class ImpossibleWindow:
         self.project_name_label = self.builder.get_object("project_name_label")
         self._install_css()
         self._install_header_actions()
+        self._install_ribbon()
         self._build_pages()
         self._connect_navigation()
         self.project_name_label.set_text(self.project.name)
@@ -79,6 +81,84 @@ class ImpossibleWindow:
         save_button.set_tooltip_text("Save Impossible project")
         save_button.connect("clicked", self.on_save_project)
         header.pack_end(save_button)
+
+    def _install_ribbon(self) -> None:
+        """Install the reusable GTK3 RibbonFM-derived authoring ribbon."""
+        self.ribbon = Ribbon(
+            self.builder.get_object("ribbon_stack"),
+            self.builder.get_object("ribbon_switcher"),
+            self.builder.get_object("ribbon_top_row"),
+            self.builder.get_object("ribbon_quick_access"),
+            self.dispatch_ribbon_action,
+        )
+        self.ribbon.build()
+
+    def dispatch_ribbon_action(self, action: str) -> None:
+        """Route ribbon commands to existing editor operations."""
+        if action == "open_project":
+            self.on_open_project(None)
+        elif action == "save_project":
+            self.on_save_project(None)
+        elif action == "new_project":
+            self.project = make_demo_project()
+            self.project_path = None
+            self._refresh_all_pages()
+            self.status_label.set_text("New project created")
+        elif action == "add_event":
+            self.on_add_event(None)
+        elif action == "add_condition":
+            self.on_add_condition(None)
+        elif action == "add_action":
+            self.on_add_action(None)
+        elif action.startswith("show:"):
+            self.show_page(action.split(":", 1)[1])
+        elif action == "toggle:sidebar":
+            sidebar = self.builder.get_object("sidebar")
+            sidebar.set_visible(not sidebar.get_visible())
+        elif action == "toggle:ribbon":
+            toggle = self.ribbon._collapse_button
+            toggle.set_active(not toggle.get_active())
+        elif action == "toggle:event_enabled":
+            event = self._active_event()
+            if event is not None:
+                event.enabled = not event.enabled
+                self._render_events()
+                self.status_label.set_text("Event enabled" if event.enabled else "Event disabled")
+        elif action in ("undo", "redo"):
+            self.status_label.set_text("Undo/redo history is not wired yet")
+        elif action in ("validate_project", "compile_logic"):
+            if self.project_path is None:
+                self.status_label.set_text("Save the project before compiling")
+                return
+            import subprocess
+            command = [sys.executable, "-m", "impossible.compiler",
+                       "validate" if action == "validate_project" else "compile",
+                       "--project", str(self.project_path), "--target", "logic"]
+            try:
+                result = subprocess.run(command, capture_output=True, text=True, check=False)
+            except OSError as error:
+                self._show_error("Could not start compiler", str(error))
+                return
+            output = (result.stdout + result.stderr).strip()
+            self.status_label.set_text(
+                ("Validation passed" if action == "validate_project" else "Compilation finished")
+                if result.returncode == 0 else "Compiler reported an error"
+            )
+            if result.returncode != 0:
+                self._show_error("Impossible compiler", output or "Unknown compiler error")
+        elif action == "run_project":
+            self.status_label.set_text("Preview host integration is not connected yet")
+        elif action == "about":
+            dialog = Gtk.AboutDialog(transient_for=self.window, modal=True)
+            dialog.set_program_name("ImpossibleEngine")
+            dialog.set_version("0.1.0-dev")
+            dialog.set_comments("Rust-first visual authoring environment")
+            dialog.run()
+            dialog.destroy()
+        elif action == "close":
+            self.window.close()
+        else:
+            self.status_label.set_text("Command not available: " + action)
 
     def _connect_navigation(self) -> None:
         mapping = {"nav_events": "events", "nav_layouts": "layouts", "nav_objects": "objects", "nav_assets": "assets", "nav_platforms": "platforms"}

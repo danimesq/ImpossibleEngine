@@ -11,18 +11,18 @@ The current `main` catalogue contains:
 
 | Catalogue item | Count |
 |---|---:|
-| Plugins | 52 |
-| Behaviors | 33 |
+| Plugins | 50 |
+| Behaviors | 38 |
 | Effects | 44 |
-| Conditions | 306 |
-| Actions | 423 |
-| Expressions | 279 |
-| **Total ACEs** | **1008** |
-| **Total add-ons** | **129** |
+| Conditions | 318 |
+| Actions | 447 |
+| Expressions | 295 |
+| **Total ACEs** | **1041** |
+| **Total add-ons** | **132** |
 
-All 127 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
+All 132 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
 
-The Python `impossible.addons` module validates the catalogue, IDs, parameter metadata, categories, dependencies and presentation contracts. It does not compile an Event Sheet or execute an ACE.
+The Python `impossible.addons` module validates the built-in catalogue and discovers metadata-only third-party packages from the root `add-ons/` folder. It validates IDs, parameters, categories, dependencies and package-relative entrypoint paths, but does not compile an Event Sheet, execute an ACE or execute third-party package code.
 
 The existing Rust file under `examples/flappy-madruga/generated.rs` remains an illustrative fixture, not compiler output. A reusable `crates/impossible-runtime` now exists with the first shared primitives (clock, Wait queue, deterministic RNG and source-event binding validation), and the Flappy project-specific compiler generates its own source-event table. This is a real vertical slice, but not yet the full generic scheduler/IR/object model described by the proposal.
 
@@ -56,7 +56,7 @@ library has compiled. Separate optional preview checks also compile the legacy
 Macroquad desktop and WebAssembly hosts.
 
 This vertical slice is **specific to Flappy Madruga**, not a generic importer
-or the universal 1008-ACE compiler. The game logic is still a source-specific
+or the universal 1060-ACE compiler. The game logic is still a source-specific
 Rust implementation linked to its 32 event SIDs; it does not yet lower
 arbitrary registry ACEs into a generic typed Event Sheet IR. The original
 media (12 groups), live source differential testing and Android Google Play
@@ -83,9 +83,7 @@ Macroquad preview as if it were the Foundation adapter.
 
 ## 🌈 2. What the Construct references teach us
 
-The source-observed legacy plugin/behavior/effect map and the current
-compatibility declarations are tracked in
-[CONSTRUCT-2-COMPATIBILITY.md](CONSTRUCT-2-COMPATIBILITY.md). The expanded
+The official C2/C3 add-on and ACE audit, current mapping gaps and corrected behavior taxonomy are tracked in [CONSTRUCT-2-3-ADDON-ACE-AUDIT.md](CONSTRUCT-2-3-ADDON-ACE-AUDIT.md) and [CONSTRUCT-2-COMPATIBILITY.md](CONSTRUCT-2-COMPATIBILITY.md). The expanded
 catalogue remains a specification until each ACE has runtime wiring and
 conformance coverage.
 
@@ -324,7 +322,7 @@ The intended path is:
 5. Code generation emits normal Rust calls or statically dispatched operation identifiers. The game must not perform string-based ACE discovery or parse the registry on every frame.
 6. The runtime executes the operation and reports typed results, triggers or diagnostics to the scheduler.
 
-### 🌈 Explicit backlog: universal 1008-ACE compiler/runtime
+### 🌈 Explicit backlog: universal 1060-ACE compiler/runtime
 
 This is a committed next-phase roadmap item, not an informal future note.
 The Flappy vertical slice must not be mistaken for completion of this work.
@@ -353,7 +351,7 @@ Sprite/object operations; one simple behavior end-to-end; then expand by
 capability and target. This generalizes the compiler rather than adding more
 project-only handlers.
 
-Acceptance is not “1008 rows have a Rust function name”. Every enabled ACE
+Acceptance is not “1060 rows have a Rust function name”. Every enabled ACE
 must type-check, lower, execute and pass conformance tests. Until then the
 catalogue remains specification-only where applicable.
 
@@ -361,7 +359,7 @@ catalogue remains specification-only where applicable.
 
 The proposed `event-sheet-v1.schema.json` does not yet reference catalogue ACE IDs. It currently models only two trigger kinds (`on_layout_start` and `every_tick`), two condition forms (`compare` and `not`), a small expression grammar (`const`, `ref`, `sub`, `mul`) and three generic action kinds (`set`, `set_x`, `set_animation`).
 
-That means the sample Event Sheet is a small source-derived DSL, not yet a representation of the 1008 registry ACEs. The current fixture can demonstrate a compiler subset, but it cannot prove general ACE resolution.
+That means the sample Event Sheet is a small source-derived DSL, not yet a representation of the 1060 registry ACEs. The current fixture can demonstrate a compiler subset, but it cannot prove general ACE resolution.
 
 The next format revision should represent registry operations by stable ACE ID plus typed arguments and explicit target/selection references. Existing v1 documents must remain readable through a deliberate v1-to-IR lowering adapter; do not silently change the meaning of v1 or pretend its generic action names cover the catalogue. Preserve source IDs and provide a diagnostic for every operation that cannot be mapped exactly.
 
@@ -404,7 +402,7 @@ The core must not own a windowing toolkit, audio device, camera API, HTTP stack,
 
 The compiler and runtime should share typed operation definitions, but the runtime must not depend on GTK or on the Python editor. Python remains a replaceable authoring frontend.
 
-## 🌈 5. Turn the 33 behaviors into executable systems
+## 🌈 5. Turn the 38 behaviors into executable systems
 
 Do not create 31 isolated crates or 31 unrelated update loops. Implement shared subsystems, then attach behavior-specific configuration and per-instance state to them.
 

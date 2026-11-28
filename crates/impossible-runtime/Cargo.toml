@@ -1,9 +1,0 @@
-[package]
-name = "impossible-runtime"
-version = "0.1.0"
-edition = "2021"
-publish = false
-description = "Headless, platform-neutral execution primitives for ImpossibleEngine"
-
-[lib]
-path = "src/lib.rs"

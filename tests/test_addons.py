@@ -1,4 +1,5 @@
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -117,6 +118,106 @@ class BuiltinAddonRegistryTests(unittest.TestCase):
         self.assertTrue(any(q.id == "behavior.seek" for q in self.registry.search("steering", kind="behavior")))
         self.assertTrue(self.registry.by_category("input", kind="plugin"))
         self.assertFalse(self.registry.search("not-a-real-addon"))
+
+
+    def _external_addon(self, addon_id="plugin.example-vendor-demo"):
+        addon = json.loads(json.dumps(self.registry.get("plugin.sprite").raw))
+        addon["id"] = addon_id
+        addon["name"] = "Vendor Demo"
+        addon["description"] = "Third-party metadata fixture."
+        addon["author"] = "Example Vendor"
+        addon["documentation"] = "README.md"
+        addon["provides"] = [addon_id]
+        addon["requires"] = []
+        for section in ("conditions", "actions", "expressions"):
+            for ace in addon[section]:
+                suffix = ace["id"].split("plugin.sprite.", 1)[-1]
+                ace["id"] = f"{addon_id}.{suffix}"
+                ace["ui"]["language_key"] = f"ace.{addon_id}.{suffix}"
+        return addon
+
+    def test_c2_timer_and_pathfinding_are_object_behaviors_only(self):
+        self.assertEqual(self.registry.get("behavior.timer").kind, "behavior")
+        self.assertEqual(self.registry.get("behavior.pathfinding").kind, "behavior")
+        self.assertNotIn("plugin.timer", self.registry.ids())
+        self.assertNotIn("plugin.pathfinding", self.registry.ids())
+
+    def test_c2_missing_behaviors_are_catalogued(self):
+        for addon_id in (
+            "behavior.timer", "behavior.pathfinding", "behavior.jump-thru",
+            "behavior.no-save", "behavior.shadow-caster",
+        ):
+            self.assertEqual(self.registry.get(addon_id).kind, "behavior")
+
+    def test_system_and_common_object_are_not_insertable_picker_items(self):
+        self.assertFalse(self.registry.get("plugin.system").raw["editor"]["picker"]["visible"])
+        self.assertFalse(self.registry.get("plugin.object").raw["editor"]["picker"]["visible"])
+
+    def test_blend_mode_is_common_property_not_visible_shader_effect(self):
+        effect = self.registry.get("effect.blend-mode")
+        self.assertTrue(effect.raw["isDeprecated"])
+        self.assertFalse(effect.raw["editor"]["picker"]["visible"])
+        self.assertTrue(any(p["name"] == "blend_mode" for p in self.registry.get("plugin.object").properties))
+        self.assertIsNotNone(self.registry.find_ace("plugin.object.set_blend_mode"))
+
+    def test_c2_condition_flags_include_fake_trigger_and_static(self):
+        ace = self.registry.find_ace("plugin.sprite.on_animation_finished")[1]
+        self.assertIn("fake_trigger", ace.ui["flags"])
+        self.assertIn("static", ace.ui["flags"])
+
+    def test_audio_dsp_chain_is_separate_from_visual_effects(self):
+        audio = self.registry.get("plugin.audio").raw["audioProcessing"]
+        self.assertEqual(audio["scope"], "per_tag_ordered_chain")
+        self.assertIn("analyser", audio["operations"])
+        self.assertIn("set_effect_wet_dry", audio["controls"])
+
+    def test_loads_third_party_addon_from_drop_in_directory_without_executing_code(self):
+        with tempfile.TemporaryDirectory() as temp:
+            package_dir = Path(temp) / "example-vendor" / "demo"
+            package_dir.mkdir(parents=True)
+            marker = package_dir / "executed.txt"
+            (package_dir / "runtime.js").write_text(
+                "This entrypoint must not be evaluated by the metadata loader.",
+                encoding="utf-8",
+            )
+            manifest = {
+                "format": "impossible.addon-package",
+                "manifestVersion": 1,
+                "addon": self._external_addon(),
+                "package": {
+                    "entrypoints": {"runtime": "runtime.js"},
+                    "permissions": ["audio.output"],
+                },
+            }
+            (package_dir / "addon.json").write_text(json.dumps(manifest), encoding="utf-8")
+            registry = AddonRegistry.load(third_party_dir=temp)
+            self.assertEqual(registry.get("plugin.example-vendor-demo").name, "Vendor Demo")
+            self.assertEqual(registry.origin("plugin.example-vendor-demo"), "third-party:example-vendor/demo")
+            self.assertFalse(marker.exists())
+
+    def test_invalid_third_party_package_is_skipped_with_diagnostic(self):
+        with tempfile.TemporaryDirectory() as temp:
+            package_dir = Path(temp) / "broken"
+            package_dir.mkdir()
+            (package_dir / "addon.json").write_text("{ not json", encoding="utf-8")
+            registry = AddonRegistry.load(third_party_dir=temp)
+            self.assertIsNotNone(registry.get("plugin.sprite"))
+            self.assertTrue(any("Skipped" in message for message in registry.diagnostics))
+
+    def test_third_party_entrypoint_path_traversal_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            package_dir = Path(temp) / "vendor" / "bad"
+            package_dir.mkdir(parents=True)
+            manifest = {
+                "format": "impossible.addon-package",
+                "manifestVersion": 1,
+                "addon": self._external_addon(),
+                "package": {"entrypoints": {"runtime": "../../outside.js"}},
+            }
+            (package_dir / "addon.json").write_text(json.dumps(manifest), encoding="utf-8")
+            registry = AddonRegistry.load(third_party_dir=temp)
+            self.assertNotIn("plugin.example-vendor-demo", registry.ids())
+            self.assertTrue(any("Unsafe entrypoint" in message for message in registry.diagnostics))
 
     def test_duplicate_addon_id_rejected(self):
         raw = json.loads(Path(self.registry.source).read_text(encoding="utf-8"))

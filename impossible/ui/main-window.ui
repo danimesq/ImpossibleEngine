@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkApplicationWindow" id="main_window">
+    <property name="title">Impossible Engine</property>
+    <property name="default-width">1440</property>
+    <property name="default-height">900</property>
+    <property name="window-position">center</property>
+    <child>
+      <object class="GtkBox" id="root_box">
+        <property name="orientation">vertical</property>
+        <property name="spacing">0</property>
+        <child>
+          <object class="GtkHeaderBar" id="header_bar">
+            <property name="visible">True</property>
+            <property name="show-close-button">True</property>
+            <property name="title">Impossible Engine</property>
+            <property name="subtitle">Visual authoring · Rust-first targets</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="ribbon_root">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <style><class name="impossible-ribbon"/></style>
+            <child>
+              <object class="GtkBox" id="ribbon_top_row">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+                <style><class name="ribbon-top-row"/></style>
+                <child>
+                  <object class="GtkBox" id="ribbon_quick_access">
+                    <property name="visible">True</property>
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">1</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackSwitcher" id="ribbon_switcher">
+                    <property name="visible">True</property>
+                    <property name="halign">start</property>
+                    <style><class name="ribbon-switcher"/></style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStack" id="ribbon_stack">
+                <property name="visible">True</property>
+                <property name="transition-type">crossfade</property>
+                <property name="transition-duration">100</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="body_box">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">0</property>
+            <child>
+              <object class="GtkBox" id="sidebar">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
+                <property name="width-request">218</property>
+                <property name="margin">12</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-bottom">18</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="label">IE</property>
+                        <style><class name="brand-mark"/></style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="label">IMPOSSIBLE</property>
+                            <property name="xalign">0</property>
+                            <style><class name="brand-name"/></style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="label">ENGINE · 0.1 DEV</property>
+                            <property name="xalign">0</property>
+                            <style><class name="eyebrow"/></style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label">WORKSPACE</property>
+                    <property name="xalign">0</property>
+                    <property name="margin-top">4</property>
+                    <property name="margin-bottom">4</property>
+                    <style><class name="section-label"/></style>
+                  </object>
+                </child>
+                <child><object class="GtkButton" id="nav_events"><property name="visible">True</property><property name="label">Event Sheets</property><property name="relief">none</property><style><class name="nav-button"/><class name="active"/></style></object></child>
+                <child><object class="GtkButton" id="nav_layouts"><property name="visible">True</property><property name="label">Layouts</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
+                <child><object class="GtkButton" id="nav_objects"><property name="visible">True</property><property name="label">Objects</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
+                <child><object class="GtkButton" id="nav_assets"><property name="visible">True</property><property name="label">Assets</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
+                <child><object class="GtkButton" id="nav_platforms"><property name="visible">True</property><property name="label">Platform Variants</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
+                <child><object class="GtkBox"><property name="visible">True</property><property name="vexpand">True</property></object></child>
+                <child><object class="GtkSeparator"><property name="visible">True</property></object></child>
+                <child>
+                  <object class="GtkLabel" id="project_name_label">
+                    <property name="visible">True</property>
+                    <property name="label">Impossible Sandbox</property>
+                    <property name="xalign">0</property>
+                    <property name="margin-top">8</property>
+                    <style><class name="project-name"/></style>
+                  </object>
+                </child>
+                <child><object class="GtkLabel"><property name="visible">True</property><property name="label">UNSAVED PROTOTYPE</property><property name="xalign">0</property><style><class name="eyebrow"/></style></object></child>
+              </object>
+            </child>
+            <child><object class="GtkSeparator"><property name="visible">True</property><property name="orientation">vertical</property></object></child>
+            <child>
+              <object class="GtkStack" id="workspace_stack">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="transition-type">crossfade</property>
+                <property name="transition-duration">120</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

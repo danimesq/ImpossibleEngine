@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "impossible-engine"
+version = "0.1.0.dev0"
+description = "Visual game authoring environment with GTK editor and headless CLI"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+impossible = "impossible.cli:main"
+
+[tool.setuptools.package-data]
+impossible = ["ui/*.ui", "ui/*.css"]
+
+[tool.setuptools.packages.find]
+include = ["impossible*"]

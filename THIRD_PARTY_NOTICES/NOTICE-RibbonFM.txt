@@ -1,0 +1,22 @@
+Ribbon component attribution
+============================
+
+The GTK3 ribbon implementation in impossible/ui/ribbon.py and its declarative
+layout in impossible/ui/ribbon_spec.py are adapted from:
+
+  Ribbon File Manager (RibbonFM)
+  Repository: https://github.com/ysnx64523/Ribbon-File-Manager
+  Upstream files:
+    src/ribbonfm/ui/ribbon.py
+    src/ribbonfm/ui/ribbon_spec.py
+  Upstream revision inspected: feeec7c433dc0a1028d730f228a1d50aba861de6
+  License: Apache License 2.0
+
+The ImpossibleEngine adaptation removes file-manager-specific commands and
+translation plumbing, and adds engine-specific tabs, commands and quick access.
+The original RibbonFM project is not affiliated with or endorsing ImpossibleEngine.
+
+A complete copy of the upstream Apache License 2.0 is provided in
+THIRD_PARTY_NOTICES/RibbonFM-LICENSE.
+
+Changes to upstream-derived files are documented in their source headers.

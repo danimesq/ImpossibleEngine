@@ -1,5 +1,8 @@
 # Documentation index
 
+## Desktop GUI and distribution
+- [Windows portable packaging and GitHub Releases](WINDOWS-PACKAGING.md)
+
 ## Engine architecture
 - [Add-on system and built-in feature catalogue](ADDON-SYSTEM.md)
 - [Runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md)

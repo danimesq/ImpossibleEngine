@@ -5,6 +5,9 @@
 
 ## Engine architecture
 - [Add-on system and built-in feature catalogue](ADDON-SYSTEM.md)
+- [Generic 2D interaction and platform capability profile](LEGACY-2D-CAPABILITY-PROFILE.md)
+- [Arcade Car Movement behavior](behaviors/car-movement.md)
+- [Provider-neutral Game Services add-on](addons/game-services.md)
 - [Runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md)
 - [ImpossibleEngine project format](PROJECT-FORMAT.md)
 - [Typed Event Sheets: JSON to native Rust](EVENT-SHEETS-JSON-TO-RUST.md)

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impossible-engine.dev/schemas/addon-package-v1.schema.json",
+  "title": "ImpossibleEngine Third-party Add-on Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "manifestVersion", "addon", "package"],
+  "properties": {
+    "format": {
+      "const": "impossible.addon-package"
+    },
+    "manifestVersion": {
+      "const": 1
+    },
+    "addon": {
+      "type": "object",
+      "description": "A complete add-on descriptor conforming to the built-in add-on registry schema."
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entrypoints": {
+          "type": "object",
+          "description": "Named package entrypoints. Values are relative file paths and are validated for containment by the loader.",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

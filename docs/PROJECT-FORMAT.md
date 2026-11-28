@@ -150,15 +150,19 @@ The `project.ieproj` file is JSON. Its core shape uses a project-format version,
 
 This is a format example, not a complete list of every optional top-level property. The reader must preserve recognized metadata and unknown properties. New features add versioned fields and resource categories without making older project files unreadable.
 
+### Display settings
+
+The project index must preserve display configuration independently of the current desktop window: logical design resolution, requested orientation, fullscreen/resizing policy, scaling strategy, pixel rounding, startup layout and optional loading layout. The scale strategy must distinguish fitting the full design canvas, filling the viewport with cropping, letterboxing and integer/pixel-perfect scaling. Runtime host dimensions must never overwrite the authored design resolution. Unsupported orientation or fullscreen requests produce target diagnostics without deleting source settings.
+
 Each `items` list preserves editor order. A subfolder node has a `name`, its own `items` list and its own `subfolders` list. Entries in `rootFileFolders` carry file metadata such as filename, MIME type, serialization ID and category-specific metadata.
 
 ## Resource files
 
 The main index identifies which resources belong to the project. The editor then reads each resource's own JSON document or media file.
 
-- **Object types:** JSON metadata, properties, behaviors, effects, animations and references to image frames.
+- **Object types:** JSON metadata, properties, behaviors, effects, animations and references to image frames. Animation metadata preserves frame order/duration, hotspot, collision polygon, loop, ping-pong, repeat count/repeat-to and playback speed.
 - **Families:** JSON definitions grouping object types and preserving member references.
-- **Layouts:** JSON metadata plus a recursive layer tree. Layers preserve their properties and ordered object instances, including sub-layers.
+- **Layouts:** JSON metadata plus a recursive, ordered layer tree. Each layer preserves background color/transparency, parallax, zoom rate, opacity, blend mode, texture/render-cell flags, global state and ordered object instances, including sub-layers. Instances preserve X/Y/Z, width/height/depth, angle, opacity, hotspot, instance variables, behaviors and effects.
 - **Event Sheets:** JSON event trees, including nested subevents, groups, functions, custom actions, conditions, actions and inline script blocks.
 - **Timelines:** JSON definitions for sequences of changes over time.
 - **Flowcharts:** JSON node/connection graphs for conversation trees, state machines and related logic.
@@ -244,7 +248,10 @@ The current GTK/Python editor prototype is not yet connected to this Rust publis
 
 Before declaring a project format version stable, keep fixtures that exercise:
 
-- multiple layouts, nested folders, layers, object types and instances;
+- multiple layouts, nested folders, recursive layer trees, viewport/display settings, object types and instances;
+- orientation and fullscreen scaling policies, pixel rounding, startup and loader layout settings;
+- layer background/transparency, parallax, zoom, opacity, blend mode, own-texture/render-cell flags and nested ordering;
+- animation frame durations, hotspots, collision polygons, looping, ping-pong and repeat ranges;
 - recursive layer trees with mixed instance types and stable UIDs;
 - nested Event Sheets, includes, groups, functions, custom actions and inline scripts;
 - families, tilemap brushes, containers, behaviors and effect properties;

@@ -11,14 +11,14 @@ The current `main` catalogue contains:
 
 | Catalogue item | Count |
 |---|---:|
-| Plugins | 51 |
-| Behaviors | 32 |
+| Plugins | 52 |
+| Behaviors | 33 |
 | Effects | 44 |
-| Conditions | 254 |
-| Actions | 386 |
-| Expressions | 210 |
-| **Total ACEs** | **850** |
-| **Total add-ons** | **127** |
+| Conditions | 306 |
+| Actions | 423 |
+| Expressions | 279 |
+| **Total ACEs** | **1008** |
+| **Total add-ons** | **129** |
 
 All 127 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
 
@@ -56,7 +56,7 @@ library has compiled. Separate optional preview checks also compile the legacy
 Macroquad desktop and WebAssembly hosts.
 
 This vertical slice is **specific to Flappy Madruga**, not a generic importer
-or the universal 850-ACE compiler. The game logic is still a source-specific
+or the universal 1008-ACE compiler. The game logic is still a source-specific
 Rust implementation linked to its 32 event SIDs; it does not yet lower
 arbitrary registry ACEs into a generic typed Event Sheet IR. The original
 media (12 groups), live source differential testing and Android Google Play
@@ -324,7 +324,7 @@ The intended path is:
 5. Code generation emits normal Rust calls or statically dispatched operation identifiers. The game must not perform string-based ACE discovery or parse the registry on every frame.
 6. The runtime executes the operation and reports typed results, triggers or diagnostics to the scheduler.
 
-### 🌈 Explicit backlog: universal 850-ACE compiler/runtime
+### 🌈 Explicit backlog: universal 1008-ACE compiler/runtime
 
 This is a committed next-phase roadmap item, not an informal future note.
 The Flappy vertical slice must not be mistaken for completion of this work.
@@ -353,7 +353,7 @@ Sprite/object operations; one simple behavior end-to-end; then expand by
 capability and target. This generalizes the compiler rather than adding more
 project-only handlers.
 
-Acceptance is not “850 rows have a Rust function name”. Every enabled ACE
+Acceptance is not “1008 rows have a Rust function name”. Every enabled ACE
 must type-check, lower, execute and pass conformance tests. Until then the
 catalogue remains specification-only where applicable.
 
@@ -361,7 +361,7 @@ catalogue remains specification-only where applicable.
 
 The proposed `event-sheet-v1.schema.json` does not yet reference catalogue ACE IDs. It currently models only two trigger kinds (`on_layout_start` and `every_tick`), two condition forms (`compare` and `not`), a small expression grammar (`const`, `ref`, `sub`, `mul`) and three generic action kinds (`set`, `set_x`, `set_animation`).
 
-That means the sample Event Sheet is a small source-derived DSL, not yet a representation of the 850 registry ACEs. The current fixture can demonstrate a compiler subset, but it cannot prove general ACE resolution.
+That means the sample Event Sheet is a small source-derived DSL, not yet a representation of the 1008 registry ACEs. The current fixture can demonstrate a compiler subset, but it cannot prove general ACE resolution.
 
 The next format revision should represent registry operations by stable ACE ID plus typed arguments and explicit target/selection references. Existing v1 documents must remain readable through a deliberate v1-to-IR lowering adapter; do not silently change the meaning of v1 or pretend its generic action names cover the catalogue. Preserve source IDs and provide a diagnostic for every operation that cannot be mapped exactly.
 
@@ -404,13 +404,13 @@ The core must not own a windowing toolkit, audio device, camera API, HTTP stack,
 
 The compiler and runtime should share typed operation definitions, but the runtime must not depend on GTK or on the Python editor. Python remains a replaceable authoring frontend.
 
-## 🌈 5. Turn the 32 behaviors into executable systems
+## 🌈 5. Turn the 33 behaviors into executable systems
 
 Do not create 31 isolated crates or 31 unrelated update loops. Implement shared subsystems, then attach behavior-specific configuration and per-instance state to them.
 
 | Runtime subsystem | Behaviors covered |
 |---|---|
-| Movement and steering | Platform Movement, Eight Direction, Bullet Movement, Vehicle Dynamics, Oscillation, Seek, Pursuit & Evade, Arrive, Wander, Flocking |
+| Movement and steering | Platform Movement, Eight Direction, Bullet Movement, Vehicle Dynamics, Arcade Car Movement, Oscillation, Seek, Pursuit & Evade, Arrive, Wander, Flocking |
 | Physics and collision | Solid / Static Collider, Physics Body, Bounce, Platform Solid |
 | Camera and world bounds | Scroll To / Camera Follow, Anchor to Viewport, Bound to Layout, Destroy Outside Layout, Wrap Around Layout |
 | Animation and timing | Fade, Flash, Tween, Rotate To Target |
@@ -437,7 +437,7 @@ An adapter is an implementation boundary, not a promise that every target suppor
 | Camera / microphone | Permission lifecycle, device selection, stream state, capture, stop and resource cleanup |
 | Storage / files | Namespaces, persistence guarantees, quotas, serialization, file selection and access errors |
 | Browser / platform | URL/navigation, clipboard, lifecycle, safe-area, orientation and platform capabilities |
-| Haptics / speech / social / advertising | Capability-gated requests, permissions/consent and asynchronous result events |
+| Haptics / speech / media capture / social / advertising / game services | Capability-gated requests, permissions/consent, sign-in, achievements, leaderboards and asynchronous result events |
 
 Use typed request handles and typed completion payloads. Cancellation, timeout, permission denial, unavailable service, network failure and unsupported target must be distinguishable.
 

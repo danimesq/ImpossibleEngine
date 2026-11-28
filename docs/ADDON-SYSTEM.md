@@ -61,7 +61,7 @@ the ACE identity to preserve old projects.
 
 System, Object, Sprite, Tiled Background, Text, Button Control, Text Input,
 Advanced Text Input, Slider Bar, Progress Bar, Keyboard, Mouse, Touch,
-Gamepad, Input Actions, Audio, Camera, Collision & Picking, Function, Timer,
+Gamepad (mapped/raw input), Input Actions, Audio, Game Services, Camera, Collision & Picking, Function, Timer,
 Date and Clock, Time Manager, Random, Array, Dictionary, JSON, XML, Storage,
 HTTP, WebSocket, Multiplayer Sessions, Particles, Tilemap, UI Controls, Video,
 SVG Canvas, Embedded Web Frame, CSS Stylesheet, Layout Transition, User Media,
@@ -71,7 +71,7 @@ Flowchart & Dialogue.
 
 ## Built-in behaviors
 
-Platform Movement, Eight Direction, Bullet Movement, Vehicle Dynamics,
+Platform Movement, Eight Direction, Bullet Movement, Vehicle Dynamics, Arcade Car Movement,
 Oscillation, Scroll To / Camera Follow, Persist, Anchor to Viewport,
 Destroy Outside Layout, Solid / Static Collider, Physics Body, Fade, Flash,
 Tween, Rotate To Target, Turret, Line of Sight, Seek, Pursuit & Evade, Arrive,
@@ -107,7 +107,7 @@ rendering and I/O execution.
 RustMultiConsoleFoundation owns cross-platform build/package services and
 concrete host/transport adapters that belong below the engine.
 
-WebSocket is a transport, not multiplayer gameplay. Multiplayer separately
+Gamepad exposes both normalized mapped controls and raw axes/buttons for unusual devices. Text-to-Speech owns synthesis and voice selection, while User Media owns camera/microphone capture, source enumeration, snapshots, canvas recording, recognition and ambient-light readings. Advertising exposes provider-neutral banner placements as well as interstitial and rewarded lifecycles. Game Services owns sign-in, profile, achievements and leaderboards through host adapters. WebSocket is a transport, not multiplayer gameplay. Multiplayer separately
 models sessions, rooms, peers, authority, input replication, state replication
 and interpolation. Input devices are normalized into semantic actions before
 they reach behavior-specific controls.

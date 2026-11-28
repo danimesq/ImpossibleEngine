@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Build a self-contained GTK3 + PyGObject Windows portable ZIP with MSYS2.
-
-Run from an MSYS2 MINGW64 shell after installing the documented pacman packages.
-The bundle includes the MSYS2 runtime and the ImpossibleEngine Python package.
-"""
+"""Build a self-contained GTK3 + PyGObject Windows portable ZIP with MSYS2."""
 from __future__ import annotations
 
 import os
@@ -28,9 +24,7 @@ def mingw_prefix() -> Path:
 
 def version() -> str:
     tag = os.environ.get("GITHUB_REF_NAME", "")
-    if tag.startswith("v"):
-        return tag[1:]
-    return "0.1.0-dev"
+    return tag[1:] if tag.startswith("v") else "0.1.0-dev"
 
 
 def main() -> int:
@@ -45,45 +39,50 @@ def main() -> int:
             raise SystemExit(f"Required MSYS2 runtime directory missing: {source}")
         print(f"Bundling {folder}/ from {prefix}")
         shutil.copytree(source, stage / "runtime" / folder, dirs_exist_ok=True)
+
     (stage / "README-Windows.txt").write_text(
-        "ImpossibleEngine Windows portable build\\n"
-        "========================================\\n\\n"
-        "Extract this folder and run ImpossibleEngine.bat.\\n"
-        "This package bundles GTK3, PyGObject and the MSYS2 MINGW64 runtime.\\n"
-        "The current package contains the Python authoring GUI; native Rust\\n"
-        "runtime/renderer integration is a separate build capability.\\n",
-        encoding="utf-8")
-    for name in ("THIRD_PARTY_NOTICES",):
-        source = ROOT / name
-        if source.exists():
-            shutil.copytree(source, stage / name)
-    launcher = [
-        "@echo off",
-        "setlocal",
-        "set \\"H=%~dp0\\"",
-        "set \\"PATH=%H%runtime\\\\bin;%PATH%\\"",
-        "set \\"PYTHONPATH=%H%app\\"",
-        "set \\"GI_TYPELIB_PATH=%H%runtime\\\\lib\\\\girepository-1.0\\"",
-        "set \\"GTK_EXE_PREFIX=%H%runtime\\"",
-        "set \\"GTK_DATA_PREFIX=%H%runtime\\"",
-        "set \\"XDG_DATA_DIRS=%H%runtime\\\\share\\"",
-        "set \\"GDK_PIXBUF_MODULE_FILE=%H%runtime\\\\lib\\\\gdk-pixbuf-2.0\\\\2.10.0\\\\loaders.cache\\"",
-        "set \\"GIO_MODULE_DIR=%H%runtime\\\\lib\\\\gio\\\\modules\\"",
-        "set \\"FONTCONFIG_PATH=%H%runtime\\\\etc\\\\fonts\\"",
-        "set \\"FONTCONFIG_FILE=%H%runtime\\\\etc\\\\fonts\\\\fonts.conf\\"",
-        "\\"%H%runtime\\\\bin\\\\python.exe\\" -m impossible %*",
-        "endlocal",
-        "",
-    ]
-    (stage / "ImpossibleEngine.bat").write_text("\\r\\n".join(launcher), encoding="utf-8")
+        "ImpossibleEngine Windows portable build\n"
+        "========================================\n\n"
+        "Extract this folder and run ImpossibleEngine.bat.\n"
+        "This package bundles GTK3, PyGObject and the MSYS2 MINGW64 runtime.\n"
+        "The current package contains the Python authoring GUI; native Rust\n"
+        "runtime/renderer integration is a separate build capability.\n",
+        encoding="utf-8",
+    )
+    notices = ROOT / "THIRD_PARTY_NOTICES"
+    if notices.exists():
+        shutil.copytree(notices, stage / "THIRD_PARTY_NOTICES")
+
+    launcher = r"""@echo off
+setlocal
+set "H=%~dp0"
+set "PATH=%H%runtime\bin;%PATH%"
+set "PYTHONPATH=%H%app"
+set "GI_TYPELIB_PATH=%H%runtime\lib\girepository-1.0"
+set "GTK_EXE_PREFIX=%H%runtime"
+set "GTK_DATA_PREFIX=%H%runtime"
+set "XDG_DATA_DIRS=%H%runtime\share"
+set "GDK_PIXBUF_MODULE_FILE=%H%runtime\lib\gdk-pixbuf-2.0\2.10.0\loaders.cache"
+set "GIO_MODULE_DIR=%H%runtime\lib\gio\modules"
+set "FONTCONFIG_PATH=%H%runtime\etc\fonts"
+set "FONTCONFIG_FILE=%H%runtime\etc\fonts\fonts.conf"
+"%H%runtime\bin\python.exe" -m impossible %*
+endlocal
+"""
+    (stage / "ImpossibleEngine.bat").write_text(launcher, encoding="utf-8")
+
     python = stage / "runtime" / "bin" / "python.exe"
     if not python.is_file():
         raise SystemExit("Bundled python.exe missing")
     env = os.environ.copy()
     env["PATH"] = str(stage / "runtime" / "bin") + os.pathsep + env.get("PATH", "")
     env["PYTHONPATH"] = str(stage / "app")
-    subprocess.run([str(python), "-m", "compileall", "-q", str(stage / "app" / "impossible")],
-                   check=True, env=env)
+    subprocess.run(
+        [str(python), "-m", "compileall", "-q", str(stage / "app" / "impossible")],
+        check=True,
+        env=env,
+    )
+
     output = ROOT / "dist" / f"ImpossibleEngine-{version()}-windows-x86_64-portable.zip"
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:

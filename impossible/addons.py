@@ -8,6 +8,7 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_REGISTRY = ROOT / "addons" / "builtin-v1.json"
+DEFAULT_THIRD_PARTY_DIR = ROOT / "add-ons"
 KINDS = {"plugin", "behavior", "effect"}
 SECTIONS = {"conditions": {"trigger", "predicate"}, "actions": {"command"}, "expressions": {"pure"}}
 PARAMETER_TYPES = {"number", "integer", "string", "boolean", "enum", "object", "array",
@@ -57,6 +58,8 @@ class AddonRegistry:
 
     def __init__(self, raw: dict[str, Any], source: Path | None = None) -> None:
         self.raw, self.source = raw, source
+        self.diagnostics: list[str] = []
+        self._origins: dict[str, str] = {}
         self._validate_root(raw)
         self._addons: dict[str, AddonDefinition] = {}
         seen: set[str] = set()
@@ -65,10 +68,16 @@ class AddonRegistry:
             if addon.id in self._addons:
                 raise AddonRegistryError(f"Duplicate add-on ID: {addon.id}")
             self._addons[addon.id] = addon
+            self._origins[addon.id] = "builtin"
         self._validate_dependencies()
 
     @classmethod
-    def load(cls, path: str | Path | None = None) -> "AddonRegistry":
+    def load(
+        cls,
+        path: str | Path | None = None,
+        third_party_dir: str | Path | None = None,
+    ) -> "AddonRegistry":
+        """Load built-ins and safe third-party descriptors without executing code."""
         source = Path(path) if path else DEFAULT_REGISTRY
         try:
             raw = json.loads(source.read_text(encoding="utf-8"))
@@ -76,7 +85,108 @@ class AddonRegistry:
             raise AddonRegistryError(f"Cannot read {source}: {exc}") from exc
         except json.JSONDecodeError as exc:
             raise AddonRegistryError(f"Invalid registry JSON: {exc}") from exc
-        return cls(raw, source)
+        registry = cls(raw, source)
+        registry._load_third_party(
+            Path(third_party_dir) if third_party_dir is not None else DEFAULT_THIRD_PARTY_DIR
+        )
+        return registry
+
+    @staticmethod
+    def _package_entrypoints(package: Any, package_dir: Path) -> None:
+        """Check package entrypoint paths; metadata loading never executes them."""
+        if not isinstance(package, dict):
+            raise AddonRegistryError("Package metadata must be an object.")
+        entrypoints = package.get("entrypoints", {})
+        if not isinstance(entrypoints, dict):
+            raise AddonRegistryError("Package entrypoints must be an object.")
+        root = package_dir.resolve()
+        for name, relative_value in entrypoints.items():
+            if not isinstance(name, str) or not isinstance(relative_value, str) or not relative_value.strip():
+                raise AddonRegistryError("Entrypoint names and paths must be non-empty strings.")
+            relative = Path(relative_value)
+            if relative.is_absolute():
+                raise AddonRegistryError(f"Unsafe entrypoint path: {relative_value}")
+            resolved = (root / relative).resolve()
+            if not resolved.is_relative_to(root):
+                raise AddonRegistryError(f"Unsafe entrypoint path: {relative_value}")
+            if not resolved.is_file():
+                raise AddonRegistryError(f"Missing package entrypoint: {relative_value}")
+
+    def _load_third_party(self, directory: Path) -> None:
+        """Discover addon.json packages as untrusted metadata, never executable code."""
+        if not directory.exists():
+            return
+        try:
+            root = directory.resolve()
+            manifests = sorted(directory.rglob("addon.json"))
+        except OSError as exc:
+            self.diagnostics.append(f"Skipped third-party directory {directory}: {exc}")
+            return
+
+        candidates: list[tuple[AddonDefinition, str]] = []
+        for manifest_path in manifests:
+            try:
+                resolved_manifest = manifest_path.resolve()
+                if not resolved_manifest.is_relative_to(root):
+                    raise AddonRegistryError("Manifest path escapes the package directory.")
+                package_dir = resolved_manifest.parent
+                manifest = json.loads(resolved_manifest.read_text(encoding="utf-8"))
+                if not isinstance(manifest, dict) or manifest.get("format") != "impossible.addon-package":
+                    raise AddonRegistryError("Unsupported add-on package format.")
+                if manifest.get("manifestVersion") != 1:
+                    raise AddonRegistryError("Unsupported add-on package manifest version.")
+                self._package_entrypoints(manifest.get("package", {}), package_dir)
+                addon_raw = manifest.get("addon")
+                candidate_seen = {
+                    ace.id
+                    for addon in self._addons.values()
+                    for section in ("conditions", "actions", "expressions")
+                    for ace in getattr(addon, section)
+                }
+                addon = self._parse_addon(addon_raw, candidate_seen)
+                if addon.id in self._addons or any(existing.id == addon.id for existing, _ in candidates):
+                    raise AddonRegistryError(f"Duplicate add-on ID: {addon.id}")
+                origin = "third-party:" + package_dir.relative_to(root).as_posix()
+                candidates.append((addon, origin))
+            except (OSError, json.JSONDecodeError, AddonRegistryError, TypeError, ValueError) as exc:
+                relative = manifest_path.parent.name
+                self.diagnostics.append(f"Skipped third-party package {relative}: {exc}")
+
+        # Resolve dependencies in passes so a package can depend on another package
+        # discovered later in filesystem order.
+        pending = list(candidates)
+        while pending:
+            progress = False
+            for addon, origin in pending[:]:
+                ids = set(self._addons)
+                capabilities = {item for current in self._addons.values() for item in current.provides}
+                available = ids | capabilities | set(addon.provides) | {addon.id}
+                if not all(requirement in available for requirement in addon.requires):
+                    continue
+                existing_ace_ids = {
+                    ace.id for current in self._addons.values()
+                    for section in ("conditions", "actions", "expressions")
+                    for ace in getattr(current, section)
+                }
+                addon_ace_ids = {
+                    ace.id for section in ("conditions", "actions", "expressions")
+                    for ace in getattr(addon, section)
+                }
+                if existing_ace_ids & addon_ace_ids:
+                    self.diagnostics.append(f"Skipped third-party package {addon.id}: duplicate ACE ID.")
+                else:
+                    self._addons[addon.id] = addon
+                    self._origins[addon.id] = origin
+                    self.raw["addons"].append(addon.raw)
+                pending.remove((addon, origin))
+                progress = True
+            if not progress:
+                for addon, _origin in pending:
+                    self.diagnostics.append(
+                        f"Skipped third-party package {addon.id}: unresolved dependency "
+                        + ", ".join(addon.requires)
+                    )
+                break
 
     @staticmethod
     def _validate_root(raw: Any) -> None:
@@ -218,3 +328,8 @@ class AddonRegistry:
 
     def ids(self) -> tuple[str, ...]:
         return tuple(self._addons)
+
+    def origin(self, addon_id: str) -> str:
+        """Return whether an add-on came from the built-in registry or a package."""
+        self.get(addon_id)
+        return self._origins.get(addon_id, "unknown")

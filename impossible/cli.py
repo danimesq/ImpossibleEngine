@@ -152,7 +152,12 @@ def _project_diagnostics(project: Project) -> tuple[list[str], list[str]]:
     for obj in project.objects:
         if obj.asset_id and obj.asset_id not in asset_ids:
             warnings.append(f"Object {obj.id} references missing asset {obj.asset_id}.")
-    if project.active_platform not in PROFILE_BY_ID:
+    if project.native_index:
+        warnings.append(
+            "Native resource documents are not deeply validated yet; this report checks "
+            "the project index format/version and add-on metadata only."
+        )
+    elif project.active_platform not in PROFILE_BY_ID:
         errors.append(f"Unknown active platform: {project.active_platform}")
     return errors, warnings
 

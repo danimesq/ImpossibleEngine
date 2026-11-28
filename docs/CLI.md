@@ -13,7 +13,6 @@ No GTK or display server is imported for normal CLI commands.
 - `impossible gui` explicitly opens the graphical editor.
 - `impossible --help` prints CLI help.
 - `python -m impossible` uses the same dispatcher.
-- `impossible-compile` remains available as the standalone compiler command.
 
 ## 🌈 Output formats
 
@@ -35,9 +34,9 @@ impossible project set-platform --project ./MyProject.ieproj --platform web-wasm
 Creation adds a default `Gameplay` Event Sheet. Pass `--no-default-sheet`
 to create an empty project. Creation refuses to overwrite an existing path.
 
-The CLI validator checks the Python editor model, duplicate resource IDs and
-basic layout/object/asset references. It is not a replacement for the
-source-aware native compiler validator.
+The CLI validator checks the editable project model, duplicate resource IDs
+and basic layout/object/asset references. It does not claim to compile arbitrary
+ACE descriptors or execute add-on code.
 
 ## 🌈 Add-ons
 
@@ -48,6 +47,7 @@ impossible addons list
 impossible addons list --kind behavior
 impossible addons list --kind effect --search blur --format json
 impossible addons show plugin.sprite
+impossible addons list --third-party-dir ./add-ons
 ```
 
 Select or remove a catalogue entry in a project:
@@ -62,11 +62,15 @@ project's canonical `usedAddons` field. Missing catalogue dependencies are
 added first; removal is refused when another selected add-on depends on the
 requested entry.
 
-**Important:** this is project metadata selection, not code installation.
-The current built-in catalogue entries are explicitly marked
-`specification_only`; selecting one does not make its Conditions, Actions or
-Expressions executable. The CLI does not execute third-party scripts, native
-libraries or WASM add-ons.
+Third-party packages can be placed under `add-ons/<vendor>/<package>/addon.json`
+or discovered from another directory with `--third-party-dir`. The registry
+validates the manifest and checks every declared entrypoint path remains inside
+the package directory. It reads metadata only and never executes package code.
+
+**Important:** selecting an add-on records project metadata; it does not execute
+or install its runtime. The current built-in catalogue entries are marked
+`specification_only`, so selection does not make their Conditions, Actions or
+Expressions executable.
 
 ## 🌈 Event Sheets
 
@@ -109,15 +113,6 @@ impossible objects set-override --project ./MyProject.ieproj \
 
 An empty object override removes the target-specific override. Asset variants
 can be cleared to restore the project's fallback source resolution.
-
-## 🌈 Compile
-
-```sh
-impossible compile --project ./projects/flappy-ramon/Flappy-Madruga.ieproj
-```
-
-This delegates to the existing headless logic compiler. Its current supported
-target is `logic`; renderer and presentation integration remain separate work.
 
 ## 🌈 Shared implementation
 

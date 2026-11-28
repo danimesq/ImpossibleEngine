@@ -19,6 +19,53 @@ class BuiltinAddonRegistryTests(unittest.TestCase):
         self.assertGreater(counts["actions"], 100)
         self.assertGreater(counts["expressions"], 50)
 
+    def test_legacy_plugin_surface_is_catalogued(self):
+        expected = {
+            "plugin.http", "plugin.advanced-text-input", "plugin.audio",
+            "plugin.browser", "plugin.haptics", "plugin.button-control",
+            "plugin.websocket", "plugin.time-manager", "plugin.css-styles",
+            "plugin.clock", "plugin.function", "plugin.embedded-frame",
+            "plugin.keyboard", "plugin.mouse", "plugin.svg-canvas",
+            "plugin.sprite", "plugin.text", "plugin.text-input",
+            "plugin.tiled-background", "plugin.touch", "plugin.storage",
+            "plugin.xml", "plugin.layout-transition", "plugin.progress-bar",
+            "plugin.slider", "plugin.video",
+        }
+        for addon_id in expected:
+            self.assertEqual(self.registry.get(addon_id).kind, "plugin")
+
+    def test_legacy_ace_coverage_is_declared(self):
+        expected = {
+            "plugin.http.on_completed",
+            "plugin.http.request_url",
+            "plugin.audio.play_at_object",
+            "plugin.audio.set_listener_object",
+            "plugin.audio.stop_all",
+            "plugin.storage.compare_key_text",
+            "plugin.xml.string_value_legacy",
+            "plugin.function.call_expression",
+            "plugin.function.parameter_count",
+            "plugin.layout-transition.entrance_transition",
+            "plugin.layout-transition.is_transition_ended",
+            "plugin.progress-bar.set_progress",
+            "plugin.slider.set_value",
+            "plugin.text-input.on_text_changed",
+            "plugin.embedded-frame.set_url",
+            "plugin.svg-canvas.set_svg",
+            "plugin.time-manager.get_time_value",
+        }
+        for ace_id in expected:
+            self.assertIsNotNone(self.registry.find_ace(ace_id), ace_id)
+
+    def test_legacy_behavior_and_effect_coverage_is_declared(self):
+        self.assertEqual(self.registry.get("behavior.persist").kind, "behavior")
+        self.assertIsNotNone(self.registry.find_ace("behavior.solid.is_enabled"))
+        self.assertIsNotNone(self.registry.find_ace("behavior.solid.set_enabled"))
+        self.assertIsNotNone(self.registry.find_ace("behavior.pin.is_pinned"))
+        self.assertIsNotNone(self.registry.find_ace("behavior.platform.set_max_speed"))
+        self.assertIsNotNone(self.registry.find_ace("behavior.eight-direction.reverse"))
+        self.assertEqual(self.registry.get("effect.swirl").kind, "effect")
+
     def test_namespaced_ids_and_picker_metadata(self):
         self.assertEqual(self.registry.get("plugin.sprite").kind, "plugin")
         self.assertEqual(self.registry.get("behavior.platform").kind, "behavior")

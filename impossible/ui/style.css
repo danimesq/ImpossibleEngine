@@ -1,0 +1,51 @@
+window, .app-surface {
+  background: #11151d;
+  color: #e7ebf2;
+  font-family: "Inter", "Noto Sans", sans-serif;
+}
+headerbar { background: #171d28; border-bottom: 1px solid #283243; box-shadow: none; min-height: 54px; }
+headerbar .title { color: #f4f6fa; font-weight: 700; }
+#sidebar { background: #151b25; }
+.brand-mark { background: #8b79ff; color: #10131b; border-radius: 12px; padding: 8px 10px; font-size: 18px; font-weight: 900; }
+.brand-name { color: #f4f5fb; font-size: 13px; font-weight: 800; letter-spacing: 1.1px; }
+.eyebrow, .section-label { color: #8290a5; font-size: 9px; font-weight: 800; letter-spacing: 1.2px; }
+.project-name { color: #dce2ed; font-size: 12px; font-weight: 700; }
+.nav-button { color: #aab5c6; background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 10px 12px; text-align: left; }
+.nav-button:hover { color: #f3f5fa; background: #202a39; }
+.nav-button.active { color: #eae7ff; background: #292744; border-color: #46406d; }
+.page { padding: 28px; background: #11151d; }
+.page-title { color: #f4f6fb; font-size: 25px; font-weight: 800; }
+.page-subtitle { color: #8f9bad; font-size: 12px; }
+.toolbar { margin-top: 16px; margin-bottom: 18px; }
+button.primary-action { color: #12131b; background: #a99aff; border: 1px solid #b9adff; border-radius: 8px; padding: 8px 13px; font-weight: 800; }
+button.primary-action:hover { background: #b8adff; }
+button.secondary-action { color: #dbe2ed; background: #202938; border: 1px solid #303c50; border-radius: 8px; padding: 8px 12px; }
+button.secondary-action:hover { background: #29364a; }
+.card { background: #191f2b; border: 1px solid #2a3546; border-radius: 12px; padding: 15px; }
+.card-title { color: #f1f3f8; font-size: 14px; font-weight: 750; }
+.muted { color: #8d9aae; font-size: 11px; }
+.pill { color: #c5bdff; background: #292644; border-radius: 20px; padding: 4px 9px; font-size: 10px; font-weight: 700; }
+.condition-row { color: #b9d6ff; background: #1b2b3e; border-radius: 6px; padding: 7px 9px; margin-top: 5px; }
+.action-row { color: #aee3ca; background: #1b332f; border-radius: 6px; padding: 7px 9px; margin-top: 5px; }
+.event-index { color: #8d9aae; font-size: 10px; font-weight: 800; }
+.target-card { background: #191f2b; border: 1px solid #2a3546; border-radius: 10px; padding: 12px; }
+.target-name { color: #f0f2f7; font-size: 13px; font-weight: 750; }
+.target-meta { color: #8d9aae; font-size: 10px; }
+.field-label { color: #aab6c8; font-size: 11px; font-weight: 700; }
+entry, textview, combobox { color: #ecf0f7; background: #111722; border: 1px solid #344154; border-radius: 7px; padding: 7px; }
+separator { background: #2a3546; }
+
+
+/* RibbonFM-derived GTK3 ribbon, adapted for ImpossibleEngine. */
+.impossible-ribbon { background: #171d28; border-bottom: 1px solid #30394a; }
+.ribbon-top-row { background: #171d28; padding: 3px 8px; }
+.ribbon-switcher button { color: #aeb9cb; background: transparent; border: 1px solid transparent; border-radius: 6px 6px 0 0; padding: 6px 13px; font-weight: 700; }
+.ribbon-switcher button:checked { color: #f2efff; background: #292744; border-color: #46406d; }
+.ribbon-page { background: #1b2230; padding: 5px 6px 2px 6px; }
+.ribbon-group { padding: 3px 8px; }
+.ribbon-group-caption { color: #8795aa; font-size: 10px; font-weight: 700; padding-top: 3px; }
+.ribbon-large-button, .ribbon-small-button, .ribbon-quick-button, .ribbon-collapse-button, .ribbon-file-button { color: #dbe3ef; background: transparent; border: 1px solid transparent; border-radius: 6px; }
+.ribbon-large-button { padding: 5px 7px; }
+.ribbon-small-button, .ribbon-quick-button, .ribbon-collapse-button, .ribbon-file-button { padding: 4px 7px; }
+.ribbon-large-button:hover, .ribbon-small-button:hover, .ribbon-quick-button:hover, .ribbon-collapse-button:hover, .ribbon-file-button:hover { background: #29364a; }
+.ribbon-large-button.checked, .ribbon-small-button.checked { background: #39345d; border-color: #62558e; }

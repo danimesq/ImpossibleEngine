@@ -136,8 +136,7 @@ class Project:
         # Preserve future/foreign project metadata before writing current fields.
         result.update(extra_fields)
         # Keep the canonical project-index spelling documented by the format.
-        if used_addons:
-            result["usedAddons"] = used_addons
+        result["usedAddons"] = used_addons
         return result
 
     @classmethod

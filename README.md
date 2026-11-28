@@ -5,6 +5,8 @@ platform-independent project data, and interchangeable runtime adapters.
 
 ## Current prototype
 - GTK 3 + PyGObject + GtkBuilder desktop shell.
+- GTK3 ribbon authoring UI adapted from RibbonFM under Apache-2.0, with attribution and license in `THIRD_PARTY_NOTICES/`.
+- Windows portable GTK3/PyGObject packaging through MSYS2, with GitHub Actions package and tagged-release workflows.
 - Toolkit-independent Python project model and JSON project persistence.
 - Event Sheets, Objects, Assets and Platform Variants authoring surfaces.
 - Platform-specific asset sources and sparse object-property overrides.

@@ -34,3 +34,18 @@ button.secondary-action:hover { background: #29364a; }
 .field-label { color: #aab6c8; font-size: 11px; font-weight: 700; }
 entry, textview, combobox { color: #ecf0f7; background: #111722; border: 1px solid #344154; border-radius: 7px; padding: 7px; }
 separator { background: #2a3546; }
+
+
+/* RibbonFM-derived GTK3 ribbon, adapted for ImpossibleEngine. */
+.impossible-ribbon { background: #171d28; border-bottom: 1px solid #30394a; }
+.ribbon-top-row { background: #171d28; padding: 3px 8px; }
+.ribbon-switcher button { color: #aeb9cb; background: transparent; border: 1px solid transparent; border-radius: 6px 6px 0 0; padding: 6px 13px; font-weight: 700; }
+.ribbon-switcher button:checked { color: #f2efff; background: #292744; border-color: #46406d; }
+.ribbon-page { background: #1b2230; padding: 5px 6px 2px 6px; }
+.ribbon-group { padding: 3px 8px; }
+.ribbon-group-caption { color: #8795aa; font-size: 10px; font-weight: 700; padding-top: 3px; }
+.ribbon-large-button, .ribbon-small-button, .ribbon-quick-button, .ribbon-collapse-button, .ribbon-file-button { color: #dbe3ef; background: transparent; border: 1px solid transparent; border-radius: 6px; }
+.ribbon-large-button { padding: 5px 7px; }
+.ribbon-small-button, .ribbon-quick-button, .ribbon-collapse-button, .ribbon-file-button { padding: 4px 7px; }
+.ribbon-large-button:hover, .ribbon-small-button:hover, .ribbon-quick-button:hover, .ribbon-collapse-button:hover, .ribbon-file-button:hover { background: #29364a; }
+.ribbon-large-button.checked, .ribbon-small-button.checked { background: #39345d; border-color: #62558e; }

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "impossible-engine"
 version = "0.1.0.dev0"
-description = "Rust-first visual game authoring prototype with GTK 3 Event Sheets"
+description = "Rust-first visual game authoring environment with GTK 3 Ribbon and Event Sheets"
 requires-python = ">=3.10"
 dependencies = []
 

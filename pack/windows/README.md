@@ -40,9 +40,8 @@ GIO, GdkPixbuf and fontconfig paths relative to the extracted directory.
 ## GitHub Actions
 
 - `.github/workflows/windows-package.yml` builds the portable ZIP on pushes,
-  pull requests and manual dispatch, then uploads it as a workflow artifact.
-- `.github/workflows/windows-release.yml` builds the same package for `v*`
-  tags and attaches it to a GitHub Release. It can also be run manually to
+  pull requests and manual dispatch, uploads CI artifacts, and attaches the ZIP
+  to a GitHub Release when a `v*` tag is pushed. It can also be run manually to
   validate packaging without publishing a release.
 
 To publish: push a version tag such as `v0.2.0`. The release workflow uses

@@ -29,8 +29,8 @@ download and inspection.
 
 ## GitHub Releases
 
-`windows-release.yml` runs for tags matching `v*`. It builds the same ZIP
-and attaches it to a GitHub Release using the repository `GITHUB_TOKEN` with
+`windows-package.yml` also handles tags matching `v*`. It builds the ZIP and
+attaches it to a GitHub Release using the repository `GITHUB_TOKEN` with
 `contents: write`. To publish a release, push a version tag, for example:
 
 ```sh

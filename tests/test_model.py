@@ -58,5 +58,18 @@ class PlatformVariantTests(unittest.TestCase):
         self.assertNotIn("extra_fields", serialized)
 
 
+    def test_native_project_format_version_is_validated(self):
+        with self.assertRaisesRegex(ValueError, "Unsupported native project format version"):
+            Project.from_dict({
+                "format": "impossible-engine-project",
+                "projectFormatVersion": 99,
+                "name": "Future Project",
+                "usedAddons": [],
+            })
+
+    def test_used_addons_must_be_an_array_of_objects(self):
+        with self.assertRaisesRegex(ValueError, "usedAddons must be an array"):
+            Project.from_dict({"name": "Invalid", "usedAddons": ["plugin.sprite"]})
+
 if __name__ == "__main__":
     unittest.main()

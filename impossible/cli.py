@@ -79,6 +79,14 @@ def _save_project(project: Project, path: str) -> None:
     save_project(project, path)
 
 
+def _canonical_project_addon_id(entry: dict[str, Any]) -> str:
+    addon_id = str(entry.get("id", ""))
+    kind = str(entry.get("type", entry.get("kind", "")))
+    if addon_id and "." not in addon_id and kind:
+        return f"{kind}.{addon_id.lower().replace(' ', '-')}"
+    return addon_id
+
+
 def _project_summary(project: Project, path: str) -> dict[str, Any]:
     return {
         "path": str(Path(path).expanduser()),
@@ -226,6 +234,41 @@ def _handle_project(args: argparse.Namespace) -> int:
 
 def _handle_addons(args: argparse.Namespace) -> int:
     registry = AddonRegistry.load(args.registry, args.third_party_dir)
+    if args.addon_action == "list" and args.project:
+        project = _load_project(args.project)
+        rows = []
+        for entry in project.used_addons:
+            addon_id = _canonical_project_addon_id(entry)
+            try:
+                addon = registry.get(addon_id)
+                name, kind, category = addon.name, addon.kind, addon.category
+                origin, available = registry.origin(addon_id), True
+            except KeyError:
+                name = str(entry.get("name", addon_id))
+                kind = str(entry.get("type", entry.get("kind", "unknown")))
+                category, origin, available = "", "missing", False
+            if args.kind and kind != args.kind:
+                continue
+            if args.category and category.casefold() != args.category.casefold():
+                continue
+            if args.search and args.search.casefold() not in (addon_id + " " + name).casefold():
+                continue
+            rows.append({
+                "id": addon_id, "name": name, "kind": kind, "category": category,
+                "bundled": bool(entry.get("bundled", False)), "origin": origin,
+                "available": available,
+            })
+        result = {
+            "project": str(Path(args.project).expanduser()),
+            "count": len(rows),
+            "addons": rows,
+        }
+        _emit(result if args.format == "json" else rows, args.format, [
+            ("id", "ID"), ("kind", "TYPE"), ("name", "NAME"),
+            ("bundled", "BUNDLED"), ("origin", "ORIGIN"), ("available", "AVAILABLE"),
+        ])
+        return 0
+
     if args.addon_action == "list":
         addons = registry.search(args.search or "", kind=args.kind)
         if args.category:
@@ -392,6 +435,86 @@ def _handle_assets(args: argparse.Namespace) -> int:
     return 0
 
 
+RESOURCE_INDEX_KINDS = {
+    "object-type": "objectTypes",
+    "family": "families",
+    "layout": "layouts",
+    "event-sheet": "eventSheets",
+    "timeline": "timelines",
+    "flowchart": "flowcharts",
+    "3d-model": "3dmodels",
+    "palette": "palettes",
+    "tilemap-brush": "tilemapBrushes",
+}
+
+
+def _walk_index_items(node: Any, kind: str, folder: str = "") -> list[dict[str, Any]]:
+    """Flatten an ordered project-index folder tree without discarding its path."""
+    if not isinstance(node, dict):
+        return []
+    rows: list[dict[str, Any]] = []
+    items = node.get("items", [])
+    if isinstance(items, list):
+        for item in items:
+            if isinstance(item, dict):
+                name = str(item.get("name", item.get("id", item.get("fileName", "Untitled"))))
+                row = {"kind": kind, "name": name, "folder": folder, "metadata": item}
+            else:
+                row = {"kind": kind, "name": str(item), "folder": folder}
+            rows.append(row)
+    children = node.get("subfolders", [])
+    if isinstance(children, list):
+        for child in children:
+            if not isinstance(child, dict):
+                continue
+            child_name = str(child.get("name", ""))
+            child_folder = "/".join(part for part in (folder, child_name) if part)
+            rows.extend(_walk_index_items(child, kind, child_folder))
+    return rows
+
+
+def _handle_resources(args: argparse.Namespace) -> int:
+    project = _load_project(args.project)
+    rows: list[dict[str, Any]] = []
+    for kind, key in RESOURCE_INDEX_KINDS.items():
+        rows.extend(_walk_index_items(project.extra_fields.get(key), kind))
+    root_folders = project.extra_fields.get("rootFileFolders", {})
+    if isinstance(root_folders, dict):
+        for kind in ("script", "sound", "music", "video", "font", "icon", "file"):
+            rows.extend(_walk_index_items(root_folders.get(kind), kind))
+
+    # Include resources from the current GTK editor model as well as index-based projects.
+    for kind, collection in (
+        ("asset", project.assets),
+        ("object-type", project.objects),
+        ("layout", project.layouts),
+        ("event-sheet", project.event_sheets),
+    ):
+        for item in collection:
+            rows.append({
+                "kind": kind, "name": item.name, "folder": "",
+                "id": item.id,
+            })
+
+    if args.kind:
+        rows = [row for row in rows if row["kind"] == args.kind]
+    if args.search:
+        needle = args.search.casefold()
+        rows = [
+            row for row in rows
+            if needle in (row.get("name", "") + " " + row.get("folder", "")).casefold()
+        ]
+    result = {
+        "project": str(Path(args.project).expanduser()),
+        "count": len(rows),
+        "resources": rows,
+    }
+    _emit(result if args.format == "json" else rows, args.format, [
+        ("kind", "TYPE"), ("name", "NAME"), ("folder", "FOLDER"), ("id", "ID"),
+    ])
+    return 0
+
+
 def _handle_platforms(args: argparse.Namespace) -> int:
     rows = [{
         "id": item.id, "name": item.name, "family": item.family,
@@ -455,6 +578,7 @@ def build_parser() -> argparse.ArgumentParser:
     addon_list.add_argument("--category")
     addon_list.add_argument("--search")
     addon_list.add_argument("--include-deprecated", action="store_true")
+    addon_list.add_argument("--project", help="List the add-ons selected in this project instead of the full catalogue.")
     addon_list.add_argument("--registry", help="Path to an alternate built-in registry JSON file.")
     addon_list.add_argument("--third-party-dir", help="Directory containing third-party addon.json packages (default: ./add-ons).")
     _format_option(addon_list)
@@ -542,6 +666,19 @@ def build_parser() -> argparse.ArgumentParser:
     variant_source.add_argument("--clear", action="store_true", help="Remove the explicit variant and use fallback resolution.")
     _format_option(asset_variant, "json")
     asset_variant.set_defaults(handler=_handle_assets)
+
+    resources = commands.add_parser("resources", help="Inspect indexed project resources.")
+    resource_commands = resources.add_subparsers(dest="resources_action", required=True)
+    resource_list = resource_commands.add_parser("list", help="List resources from the project index and editor model.")
+    resource_list.add_argument("--project", required=True)
+    resource_list.add_argument("--kind", choices=(
+        "object-type", "family", "layout", "event-sheet", "timeline",
+        "flowchart", "3d-model", "palette", "tilemap-brush",
+        "script", "sound", "music", "video", "font", "icon", "file", "asset",
+    ))
+    resource_list.add_argument("--search")
+    _format_option(resource_list)
+    resource_list.set_defaults(handler=_handle_resources)
 
     platforms = commands.add_parser("platforms", help="List supported target profiles.")
     _format_option(platforms)

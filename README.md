@@ -34,7 +34,9 @@ impossible --help
 impossible addons list --kind behavior --format json
 impossible addons show plugin.sprite
 impossible addons add plugin.sprite --project ./MyProject.ieproj
+impossible addons list --project ./MyProject.ieproj --format json
 impossible events list --project ./MyProject.ieproj
+impossible resources list --project ./MyProject.ieproj --kind event-sheet
 impossible project validate --project ./MyProject.ieproj --format json
 ```
 

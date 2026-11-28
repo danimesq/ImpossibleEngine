@@ -146,8 +146,12 @@ class Project:
         version = raw.get("schema_version", 1)
         if version != 1:
             raise ValueError(f"Unsupported project schema: {version}")
+        def model_list(name: str) -> list[Any]:
+            value = raw.get(name, [])
+            return value if isinstance(value, list) else []
+
         sheets = []
-        for item in raw.get("event_sheets", []):
+        for item in model_list("event_sheets"):
             events = [Event(**event) for event in item.get("events", [])]
             sheets.append(EventSheet(
                 id=str(item["id"]),
@@ -158,17 +162,26 @@ class Project:
                 groups=list(item.get("groups", [])),
             ))
         known_fields = {
-            "name", "schema_version", "active_platform", "event_sheets",
-            "assets", "objects", "layouts", "usedAddons", "used_addons",
-            "metadata",
+            "name", "schema_version", "active_platform", "usedAddons", "used_addons",
         }
+        # Canonical project indexes use object trees under keys such as "layouts".
+        # Only claim fields that match the inline editor model; preserve all others.
+        known_fields.update(
+            key for key in ("event_sheets", "assets", "objects", "layouts")
+            if key not in raw or isinstance(raw[key], list)
+        )
+        if "metadata" not in raw or isinstance(raw["metadata"], dict):
+            known_fields.add("metadata")
+        used_addons_raw = raw.get("usedAddons", raw.get("used_addons", []))
+        if not isinstance(used_addons_raw, list):
+            raise ValueError("usedAddons must be a JSON array.")
         project = cls(
             name=str(raw.get("name", "Untitled Project")),
             schema_version=1,
             active_platform=str(raw.get("active_platform", "pc-modern")),
             event_sheets=sheets,
-            assets=[Asset(**item) for item in raw.get("assets", [])],
-            objects=[GameObject(**item) for item in raw.get("objects", [])],
+            assets=[Asset(**item) for item in model_list("assets")],
+            objects=[GameObject(**item) for item in model_list("objects")],
             layouts=[
                 Layout(
                     id=str(item["id"]),
@@ -178,12 +191,10 @@ class Project:
                     instances=[ObjectInstance(**instance) for instance in item.get("instances", [])],
                     properties=dict(item.get("properties", {})),
                 )
-                for item in raw.get("layouts", [])
+                for item in model_list("layouts")
             ],
-            used_addons=[
-                dict(item) for item in raw.get("usedAddons", raw.get("used_addons", []))
-            ],
-            metadata=dict(raw.get("metadata", {})),
+            used_addons=[dict(item) for item in used_addons_raw],
+            metadata=dict(raw.get("metadata", {})) if isinstance(raw.get("metadata", {}), dict) else {},
             extra_fields={key: value for key, value in raw.items() if key not in known_fields},
         )
         if project.active_platform not in PROFILE_BY_ID:

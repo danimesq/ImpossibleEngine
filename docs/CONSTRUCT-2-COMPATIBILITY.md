@@ -29,6 +29,7 @@ The left column is the legacy C2 plugin identifier. The right column lists the g
 | `AJAX` | `plugin.http` |
 | `AdvTextBox` | `plugin.advanced-text-input` |
 | `Audio` | `plugin.audio` |
+| `CJSAds` | `plugin.advertising` (banner placement through a provider adapter) |
 | `Browser` | `plugin.browser` + `plugin.haptics` |
 | `Button` | `plugin.button-control` |
 | `C2WebSocket` | `plugin.websocket` |
@@ -36,8 +37,11 @@ The left column is the legacy C2 plugin identifier. The right column lists the g
 | `CSS_import` | `plugin.css-styles` |
 | `Clock` | `plugin.clock` |
 | `Function` | `plugin.function` |
+| `gamepad` | `plugin.gamepad` |
+| `googleplay` | `plugin.game-services` (provider-neutral identity, achievements and leaderboards) |
 | `HTML_iFrame_Pode` | `plugin.embedded-frame` |
 | `Keyboard` | `plugin.keyboard` |
+| `LocalStorage` | `plugin.storage` |
 | `Mouse` | `plugin.mouse` |
 | `SVGCanvas` | `plugin.svg-canvas` |
 | `Sprite` | `plugin.sprite` + common `plugin.object` |
@@ -45,6 +49,7 @@ The left column is the legacy C2 plugin identifier. The right column lists the g
 | `TextBox` | `plugin.text-input` |
 | `TiledBg` | `plugin.tiled-background` |
 | `Touch` | `plugin.touch` |
+| `UserMedia` | `plugin.user-media` + `plugin.text-to-speech` |
 | `WebStorage` | `plugin.storage` |
 | `XML` | `plugin.xml` |
 | `hmmg_layoutTransition` | `plugin.layout-transition` |
@@ -58,6 +63,9 @@ The generic controls are intentionally distinct add-ons. A button, text input, a
 
 | Legacy behavior/effect | ImpossibleEngine add-on | Compatibility requirements |
 |---|---|---|
+| `Anchor` | `behavior.anchor` |
+| `Car` | `behavior.car-movement` |
+| `bound` | `behavior.bound-to-layout` |
 | `EightDir` | `behavior.eight-direction` | Direction modes, default/custom controls, simulated controls, speed, acceleration, deceleration, enable/disable, direction and speed queries |
 | `Fade` | `behavior.fade` | Activate-at-start, fade-in/wait/fade-out phases, destroy-after-fade, stage-completion triggers, restart/start and timing setters |
 | `Persist` | `behavior.persist` | Retain instance state, instance variables, created/destroyed state and identity while changing layouts |
@@ -65,9 +73,34 @@ The generic controls are intentionally distinct add-ons. A button, text input, a
 | `Platform` | `behavior.platform` | Ground/fall/jump state, jump trigger, simulated controls, max speed, jump strength, acceleration/deceleration, gravity and input enablement |
 | `scrollto` | `behavior.scroll-to` | Center/follow target, enable/disable and camera shake |
 | `solid` | `behavior.solid` | Solid enabled state, enable/disable and collision response |
+| `overlay` | `effect.blend-mode` |
 | `swirl` | `effect.swirl` | Radial distortion with editable center, radius, angle and quality |
 
 Behaviors are attached to object types and extend the object's ACE list and Properties Bar. They are not independent gameplay modules or hard-coded rules. This matches the C2 behavior model.
+
+## 🌈 3A. Additional 2D interaction and platform capability profile
+
+The native catalogue covers a broad, source-independent set of capabilities that commonly appear together in 2D projects. No source project identity, per-game rules, artwork or game-specific project container is part of this profile.
+
+| Capability family | Native contract |
+|---|---|
+| Arcade vehicle movement | Dedicated `behavior.car-movement`, separate from general vehicle dynamics; signed speed, acceleration/deceleration, steering, drift recovery, friction and simulated controls |
+| Viewport anchoring | `behavior.anchor` with enabled state, viewport-edge constraints and margins; anchoring is resolved against the viewport rather than the scrolling world |
+| Layout bounds | `behavior.bound-to-layout` supports edge-based and origin-based bounds |
+| Solid response | `behavior.solid` exposes collision participation and enabled state; simple solid contacts remain distinct from rigid-body physics |
+| Repeating textures | Tiled surfaces support texture offset/scale, source dimensions and asynchronous URI-backed image replacement |
+| Speech | `plugin.text-to-speech` supports language, voice URI, volume, rate, pitch and utterance lifecycle; `plugin.user-media` separately covers speech recognition and capture |
+| Banner advertising | `plugin.advertising` exposes banner-specific show/hide/position operations alongside generic interstitial and rewarded placements |
+| Game services | `plugin.game-services` provides asynchronous player identity, authentication, achievement and leaderboard contracts without binding projects to one provider |
+| Input | Keyboard, pointer, touch and gamepad inputs can be normalized into semantic actions while retaining raw device-specific state and analog values |
+| Event execution | OR condition blocks, groups, includes, global/instance variables, trigger-once state and non-blocking Wait continuations |
+| Presentation | Sprite animations, per-frame durations, hotspots, collision polygons, text/font properties, blend modes, layers, z-order and per-instance transforms |
+
+These contracts describe capabilities, not a sample game. They belong in reusable add-ons, runtime services, platform adapters and anonymous conformance fixtures. Do not create one native project file per reference title.
+
+The arcade movement behavior is intentionally distinct from generic 3D or rigid-body vehicle dynamics. It models a controllable 2D object with forward speed, steering and drift state. Its movement system consumes collision contacts from the shared collision world and must remain deterministic under the configured simulation delta policy.
+
+Platform services are asynchronous. Authentication, profile, achievement, leaderboard, speech, media and advertising results re-enter the Event Sheet scheduler through typed completion/failure events. A request must not block a simulation tick or report success before its host adapter confirms the operation.
 
 ## 🌈 4. Event-sheet ACE compatibility
 
@@ -85,6 +118,10 @@ The following are the source-observed ACE operations that the importer/compiler 
 |---|---|
 | HTTP/AJAX | Request URL and completion trigger, with response data and request tag available to expressions |
 | Audio | Play, play by name, play at object, set listener object, stop, stop all, and playing-state query |
+| User Media / speech | Camera and microphone permission lifecycle, capture stop/frame, speech recognition lifecycle and transcript values; synthesis is provided by the separate Text-to-Speech contract |
+| Game services | Sign-in lifecycle, player profile, achievement metadata/progression, leaderboard requests/submission and indexed results |
+| Advertising | Banner lifecycle and visibility/position operations alongside interstitial and rewarded placements |
+| Tiled Background | Repeating texture transform, source dimensions and asynchronous image-URL loading |
 | Browser/platform | Online state, went-online/went-offline triggers and vibration |
 | Sprite | Set animation, set mirrored, animation completion, frame changes, collision geometry and common transforms |
 | Text | Set text, set web font, text measurement |
@@ -136,6 +173,14 @@ The audited project snapshot contains third-party extension identifiers, but it 
 - [XML](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/xml)
 - [Function](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/function)
 - [Touch](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/touch)
+- [User Media](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/user-media)
+- [Google Play](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/google-play)
+- [Tiled Background](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/tiled-background)
+- [Car behavior](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/car)
+- [Anchor behavior](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/anchor)
+- [Bound to Layout behavior](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/bound-layout)
+- [Scroll To behavior](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/scroll)
+- [Solid behavior](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/solid)
 - [Browser](https://www.construct.net/en/construct-2/manuals/construct-2/plugin-reference/browser)
 - [Persist](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/persist)
 - [Platform](https://www.construct.net/en/construct-2/manuals/construct-2/behavior-reference/platform)

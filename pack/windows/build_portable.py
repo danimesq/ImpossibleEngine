@@ -77,6 +77,17 @@ endlocal
     env = os.environ.copy()
     env["PATH"] = str(stage / "runtime" / "bin") + os.pathsep + env.get("PATH", "")
     env["PYTHONPATH"] = str(stage / "app")
+    env["GI_TYPELIB_PATH"] = str(stage / "runtime" / "lib" / "girepository-1.0")
+    env["GTK_EXE_PREFIX"] = str(stage / "runtime")
+    env["GTK_DATA_PREFIX"] = str(stage / "runtime")
+    env["XDG_DATA_DIRS"] = str(stage / "runtime" / "share")
+    # Import GTK from the staged runtime before creating the distributable ZIP.
+    subprocess.run(
+        [str(python), "-c",
+         "import gi; gi.require_version('Gtk', '3.0'); from gi.repository import Gtk; print(Gtk.get_major_version(), Gtk.get_minor_version())"],
+        check=True,
+        env=env,
+    )
     subprocess.run(
         [str(python), "-m", "compileall", "-q", str(stage / "app" / "impossible")],
         check=True,

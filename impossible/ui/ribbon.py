@@ -174,6 +174,9 @@ class Ribbon:
         self._pages: dict[str, Gtk.Box] = {}
         self._collapsed = False
         self._collapse_button: Optional[Gtk.ToggleButton] = None
+        self._zoom = 1.0
+        self._stack.add_events(Gdk.EventMask.SCROLL_MASK)
+        self._stack.connect("scroll-event", self._on_scroll)
 
     def build(self, with_quick_access: bool = True) -> None:
         """Populate the stack and quick-access bar."""
@@ -277,6 +280,30 @@ class Ribbon:
         self._stack.set_visible(not self._collapsed)
         if self._on_collapse:
             self._on_collapse(self._collapsed)
+
+    def _on_scroll(self, _widget, event) -> bool:
+        """Ctrl+wheel scales the ribbon's iconography and vertical footprint."""
+        if not (event.state & Gdk.ModifierType.CONTROL_MASK):
+            return False
+        if event.direction == Gdk.ScrollDirection.UP:
+            factor = 1.1
+        elif event.direction == Gdk.ScrollDirection.DOWN:
+            factor = 0.9
+        else:
+            return False
+        self._zoom = min(1.6, max(0.7, self._zoom * factor))
+        self._stack.set_size_request(-1, int(92 * self._zoom))
+        for page in self._stack.get_children():
+            self._scale_images(page)
+        return True
+
+    def _scale_images(self, widget) -> None:
+        """Apply the current zoom to ribbon icons without changing action data."""
+        if isinstance(widget, Gtk.Image):
+            widget.set_pixel_size(max(16, int(32 * self._zoom)))
+        if hasattr(widget, "get_children"):
+            for child in widget.get_children():
+                self._scale_images(child)
 
     @property
     def collapsed(self) -> bool:

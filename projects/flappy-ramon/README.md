@@ -2,28 +2,37 @@
 
 **Source:** [danimesq/Flappy-Ramon](https://github.com/danimesq/Flappy-Ramon)  
 **Original project:** Flappy Madruga, legacy visual-editor, version 0.6.1.6  
-**Port status:** First native Rust implementation is in progress. The source project is mapped directly; a general-purpose the source editor importer is not part of this round.
+**Port status:** A source-pinned ImpossibleEngine project can be opened, validated and compiled to a headless Rust gameplay library. This is a project-specific Construct 2 adapter, not a general-purpose legacy project importer.
 
-## Run
+## Open and compile with ImpossibleEngine
 
-From this directory:
+From the repository root:
 
-    cargo run
+    python -m impossible
 
-The default launch opens the original Start screen. You can also launch a gameplay layout directly for testing:
+Open `projects/flappy-ramon/Flappy-Madruga.ieproj` in the editor. The native project contains all five source Event Sheets, ten object types, three layouts and twenty placed instances, source provenance, and the pinned Construct 2 snapshots. The GTK workspace exposes the imported scenes in its Layouts page.
 
-    cargo run -- --layout=continuous
-    cargo run -- --layout=chaves
+Validate the original source and project mapping:
 
-Run the platform-neutral gameplay and collision tests:
+    python -m impossible.compiler validate --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
 
-    cargo test
+Compile the headless gameplay motor:
 
-Build an optimized native executable:
+    python -m impossible.compiler compile --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
 
-    cargo build --release
+The compiler validates every source Event Sheet against the pinned XML, generates the typed Rust source-event table, runs the Rust workspace tests, and builds the optimized `flappy-madruga` library. Graphics are deliberately not part of this target.
 
-## Controls
+The editor can also open the project directly:
+
+    impossible
+
+## Optional legacy preview controls
+
+The GTK editor and the headless compiler do not open a game window. For the existing Macroquad preview only (not the Foundation graphics host), run:
+
+    cargo run -p flappy-madruga --features graphics -- --layout=continuous
+    cargo run -p flappy-madruga --features graphics
+
 
 - Start: click Continuous Play or press Enter.
 - Flap: touch anywhere in the game viewport, click, or press Space.
@@ -31,7 +40,7 @@ Build an optimized native executable:
 
 The viewport preserves the original 400 × 500 portrait layout using letterbox scaling.
 
-## What is implemented in the first native slice
+## Headless logic target
 
 - Start, Continuous and Chaves layout states.
 - Source layout-start variables and design-time pipe destruction.
@@ -46,7 +55,13 @@ The viewport preserves the original 400 × 500 portrait layout using letterbox s
 - Music, beat and Queda audio effect adapters, pending the original sound files.
 - Explicit policy for Google Play sign-in (offline fallback until an Android SDK client is configured).
 
-The actual source-event-to-Rust map is in event-sheets/source-coverage.json. Layout, object, behavior, variable and animation source data is in source-model.json. These are manually transcribed source references, not output from a generic importer.
+The source-event map is in event-sheets/source-coverage.json. The immutable original project, all five Event Sheets and all three layouts are pinned under source/legacy-construct2/ at revision aab10559cea2d1283eafa2a8792aaf877cbffcf5. The compiler compares the source XML, source model, coverage map and native .ieproj before generating the Rust binding table. This is an explicit adapter for this one project, not a generic Construct 2 importer.
+
+## Graphics and assets
+
+The default Impossible compile target is headless and does not depend on Macroquad or open a window. Rendering and presentation through RustMultiConsoleFoundation are deferred. The existing Macroquad display/audio host remains available only as an optional legacy preview via `cargo run -p flappy-madruga --features graphics`; it is not the Foundation graphics integration. The planned Foundation boundary is `foundation-runtime::RuntimeHost` with `Sdl3Host` for native SDL3 and `Canvas2dHost` for the current browser Canvas 2D host. The game will emit Foundation-neutral `DrawCommand`/`FrameOutput` and semantic `AudioRequest` values; no Foundation dependency is linked in this headless logic build.
+
+Original media bytes are still pending. The logic build does not claim visual or audio asset completeness.
 
 ## Assets
 
@@ -65,13 +80,10 @@ See asset-placeholders.json for the complete source-to-destination media list.
 
 ## Validation status
 
-**Native and WebAssembly CI validation passed** on GitHub Actions run #45 (Ubuntu 24.04):
+The headless Impossible compiler has a dedicated GitHub Actions workflow that validates the pinned source, generates bindings, runs runtime/gameplay tests and builds the optimized logic library. The optional legacy preview has a separate graphics-enabled CI path.
 
-- 17 gameplay/geometry tests passed.
-- Optimized native desktop executable built successfully.
-- The `wasm32-unknown-unknown` game binary compiled successfully.
-- The Bash web packaging script passed `bash -n`.
+The source differential test against a running original Construct 2 build, original media population (12 media groups), Google Play SDK setup, and Foundation renderer/audio-host integration remain acceptance items.
 
-This validates compilation for both targets, not yet source-level behavior equivalence or real-browser execution.
+**Headless validation passed in CI:** 27 Python tests and 23 Rust tests passed; the source-pinned importer validated all 32 event SIDs and all 20 placed instances across the three layouts, and the optimized logic library compiled. The separate optional preview CI also built the Macroquad native desktop and WebAssembly targets. These checks prove source mapping consistency and compilation, not differential equivalence with a live Construct 2 build or visual/browser parity.
 
-The browser package still needs the matching Macroquad/miniquad and quad-storage JavaScript vendor files. Browser instantiation, storage behavior and touch/audio testing remain separate acceptance steps.
+The Macroquad browser package still needs its matching JavaScript vendor files. Foundation browser presentation is a separate future integration.

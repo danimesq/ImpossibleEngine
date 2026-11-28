@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Start events</name>
+    <events>
+        <event-block sid="868568479922385">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="3318456231271194" type="System" />
+            </conditions>
+            <actions>
+                <action id="33" name="Stop all" sid="7654601515722004" type="Audio" />
+            </actions>
+        </event-block>
+        <event-block any="1" sid="8450924142424696">
+            <conditions>
+                <condition id="0" name="On clicked" sid="8769507891639029" type="Play_Continuous" />
+                <condition id="0" name="On key pressed" sid="6893834684523622" type="Keyboard">
+                    <param id="0" name="Key">13 (Return)</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="6960960697050587">
+                    <conditions>
+                        <condition id="-32" name="Is on platform" sid="2289900176152187" type="System">
+                            <param id="0" name="Platform">2</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Sign in" sid="4183695676469353" type="GooglePlay" />
+                    </actions>
+                </event-block>
+                <event-block sid="3050908862004944">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="1472961049540363" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-2" name="Go to layout" sid="8274241155977741" type="System">
+                            <param id="0" name="Layout">Continuous</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block sid="2086025640003727">
+            <conditions>
+                <condition id="2" name="On signed in" sid="2688469047862018" type="GooglePlay" />
+            </conditions>
+            <actions>
+                <action id="-2" name="Go to layout" sid="1321255376915732" type="System">
+                    <param id="0" name="Layout">Continuous</param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>

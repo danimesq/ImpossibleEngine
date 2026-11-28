@@ -2,6 +2,7 @@
 
 ## Engine architecture
 - [Add-on system and built-in feature catalogue](ADDON-SYSTEM.md)
+- [Runtime implementation roadmap](RUNTIME-IMPLEMENTATION-ROADMAP.md)
 - [ImpossibleEngine project format](PROJECT-FORMAT.md)
 - [Typed Event Sheets: JSON to native Rust](EVENT-SHEETS-JSON-TO-RUST.md)
 - [Game import and migration strategy](GAME-IMPORT-AND-MIGRATION.md)

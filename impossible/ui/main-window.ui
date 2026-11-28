@@ -78,6 +78,7 @@
                   </object>
                 </child>
                 <child><object class="GtkButton" id="nav_events"><property name="visible">True</property><property name="label">Event Sheets</property><property name="relief">none</property><style><class name="nav-button"/><class name="active"/></style></object></child>
+                <child><object class="GtkButton" id="nav_layouts"><property name="visible">True</property><property name="label">Layouts</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
                 <child><object class="GtkButton" id="nav_objects"><property name="visible">True</property><property name="label">Objects</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
                 <child><object class="GtkButton" id="nav_assets"><property name="visible">True</property><property name="label">Assets</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>
                 <child><object class="GtkButton" id="nav_platforms"><property name="visible">True</property><property name="label">Platform Variants</property><property name="relief">none</property><style><class name="nav-button"/></style></object></child>

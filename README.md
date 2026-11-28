@@ -11,8 +11,12 @@ platform-independent project data, and interchangeable runtime adapters.
 - Built-in add-on registry with typed plugin ACEs, reusable behaviors, effect
   descriptors, picker categories and icon references.
 
-The Event Sheet GUI remains a prototype. The registry prepares the metadata
-needed by future authoring dialogs, but does not claim runtime execution.
+The Event Sheet GUI remains a prototype. The built-in registry is still
+specification-only as a general catalogue, but the Flappy Madruga project is
+now a source-pinned vertical slice: Impossible can open its native `.ieproj`,
+validate all five original Event Sheets, generate typed Rust source bindings,
+run its headless gameplay tests, and build the logic library. This does not
+claim that all catalogue ACEs or arbitrary Construct projects are executable.
 
 ## Add-on registry
 The canonical built-in catalogue is `addons/builtin-v1.json`, validated by
@@ -22,6 +26,20 @@ typed parameters and runtime status. See [docs/ADDON-SYSTEM.md](docs/ADDON-SYSTE
 
 All current add-ons are marked specification-only until runtime code,
 platform adapters and conformance tests exist.
+
+## Flappy Madruga: first compiled project
+
+Open `projects/flappy-ramon/Flappy-Madruga.ieproj` in the editor.
+
+Validate its pinned source and import map:
+
+    python -m impossible.compiler validate --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
+
+Compile its headless Rust gameplay motor:
+
+    python -m impossible.compiler compile --project projects/flappy-ramon/Flappy-Madruga.ieproj --target logic
+
+The compiler checks the original source revision, all 32 source event IDs, source order, includes, groups, three layouts and twenty placed instances. The GTK editor exposes those layouts in its Layouts page. It generates Rust source-event bindings, runs workspace tests and builds the optimized gameplay library. Renderer and presentation integration with RustMultiConsoleFoundation are deferred; the old Macroquad preview is an optional feature, not the engine's graphics backend.
 
 ## GUI stack
 - GTK 3

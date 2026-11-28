@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Continuous events</name>
+    <events>
+        <include>Common in-game</include>
+        <variable constant="0" name="Layout_Name" sid="2694300333816315" static="0" type="text"></variable>
+    </events>
+</c2eventsheet>

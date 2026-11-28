@@ -3,6 +3,31 @@
 **Status:** Architecture proposal and reference fixture, 2026-11-25.  
 **Implementation status:** The editor currently persists project schema version 1 and text-based Event Sheet rows. The typed Event Sheet format, schema, importer, semantic IR, Rust generator and build integration below are proposals, not implemented compiler features.
 
+## Implementation note: project-specific Flappy vertical slice
+
+A source-specific exception to the proposal-only status now exists on the
+`docs/executable-runtime-roadmap` branch:
+
+- `projects/flappy-ramon/Flappy-Madruga.ieproj` is a native project container
+  holding all five imported Event Sheets, ten object types, three layouts,
+  twenty placed instances, and pinned Construct 2 source snapshots.
+- `impossible.compiler` validates the pinned XML, all 32 source event SIDs,
+  event order, includes, groups, layout order, instance UIDs and geometry,
+  variables, behavior properties and text against the normalized project.
+- A source-specific SID-to-Rust handler table is generated at
+  `projects/flappy-ramon/src/generated/source_events.rs`.
+- `crates/impossible-runtime` supplies the shared timing, wait-queue,
+  deterministic RNG and source-binding primitives used by the Flappy logic
+  library. The default build is headless and compiles the gameplay library.
+
+This is deliberately **not** the generic typed ACE compiler described below:
+it does not yet translate arbitrary catalogue ACE IDs into a general typed
+Event Sheet IR, and it does not make all 640 catalogue ACEs executable. The
+Flappy adapter is project-specific and preserves the source event inventory
+through explicit Rust handlers. Renderer integration via
+RustMultiConsoleFoundation and source-vs-original differential testing remain
+separate acceptance work.
+
 ## 1. The central decision
 
 ImpossibleEngine can use JSON as a declarative gameplay authoring language and still ship a normally compiled Rust game.

@@ -216,20 +216,25 @@ def add_project_addon(project: Project, addon_id: str, registry: Any) -> list[st
 
 
 def remove_project_addon(project: Project, addon_id: str, registry: Any) -> bool:
-    """Remove a project add-on unless another active add-on depends on it."""
-    target = registry.get(addon_id)
-    active_entries = [
-        item for item in project.used_addons
-        if _canonical_addon_id(item) in registry.ids()
-    ]
-    active_ids = {_canonical_addon_id(item) for item in active_entries}
+    """Remove a selected add-on, even if its third-party package is now missing."""
+    active_ids = {_canonical_addon_id(item) for item in project.used_addons}
     if addon_id not in active_ids:
         return False
 
+    try:
+        target = registry.get(addon_id)
+    except KeyError:
+        target = None
+
     for other_id in sorted(active_ids - {addon_id}):
-        other = registry.get(other_id)
+        try:
+            other = registry.get(other_id)
+        except KeyError:
+            continue
         for requirement in other.requires:
-            if requirement == addon_id or requirement in target.provides:
+            if requirement == addon_id or (
+                target is not None and requirement in target.provides
+            ):
                 raise ValueError(
                     f"Cannot remove {addon_id}: {other_id} depends on it. "
                     f"Remove {other_id} first."
@@ -237,6 +242,6 @@ def remove_project_addon(project: Project, addon_id: str, registry: Any) -> bool
 
     project.used_addons = [
         item for item in project.used_addons
-        if _canonical_addon_id(item) != target.id
+        if _canonical_addon_id(item) != addon_id
     ]
     return True

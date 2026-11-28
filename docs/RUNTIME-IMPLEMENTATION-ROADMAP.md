@@ -11,16 +11,16 @@ The current `main` catalogue contains:
 
 | Catalogue item | Count |
 |---|---:|
-| Plugins | 40 |
-| Behaviors | 31 |
-| Effects | 43 |
-| Conditions | 204 |
-| Actions | 282 |
-| Expressions | 154 |
-| **Total ACEs** | **640** |
-| **Total add-ons** | **114** |
+| Plugins | 51 |
+| Behaviors | 32 |
+| Effects | 44 |
+| Conditions | 254 |
+| Actions | 386 |
+| Expressions | 210 |
+| **Total ACEs** | **850** |
+| **Total add-ons** | **127** |
 
-All 114 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
+All 127 add-ons currently declare `implementation.status = specification_only` and `engine_runtime = false`.
 
 The Python `impossible.addons` module validates the catalogue, IDs, parameter metadata, categories, dependencies and presentation contracts. It does not compile an Event Sheet or execute an ACE.
 
@@ -56,7 +56,7 @@ library has compiled. Separate optional preview checks also compile the legacy
 Macroquad desktop and WebAssembly hosts.
 
 This vertical slice is **specific to Flappy Madruga**, not a generic importer
-or the universal 640-ACE compiler. The game logic is still a source-specific
+or the universal 850-ACE compiler. The game logic is still a source-specific
 Rust implementation linked to its 32 event SIDs; it does not yet lower
 arbitrary registry ACEs into a generic typed Event Sheet IR. The original
 media (12 groups), live source differential testing and Android Google Play
@@ -82,6 +82,12 @@ canvas, texture/device and presentation lifecycle. Do not link the existing
 Macroquad preview as if it were the Foundation adapter.
 
 ## 🌈 2. What the Construct references teach us
+
+The source-observed legacy plugin/behavior/effect map and the current
+compatibility declarations are tracked in
+[CONSTRUCT-2-COMPATIBILITY.md](CONSTRUCT-2-COMPATIBILITY.md). The expanded
+catalogue remains a specification until each ACE has runtime wiring and
+conformance coverage.
 
 ### 🌈 C2-Clock-Addon
 
@@ -318,7 +324,7 @@ The intended path is:
 5. Code generation emits normal Rust calls or statically dispatched operation identifiers. The game must not perform string-based ACE discovery or parse the registry on every frame.
 6. The runtime executes the operation and reports typed results, triggers or diagnostics to the scheduler.
 
-### 🌈 Explicit backlog: universal 640-ACE compiler/runtime
+### 🌈 Explicit backlog: universal 850-ACE compiler/runtime
 
 This is a committed next-phase roadmap item, not an informal future note.
 The Flappy vertical slice must not be mistaken for completion of this work.
@@ -347,7 +353,7 @@ Sprite/object operations; one simple behavior end-to-end; then expand by
 capability and target. This generalizes the compiler rather than adding more
 project-only handlers.
 
-Acceptance is not “640 rows have a Rust function name”. Every enabled ACE
+Acceptance is not “850 rows have a Rust function name”. Every enabled ACE
 must type-check, lower, execute and pass conformance tests. Until then the
 catalogue remains specification-only where applicable.
 
@@ -398,7 +404,7 @@ The core must not own a windowing toolkit, audio device, camera API, HTTP stack,
 
 The compiler and runtime should share typed operation definitions, but the runtime must not depend on GTK or on the Python editor. Python remains a replaceable authoring frontend.
 
-## 🌈 5. Turn the 31 behaviors into executable systems
+## 🌈 5. Turn the 32 behaviors into executable systems
 
 Do not create 31 isolated crates or 31 unrelated update loops. Implement shared subsystems, then attach behavior-specific configuration and per-instance state to them.
 

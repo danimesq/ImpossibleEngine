@@ -18022,7 +18022,7 @@
           "returns": "string"
         },
         {
-          "id": "plugin.audio.is_tag_playing",
+          "id": "plugin.audio.tag_is_playing",
           "name": "Is tag playing",
           "description": "Is tag playing",
           "execution": "pure",
@@ -18042,7 +18042,7 @@
             "description": "Is tag playing",
             "category_id": "audio",
             "category_label": "Audio",
-            "language_key": "ace.plugin.audio.is_tag_playing",
+            "language_key": "ace.plugin.audio.tag_is_playing",
             "markers": [],
             "flags": {
               "trigger": false,
@@ -24692,24 +24692,22 @@
       ],
       "conditions": [
         {
-          "id": "plugin.layout-transition.on_transition_ended",
+          "id": "plugin.layout-transition.is_transition_ended",
           "name": "Is transition ended",
-          "description": "True when the current layout transition has ended.",
-          "execution": "trigger",
+          "description": "Checks whether the current layout transition has ended.",
+          "execution": "predicate",
           "parameters": [],
           "selection": "picked_instances",
           "ui": {
             "list_name": "Is transition ended",
             "display_string": "Is transition ended",
-            "description": "True when the current layout transition has ended.",
+            "description": "Checks whether the current layout transition has ended.",
             "category_id": "transitions",
             "category_label": "Transitions",
-            "language_key": "ace.plugin.layout-transition.on_transition_ended",
-            "markers": [
-              "trigger"
-            ],
+            "language_key": "ace.plugin.layout-transition.is_transition_ended",
+            "markers": [],
             "flags": {
-              "trigger": true,
+              "trigger": false,
               "looping": false,
               "invertible": true,
               "incompatible_with_triggers": false,
@@ -31975,7 +31973,7 @@
               "name": "data",
               "label": "Shape data",
               "description": "Shape data parameter.",
-              "type": "json",
+              "type": "object",
               "required": true
             }
           ],

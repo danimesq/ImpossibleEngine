@@ -102,6 +102,7 @@ def _project_summary(project: Project, path: str) -> dict[str, Any]:
         "native_index": project.native_index,
     }
     if project.native_index:
+        summary.pop("active_platform", None)
         index_counts: dict[str, int] = {}
         for kind, key in RESOURCE_INDEX_KINDS.items():
             index_counts[kind] = len(_walk_index_items(project.extra_fields.get(key), kind))

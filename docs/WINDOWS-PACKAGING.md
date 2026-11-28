@@ -3,8 +3,7 @@
 ## Supported bundle
 
 ImpossibleEngine can be distributed on Windows without asking end users to
-install MSYS2. The repository builds a portable ZIP that includes a trimmed
-by-directory copy of the MSYS2 MINGW64 runtime (`bin`, `lib`, `share`), the
+install MSYS2. The repository builds a portable ZIP that includes a by-directory copy of the MSYS2 MINGW64 runtime (`bin`, `lib`, `share`), the
 Python authoring package, GTK3, PyGObject and its runtime data.
 
 The bundle is intentionally independent of pip and PyInstaller: the MSYS2

@@ -165,6 +165,10 @@ class HeadlessCliTests(unittest.TestCase):
             "projectFormatVersion": 1,
             "name": "Index Project",
             "usedAddons": [],
+            "layouts": {
+                "items": ["Main"],
+                "subfolders": [],
+            },
             "eventSheets": {
                 "items": ["Gameplay"],
                 "subfolders": [{"name": "Shared", "items": ["Common"], "subfolders": []}],
@@ -183,6 +187,7 @@ class HeadlessCliTests(unittest.TestCase):
         self.assertEqual(code, 0, errors)
         resources = json.loads(output)["resources"]
         names = {(item["kind"], item["name"], item["folder"]) for item in resources}
+        self.assertIn(("layout", "Main", ""), names)
         self.assertIn(("event-sheet", "Gameplay", ""), names)
         self.assertIn(("event-sheet", "Common", "Shared"), names)
         self.assertIn(("script", "main.js", ""), names)
